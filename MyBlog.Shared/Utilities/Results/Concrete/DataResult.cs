@@ -28,6 +28,7 @@ namespace MyBlog.Shared.Utilities.Results.Concrete
             Data = data;
             Exception = exception;
         }
+        //
         public ResultStatus ResultStatus { get; }
         public string Message { get; }
         public Exception Exception { get; }
