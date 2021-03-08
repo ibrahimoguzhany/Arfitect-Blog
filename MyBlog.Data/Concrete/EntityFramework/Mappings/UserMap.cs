@@ -9,7 +9,7 @@ using MyBlog.Entities.Concrete;
 
 namespace MyBlog.Data.Concrete.EntityFramework.Mappings
 {
-   public class UserMap:IEntityTypeConfiguration<User>
+    public class UserMap : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
@@ -34,6 +34,26 @@ namespace MyBlog.Data.Concrete.EntityFramework.Mappings
             builder.Property(x => x.IsDeleted).IsRequired();
             builder.Property(x => x.Note).HasMaxLength(500);
             builder.ToTable("Users");
+
+            builder.HasData(new User
+            {
+                Id = 1,
+                RoleId = 1,
+                FirstName =  "Oguzhan",
+                LastName = "Yilmaz",
+                UserName = "oguzhany",
+                Email = "oguzhan@gmail.com",
+                IsActive = true,
+                IsDeleted = false,
+                CreatedByName = "InitialCreate",
+                CreatedDate = DateTime.Now,
+                ModifiedByName = "InitialCreate",
+                ModifiedDate = DateTime.Now,
+                Description = "Ilk admin kullanici",
+                Note = "Admin kullanicisi",
+                PasswordHash = Encoding.ASCII.GetBytes("202cb962ac59075b964b07152d234b70"),
+                Picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSX4wVGjMQ37PaO4PdUVEAliSLi8-c2gJ1zvQ&usqp=CAU"
+            });
 
         }
     }
