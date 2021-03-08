@@ -20,6 +20,7 @@ namespace MyBlog.Entities.Concrete
         public string Description { get; set; }
 
         public ICollection<Post> Posts { get; set; }
+        //sadsa
 
 
     }
