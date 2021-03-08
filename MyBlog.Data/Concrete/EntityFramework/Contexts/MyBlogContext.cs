@@ -30,7 +30,7 @@ namespace MyBlog.Data.Concrete.EntityFramework.Contexts
             modelBuilder.ApplyConfiguration(new CommentMap());
             modelBuilder.ApplyConfiguration(new RoleMap());
             modelBuilder.ApplyConfiguration(new UserMap());
-            //end
+            // end
         }
     }
 }
