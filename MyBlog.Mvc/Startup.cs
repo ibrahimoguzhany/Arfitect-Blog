@@ -20,6 +20,7 @@ namespace MyBlog.Mvc
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddAutoMapper(typeof(Startup));
             services.LoadMyServices();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
