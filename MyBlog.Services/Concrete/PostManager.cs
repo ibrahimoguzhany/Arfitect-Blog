@@ -111,7 +111,8 @@ namespace MyBlog.Services.Concrete
             post.CreatedByName = createdByName;
             post.ModifiedByName = createdByName;
             post.UserId = 1;
-            await _unitOfWork.Posts.AddAsync(post).ContinueWith(t => _unitOfWork.SaveAsync());
+            await _unitOfWork.Posts.AddAsync(post);
+            await _unitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, $"{postAddDto.Title} baslikli makale basariyla eklenmistir.");
         }
 
@@ -119,7 +120,8 @@ namespace MyBlog.Services.Concrete
         {
             var post = _mapper.Map<Post>(postUpdateDto);
             post.ModifiedByName = modifiedByName;
-            await _unitOfWork.Posts.UpdateAsync(post).ContinueWith(t => _unitOfWork.SaveAsync());
+            await _unitOfWork.Posts.UpdateAsync(post);
+            await _unitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, $"{postUpdateDto.Title} baslikli makale basariyla guncellenmistir");
         }
 
@@ -132,7 +134,8 @@ namespace MyBlog.Services.Concrete
                 post.ModifiedByName = modifiedByName;
                 post.IsDeleted = true;
                 post.ModifiedDate= DateTime.Now;
-                await _unitOfWork.Posts.UpdateAsync(post).ContinueWith(t => _unitOfWork.SaveAsync());
+                await _unitOfWork.Posts.UpdateAsync(post);
+                await _unitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{post.Title} baslikli makale basariyla guncellenmistir");
 
             }
@@ -146,7 +149,8 @@ namespace MyBlog.Services.Concrete
             {
                 var post = await _unitOfWork.Posts.GetAsync(x => x.Id == postId);
               
-                await _unitOfWork.Posts.DeleteAsync(post).ContinueWith(t => _unitOfWork.SaveAsync());
+                await _unitOfWork.Posts.DeleteAsync(post);
+                await _unitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{post.Title} baslikli makale veritabanindan basariyla silinmistir.");
             }
             return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
