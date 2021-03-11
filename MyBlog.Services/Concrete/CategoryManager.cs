@@ -70,13 +70,18 @@ namespace MyBlog.Services.Concrete
             var categories = await _unitOfWork.Categories.GetAllAsync(x => !x.IsDeleted, x => x.Posts);
             if (categories.Count > -1)
             {
-                return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto()
+                return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
                 {
                     Categories = categories,
-                    ResultStatus = ResultStatus.Success
+                    ResultStatus = ResultStatus.Success,
                 });
             }
-            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hicbir kategori bulunamadi.", null);
+            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hicbir kategori bulunamadi.", new CategoryListDto
+            {
+                Categories = null,
+                ResultStatus = ResultStatus.Error,
+                Message = "Hicbir kategori bulunamadi."
+            });
 
         }
 
@@ -121,13 +126,13 @@ namespace MyBlog.Services.Concrete
             return new DataResult<CategoryDto>(ResultStatus.Success,
                 $"{categoryUpdateDto.Name} adli kategori basariyla guncellenmistir.", new CategoryDto()
                 {
-                    Category = category,
+                    Category = updatedCategory,
                     ResultStatus = ResultStatus.Success,
                     Message = $"{categoryUpdateDto.Name} adli kategori basariyla eklenmistir."
                 });
         }
 
-        public async Task<IResult> Delete(int categoryId, string modifiedByName)
+        public async Task<IDataResult<CategoryDto>> Delete(int categoryId, string modifiedByName)
         {
             var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId);
             if (category != null)
@@ -135,11 +140,23 @@ namespace MyBlog.Services.Concrete
                 category.IsDeleted = true;
                 category.ModifiedByName = modifiedByName;
                 category.ModifiedDate = DateTime.Now;
-                await _unitOfWork.Categories.UpdateAsync(category);
+                var deletedCategory = await _unitOfWork.Categories.UpdateAsync(category);
                 await _unitOfWork.SaveAsync();
-                return new Result(ResultStatus.Success, $"{category.Name} adli kategori basariyla silinmistir.");
+
+                return new DataResult<CategoryDto>(ResultStatus.Success,
+                    $"{deletedCategory.Name} adli kategori basariyla silinmistir.", new CategoryDto()
+                    {
+                        Category = deletedCategory,
+                        ResultStatus = ResultStatus.Success,
+                        Message = $"{deletedCategory.Name} adli kategori basariyla silinmistir."
+                    });
             }
-            return new Result(ResultStatus.Error, "Boyle bir kategori bulunamadi.");
+            return new DataResult<CategoryDto>(ResultStatus.Error, "Böyle bir kategori bulunamadı.", new CategoryDto()
+                {
+                    Category = null,
+                    ResultStatus = ResultStatus.Error,
+                    Message = "Böyle bir kategori bulunamadı."
+            });
         }
 
         public async Task<IResult> HardDelete(int categoryId)
