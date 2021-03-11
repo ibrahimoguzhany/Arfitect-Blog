@@ -212,10 +212,10 @@
     });
 
     /* DataTables ends here */
-    /* Ajax GET / Getting the _CategoryAddPartial as Modal Form start here */
+    /* Ajax GET / Getting the _UserAddPartial as Modal Form start here */
 
     $(function () {
-        const url = '/Admin/Category/Add/';
+        const url = '/Admin/User/Add/';
         const placeholderDiv = $('#modalPlaceholder');
         $('#btnAdd').click(function () {
             $.get(url).done(function (data) {
@@ -224,7 +224,7 @@
             });
         });
 
-        /* Ajax GET / Getting the _CategoryAddPartial as Modal Form Ends here */
+        /* Ajax GET / Getting the _UserAddPartial as Modal Form Ends here */
         /* Ajax POST / Posting the FormData as CategoryDto starts from here */
 
         placeholderDiv.on('click',
