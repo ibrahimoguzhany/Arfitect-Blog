@@ -15,21 +15,15 @@ namespace MyBlog.Data.Concrete
         private EfPostRepository _postRepository;
         private EfCategoryRepository _categoryRepository;
         private EfCommentRepository _commentRepository;
-        private EfUserRepository _userRepository;
-        private EfRoleRepository _roleRepository;
 
         public UnitOfWork(MyBlogContext context)
         {
             _context = context;
         }
 
-        
-
         public IPostRepository Posts => _postRepository ?? new EfPostRepository(_context);
         public ICategoryRepository Categories => _categoryRepository ?? new EfCategoryRepository(_context);
         public ICommentRepository Comments => _commentRepository ?? new EfCommentRepository(_context);
-        public IRoleRepository Roles => _roleRepository ?? new EfRoleRepository(_context);
-        public IUserRepository Users => _userRepository ?? new EfUserRepository(_context);
         public async Task<int> SaveAsync()
         {
             return await _context.SaveChangesAsync();
