@@ -343,6 +343,14 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                         ViewData.Add("SuccessMessage", $"Parolanız başarıyla değiştirilmiştir.");
                         return View();
                     }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                        return View(userPasswordChangeDto);
+                    }
                 }
                 else
                 {
@@ -350,7 +358,10 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                     return View(userPasswordChangeDto);
                 }
             }
-            return View();
+            else
+            {
+                return View(userPasswordChangeDto);
+            }
         }
         [Authorize(Roles = "Admin,Editor")]
         public async Task<string> ImageUpload(string userName, IFormFile pictureFile)
