@@ -16,7 +16,7 @@
         </div>
         <div class="card-body">
             <div class="spinner-border" role="status" style="display: none;">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">Yükleniyor...</span>
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered" id="categoriesTable" width="100%" cellspacing="0">
@@ -53,7 +53,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach (Category category in Model.Categories)
+                        @foreach (var category in Model.Categories)
                         {
                             <tr name="@category.Id">
                                 <td>@category.Id</td>
@@ -71,7 +71,6 @@
                                     <button class="btn btn-danger btn-sm btn-delete" data-id="@category.Id"><span class="fas fa-minus-circle"></span></button>
                                 </td>
                             </tr>
-
                         }
                     </tbody>
                 </table>

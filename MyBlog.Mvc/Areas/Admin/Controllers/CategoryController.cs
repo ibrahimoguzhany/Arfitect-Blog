@@ -27,7 +27,6 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         {
             var result = await _categoryService.GetAllByNoneDeleted();
             return View(result.Data);
-
         }
 
         [HttpGet]
@@ -96,7 +95,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         public async Task<JsonResult> GetAllCategories()
         {
             var result = await _categoryService.GetAllByNoneDeleted();
-            var categories = JsonSerializer.Serialize(result.Data,  new JsonSerializerOptions
+            string categories = JsonSerializer.Serialize(result.Data,  new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.Preserve
             });

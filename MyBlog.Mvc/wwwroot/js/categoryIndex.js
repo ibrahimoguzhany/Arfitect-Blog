@@ -227,9 +227,7 @@
         /* Ajax GET / Getting the _CategoryAddPartial as Modal Form Ends here */
         /* Ajax POST / Posting the FormData as CategoryDto starts from here */
 
-        placeholderDiv.on('click',
-            '#btnSave',
-            function (event) {
+        placeholderDiv.on('click', '#btnSave', function (event) {
                 event.preventDefault;
                 const form = $('#form-category-add');
                 const actionUrl = form.attr('action');

@@ -1,51 +1,50 @@
-﻿@model MyBlog.Entities.Dtos.UserAddDto
+﻿@model MyBlog.Entities.Dtos.UserUpdateDto
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><span class="fas fa-plus"> </span> Kullanıcı Ekle</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><span class="fas fa-plus"> </span> Kullanıcı Düzenle</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="İptal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Add" id="form-user-add">
+                <form asp-action="Update" id="form-user-update">
                     <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
                     <div asp-validation-summary="All" class="text-danger" id="validation-summary" aria-hidden="true" style="display: none;">
-
                     </div>
+                    <input asp-for="Id" type="hidden" />
                     <div class="form-group">
                         <label asp-for="UserName"></label>
-                        <input class="form-control" asp-for="UserName" placeholder="Lütfen, kullanıcı adı giriniz." />
+                        <input class="form-control" asp-for="UserName" placeholder="Lütfen kullanıcı adı giriniz." />
                         <span class="text-danger" asp-validation-for="UserName"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Email"></label>
-                        <input class="form-control" asp-for="Email" type="email" placeholder="Lütfen, e-mail adresi giriniz." />
+                        <input class="form-control" asp-for="Email" type="email" placeholder="Lütfen e-mail adresi giriniz." />
                         <span class="text-danger" asp-validation-for="Email"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Password"></label>
-                        <input class="form-control" asp-for="Password" type="password" placeholder="Lütfen, şifre giriniz." />
-                        <span class="text-danger" asp-validation-for="Password"></span>
-                    </div>
+
                     <div class="form-group">
                         <label asp-for="PhoneNumber"></label>
-                        <input class="form-control" asp-for="PhoneNumber" type="text" placeholder="Lütfen, şifre giriniz." />
+                        <input class="form-control" asp-for="PhoneNumber" type="text" placeholder="Lütfen telefon numarası giriniz." />
                         <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Picture"></label>
+                        <img class="img-fluid img-thumbnail" src="~/img/@Model.Picture" alt="@Model.UserName"/>
                     </div>
                     <div class="form-group">
                         <label asp-for="PictureFile"></label>
                         <input class="form-control-file" accept="image/*" asp-for="PictureFile" type="file" placeholder="Lütfen, şifre giriniz." />
                         <span class="text-danger" asp-validation-for="PictureFile"></span>
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"> <span class="fas fa-times"></span> İptal</button>
-                <button type="button" class="btn btn-primary btn-block" id="btnSave"><span class="fas fa-save"></span> Kaydet</button>
+                <button type="button" class="btn btn-primary btn-block" id="btnUpdate"><span class="fas fa-save"></span> Kaydet</button>
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyBlog.Mvc.AutoMapper.Profiles;
 using MyBlog.Services.AutoMapper.Profiles;
 using MyBlog.Services.Extensions;
 
@@ -21,7 +22,7 @@ namespace MyBlog.Mvc
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddSession();
-            services.AddAutoMapper(typeof(CategoryProfile), typeof(PostProfile));
+            services.AddAutoMapper(typeof(CategoryProfile), typeof(PostProfile), typeof(UserProfile));
             services.LoadMyServices();
             services.ConfigureApplicationCookie(options =>
             {
