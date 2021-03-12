@@ -262,6 +262,51 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<ViewResult> ChangeDetails(UserUpdateDto userUpdateDto)
+        {
+            if (ModelState.IsValid)
+            {
+                bool isNewPictureUploaded = false;
+                var oldUser = await _userManager.GetUserAsync(HttpContext.User);
+                var oldUserPicture = oldUser.Picture;
+                if (userUpdateDto.PictureFile != null)
+                {
+                    userUpdateDto.Picture = await ImageUpload(userUpdateDto.UserName, userUpdateDto.PictureFile);
+                    if (oldUserPicture != "defaultuser.png")
+                    {
+                        isNewPictureUploaded = true;
+                    }
+                    isNewPictureUploaded = true;
+                }
+
+                var updatedUser = _mapper.Map<UserUpdateDto, User>(userUpdateDto, oldUser);
+                var result = await _userManager.UpdateAsync(updatedUser);
+                if (result.Succeeded)
+                {
+                    if (isNewPictureUploaded == true)
+                    {
+                        ImageDelete(oldUserPicture);
+                    }
+                    ViewData.Add("SuccessMessage", $"{updatedUser.UserName} kullanıcısı başarıyla güncellenmiştir.");
+                    return View(userUpdateDto);
+                }
+                else
+                {
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(userUpdateDto);
+                }
+            }
+            else
+            {
+                return View(userUpdateDto);
+            }
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<ViewResult> ChangeDetails()
