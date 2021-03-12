@@ -81,7 +81,13 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             }
             return View("UserLogin");
         }
-
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { Area = "" });
+        }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -254,6 +260,15 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                 });
                 return Json(userUpdateModelStateErrorViewModel);
             }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ViewResult> ChangeDetails()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var updateDto = _mapper.Map<UserUpdateDto>(user);
+            return View(updateDto);
         }
 
         [Authorize(Roles = "Admin,Editor")]
