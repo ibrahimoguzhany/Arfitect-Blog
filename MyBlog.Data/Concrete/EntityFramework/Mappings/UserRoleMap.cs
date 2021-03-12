@@ -9,7 +9,7 @@ using MyBlog.Entities.Concrete;
 
 namespace MyBlog.Data.Concrete.EntityFramework.Mappings
 {
-   public class UserRoleMap:IEntityTypeConfiguration<UserRole>
+    public class UserRoleMap : IEntityTypeConfiguration<UserRole>
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
@@ -18,6 +18,18 @@ namespace MyBlog.Data.Concrete.EntityFramework.Mappings
 
             // Maps to the AspNetUserRoles table
             builder.ToTable("AspNetUserRoles");
+
+            builder.HasData(
+                new UserRole
+                {
+                    RoleId = 1,
+                    UserId = 1
+                },
+                new UserRole
+                {
+                    RoleId = 2,
+                    UserId = 2
+                });
         }
     }
 }
