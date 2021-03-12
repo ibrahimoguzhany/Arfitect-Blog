@@ -365,12 +365,12 @@
                             userUpdateAjaxModel.UserDto.User.Email,
                             userUpdateAjaxModel.UserDto.User.PhoneNumber,
                             `<img src="/img/${userUpdateAjaxModel.UserDto.User.Picture}" alt="${userUpdateAjaxModel
-                                .UserDto.User.UserName}" class="my-image-table"/>`,
+                            .UserDto.User.UserName}" class="my-image-table"/>`,
                             `
                                     <button class="btn btn-primary btn-sm btn-update" data-id="${userUpdateAjaxModel
-                                .UserDto.User.Id}"><span class="fas fa-edit"></span></button>
+                            .UserDto.User.Id}"><span class="fas fa-edit"></span></button>
                                     <button class="btn btn-danger btn-sm btn-delete" data-id="${userUpdateAjaxModel
-                                .UserDto.User.Id}"><span class="fas fa-minus-circle"></span></button>
+                            .UserDto.User.Id}"><span class="fas fa-minus-circle"></span></button>
                                 `
                         ]);
                         tableRow.attr("name", `${id}`);

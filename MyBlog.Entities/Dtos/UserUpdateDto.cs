@@ -27,7 +27,7 @@ namespace MyBlog.Entities.Dtos
         public string Email { get; set; }
         [DisplayName("Telefon numarası")]
         [Required(ErrorMessage = "{0} adi bos gecilmemelidir.")]
-        [MaxLength(13, ErrorMessage = "{0} {1} karakterden buyuk olmamalidir.")] // +90 444 444 44 44// 13 characters
+        [MaxLength(13, ErrorMessage = "{0} {1} karakterden buyuk olmamalidir.")]
         [MinLength(13, ErrorMessage = "{0} {1} karakterden kucuk olmamalidir.")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }

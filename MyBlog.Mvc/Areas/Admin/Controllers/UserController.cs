@@ -183,7 +183,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                             Message = $"{updatedUser.UserName} kullanıcısı başarıyla güncellenmiştir.",
                             User = updatedUser
                         },
-                        UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartialView", userUpdateDto)
+                        UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartial", userUpdateDto)
                     });
                     return Json(userUpdateViewModel);
                 }
