@@ -67,11 +67,11 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                         userLoginDto.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        ModelState.AddModelError("","Email adresiniz veya şifreniz yanlıştır.");
+                        ModelState.AddModelError("", "Email adresiniz veya şifreniz yanlıştır.");
                     }
                 }
                 else
@@ -316,6 +316,42 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             return View(updateDto);
         }
 
+        [HttpGet]
+        [Authorize]
+        public ViewResult PasswordChange()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ViewResult> PasswordChange(UserPasswordChangeDto userPasswordChangeDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var isVerified = await _userManager.CheckPasswordAsync(user, userPasswordChangeDto.CurrentPassword);
+                if (isVerified)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, userPasswordChangeDto.CurrentPassword,
+                        userPasswordChangeDto.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.UpdateSecurityStampAsync(user);
+                        await _signInManager.SignOutAsync();
+                        await _signInManager.PasswordSignInAsync(user, userPasswordChangeDto.NewPassword, true, false);
+                        ViewData.Add("SuccessMessage", $"Parolanız başarıyla değiştirilmiştir.");
+                        return View();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Lütfen girmiş olduğunuz eski şifrenizi kontrol ediniz.");
+                    return View(userPasswordChangeDto);
+                }
+            }
+            return View();
+        }
         [Authorize(Roles = "Admin,Editor")]
         public async Task<string> ImageUpload(string userName, IFormFile pictureFile)
         {
