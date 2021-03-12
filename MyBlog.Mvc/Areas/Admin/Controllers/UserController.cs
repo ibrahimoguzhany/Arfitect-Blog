@@ -8,9 +8,11 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using MyBlog.Mvc.Areas.Admin.Models;
@@ -36,7 +38,6 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             List<User> users = await _userManager.Users.ToListAsync();
-
             return View(new UserListDto()
             {
                 Users = users,
@@ -72,7 +73,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                userAddDto.Picture = await ImageUpload(userAddDto);
+                userAddDto.Picture = await ImageUpload(userAddDto.UserName, userAddDto.PictureFile);
                 User user = _mapper.Map<User>(userAddDto);
                 IdentityResult result = await _userManager.CreateAsync(user, userAddDto.Password);
                 if (result.Succeeded)
@@ -143,20 +144,103 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             }
         }
 
-        public async Task<string> ImageUpload(UserAddDto userAddDto)
+        [HttpGet]
+        public async Task<PartialViewResult> Update(int userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
+            return PartialView("_UserUpdatePartial", userUpdateDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
+        {
+            if (ModelState.IsValid)
+            {
+                bool isNewPictureUploaded = false;
+                var oldUser = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
+                var oldUserPicture = oldUser.Picture;
+                if (userUpdateDto.PictureFile != null)
+                {
+                    userUpdateDto.Picture = await ImageUpload(userUpdateDto.UserName, userUpdateDto.PictureFile);
+                    isNewPictureUploaded = true;
+                }
+
+                var updatedUser = _mapper.Map<UserUpdateDto, User>(userUpdateDto, oldUser);
+                var result = await _userManager.UpdateAsync(updatedUser);
+                if (result.Succeeded)
+                {
+                    if (isNewPictureUploaded == true)
+                    {
+                        ImageDelete(oldUserPicture);
+                    }
+
+                    var userUpdateViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
+                    {
+                        UserDto = new UserDto
+                        {
+                            ResultStatus = ResultStatus.Success,
+                            Message = $"{updatedUser.UserName} kullanıcısı başarıyla güncellenmiştir.",
+                            User = updatedUser
+                        },
+                        UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartialView", userUpdateDto)
+                    });
+                    return Json(userUpdateViewModel);
+                }
+                else
+                {
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    var userUpdateErrorViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
+                    {
+                        UserUpdateDto = userUpdateDto,
+                        UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartialView", userUpdateDto)
+                    });
+                    return Json(userUpdateErrorViewModel);
+                }
+            }
+            else
+            {
+                var userUpdateModelStateErrorViewModel = JsonSerializer.Serialize(new UserUpdateAjaxViewModel
+                {
+                    UserUpdateDto = userUpdateDto,
+                    UserUpdatePartial = await this.RenderViewToStringAsync("_UserUpdatePartialView", userUpdateDto)
+                });
+                return Json(userUpdateModelStateErrorViewModel);
+            }
+        }
+
+        public async Task<string> ImageUpload(string userName, IFormFile pictureFile)
         {
             string wwwroot = _env.WebRootPath;
             //string fileName = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName);
-            string fileExtension = Path.GetExtension(userAddDto.PictureFile.FileName);
+            string fileExtension = Path.GetExtension(pictureFile.FileName);
             DateTime dateTime = DateTime.Now;
 
-            string fileName = $"{userAddDto.UserName}_{dateTime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
+            string fileName = $"{userName}_{dateTime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
             string path = Path.Combine($"{wwwroot}/img", fileName);
             await using (var stream = new FileStream(path, FileMode.Create))
             {
-                await userAddDto.PictureFile.CopyToAsync(stream);
+                await pictureFile.CopyToAsync(stream);
             }
             return fileName;
+        }
+
+        public bool ImageDelete(string pictureName)
+        {
+            string wwwroot = _env.WebRootPath;
+            var fileToDelete = Path.Combine($"{wwwroot}/img", pictureName);
+            if (System.IO.File.Exists(fileToDelete))
+            {
+                System.IO.File.Delete(fileToDelete);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

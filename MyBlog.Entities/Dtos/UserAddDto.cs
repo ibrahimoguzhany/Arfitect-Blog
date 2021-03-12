@@ -10,7 +10,7 @@ using MyBlog.Shared.Entities.Abstract;
 
 namespace MyBlog.Entities.Dtos
 {
-    public class UserAddDto:DtoGetBase
+    public class UserAddDto : DtoGetBase
     {
         [DisplayName("Kullanıcı Adı")]
         [Required(ErrorMessage = "{0} adi bos gecilmemelidir.")]

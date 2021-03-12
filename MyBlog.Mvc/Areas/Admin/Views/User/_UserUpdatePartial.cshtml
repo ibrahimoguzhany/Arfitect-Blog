@@ -1,4 +1,5 @@
 ﻿@model MyBlog.Entities.Dtos.UserUpdateDto
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -33,7 +34,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Picture"></label>
-                        <img class="img-fluid img-thumbnail" src="~/img/@Model.Picture" alt="@Model.UserName"/>
+                        <img class="my-image" src="~/img/@Model.Picture" alt="@Model.UserName"/>
                     </div>
                     <div class="form-group">
                         <label asp-for="PictureFile"></label>

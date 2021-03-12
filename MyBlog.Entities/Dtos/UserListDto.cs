@@ -8,7 +8,7 @@ using MyBlog.Shared.Entities.Abstract;
 
 namespace MyBlog.Entities.Dtos
 {
-    public class UserListDto:DtoGetBase
+    public class UserListDto : DtoGetBase
     {
         public IList<User> Users { get; set; }
     }
