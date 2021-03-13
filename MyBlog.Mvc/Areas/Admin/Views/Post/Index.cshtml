@@ -3,7 +3,10 @@
     Layout = "_Layout";
     ViewBag.Title = "Paylaşımlar";
 }
-
+<ol class="breadcrumb mb-3 mt-2">
+    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Post" asp-action="Index">Paylaşımlar</a></li>
+</ol>
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
@@ -52,25 +55,26 @@
 
                     @foreach (var post in Model.Posts)
                     {
-                    <tr>
-                        <td>@post.Id</td>
-                        <td>@post.Category.Name</td>
-                        <td>@post.Title</td>
-                        <td><img src="~/img/@post.Thumbnail" class="my-image-table" /></td>
-                        <td>@post.Date.ToShortDateString()</td>
-                        <td>@post.ViewCount</td>
-                        <td>@post.CommentCount</td>
-                        <td>@(post.IsActive ? "Evet" : "Hayır")</td>
-                        <td>@(post.IsDeleted ? "Evet" : "Hayır")</td>
-                        <td>@post.CreatedDate</td>
-                        <td>@post.ModifiedDate.ToShortDateString()</td>
-                        <td>@post.ModifiedByName</td>
-                        <td>
-                            <button class="btn btn-primary btn-sm btn-update" data-id="@post.Id"><span class="fas fa-edit"></span></button>
-                            <button class="btn btn-danger btn-sm btn-delete" data-id="@post.Id"><span class="fas fa-minus-circle"></span></button>
-                        </td>
+                        <tr>
+                            <td>@post.Id</td>
+                            <td>@post.Category.Name</td>
+                            <td>@post.Title</td>
+                            <td><img src="~/img/@post.Thumbnail" class="my-image-table" /></td>
+                            <td>@post.Date.ToShortDateString()</td>
+                            <td>@post.ViewCount</td>
+                            <td>@post.CommentCount</td>
+                            <td>@(post.IsActive ? "Evet" : "Hayır")</td>
+                            <td>@(post.IsDeleted ? "Evet" : "Hayır")</td>
+                            <td>@post.CreatedDate</td>
+                            <td>@post.CreatedByName</td>
+                            <td>@post.ModifiedDate.ToShortDateString()</td>
+                            <td>@post.ModifiedByName</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm btn-update" data-id="@post.Id"><span class="fas fa-edit"></span></button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-id="@post.Id"><span class="fas fa-minus-circle"></span></button>
+                            </td>
 
-                    </tr>
+                        </tr>
                     }
 
                 </tbody>
@@ -78,3 +82,13 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script src="~/AdminLTE/js/postIndex.js" type="application/ecmascript"></script>
+}
+
+@section Styles
+{
+    
+}
