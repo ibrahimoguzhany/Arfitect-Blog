@@ -27,7 +27,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<CategoryDto>> Get(int categoryId)
         {
-            var category = await _unitOfWork.Categories.GetAsync(x => x.Id == categoryId, x => x.Posts);
+            var category = await _unitOfWork.Categories.GetAsync(x => x.Id == categoryId);
             if (category != null)
             {
                 return new DataResult<CategoryDto>(ResultStatus.Success, new CategoryDto
@@ -62,7 +62,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<CategoryListDto>> GetAll()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(null, c => c.Posts);
+            var categories = await _unitOfWork.Categories.GetAllAsync(null);
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
@@ -82,7 +82,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<CategoryListDto>> GetAllByNoneDeleted()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(x => !x.IsDeleted, x => x.Posts);
+            var categories = await _unitOfWork.Categories.GetAllAsync(x => !x.IsDeleted);
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
@@ -102,7 +102,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedAndActive()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(x => !x.IsDeleted & x.IsActive, x => x.Posts);
+            var categories = await _unitOfWork.Categories.GetAllAsync(x => !x.IsDeleted & x.IsActive);
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
@@ -201,7 +201,7 @@ namespace MyBlog.Services.Concrete
             }
         }
 
-        public async Task<IDataResult<int>> CountByIsDeleted()
+        public async Task<IDataResult<int>> CountByNonDeleted()
         {
             var categoriesCount = await _unitOfWork.Categories.CountAsync(c=>!c.IsDeleted);
             if (categoriesCount > -1)

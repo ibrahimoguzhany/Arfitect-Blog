@@ -169,7 +169,7 @@ namespace MyBlog.Services.Concrete
             }
         }
 
-        public async Task<IDataResult<int>> CountByIsDeleted()
+        public async Task<IDataResult<int>> CountByNonDeleted()
         {
             var postsCount = await _unitOfWork.Posts.CountAsync(a=>!a.IsDeleted);
             if (postsCount > -1)

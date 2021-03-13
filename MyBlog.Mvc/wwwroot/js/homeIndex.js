@@ -137,7 +137,8 @@
             },
             "searchPlaceholder": "Ara",
             "thousands": "."
-        }
-    });
+        },
+        "order":[[4,"desc"]]
+});
 
 });
