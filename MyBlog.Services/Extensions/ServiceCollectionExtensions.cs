@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MyBlog.Data.Abstract;
 using MyBlog.Data.Concrete;
@@ -15,9 +16,9 @@ namespace MyBlog.Services.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection)
+        public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection,string connectionString)
         {
-            serviceCollection.AddDbContext<MyBlogContext>();
+            serviceCollection.AddDbContext<MyBlogContext>(options=>options.UseSqlServer(connectionString));
             serviceCollection.AddIdentity<User, Role>(options =>
             {
                 //User Password Options

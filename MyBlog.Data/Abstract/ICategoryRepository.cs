@@ -8,7 +8,8 @@ using MyBlog.Shared.Data.Abstract;
 
 namespace MyBlog.Data.Abstract
 {
-    public interface ICategoryRepository:IEntityRepository<Category>
+    public interface ICategoryRepository : IEntityRepository<Category>
     {
+        Task<Category> GetById(int categoryId);
     }
 }
