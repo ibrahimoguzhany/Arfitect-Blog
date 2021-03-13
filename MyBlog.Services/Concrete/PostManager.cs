@@ -155,5 +155,31 @@ namespace MyBlog.Services.Concrete
             }
             return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
         }
+
+        public async Task<IDataResult<int>> Count()
+        {
+            var postsCount = await _unitOfWork.Posts.CountAsync();
+            if (postsCount > -1)
+            {
+                return new DataResult<int>(ResultStatus.Success, postsCount);
+            }
+            else
+            {
+                return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
+            }
+        }
+
+        public async Task<IDataResult<int>> CountByIsDeleted()
+        {
+            var postsCount = await _unitOfWork.Posts.CountAsync(a=>!a.IsDeleted);
+            if (postsCount > -1)
+            {
+                return new DataResult<int>(ResultStatus.Success, postsCount);
+            }
+            else
+            {
+                return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
+            }
+        }
     }
 }

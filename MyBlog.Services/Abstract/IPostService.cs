@@ -20,5 +20,7 @@ namespace MyBlog.Services.Abstract
         Task<IResult> Update(PostUpdateDto postUpdateDto, string modifiedByName);
         Task<IResult> Delete(int postId, string modifiedByName);
         Task<IResult> HardDelete(int postId);
+        Task<IDataResult<int>> Count();
+        Task<IDataResult<int>> CountByIsDeleted();
     }
 }

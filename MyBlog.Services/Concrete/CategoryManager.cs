@@ -50,7 +50,7 @@ namespace MyBlog.Services.Concrete
             var result = await _unitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
             if (result)
             {
-                var category = await _unitOfWork.Categories.GetAsync(c=>c.Id == categoryId);
+                var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId);
                 var categoryUpdateDto = _mapper.Map<CategoryUpdateDto>(category);
                 return new DataResult<CategoryUpdateDto>(ResultStatus.Success, categoryUpdateDto);
             }
@@ -134,7 +134,7 @@ namespace MyBlog.Services.Concrete
         public async Task<IDataResult<CategoryDto>> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName)
         {
             var oldCategory = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryUpdateDto.Id);
-            var category = _mapper.Map(categoryUpdateDto,oldCategory);
+            var category = _mapper.Map(categoryUpdateDto, oldCategory);
             category.ModifiedByName = modifiedByName;
             var updatedCategory = await _unitOfWork.Categories.UpdateAsync(category);
             await _unitOfWork.SaveAsync();
@@ -168,10 +168,10 @@ namespace MyBlog.Services.Concrete
                     });
             }
             return new DataResult<CategoryDto>(ResultStatus.Error, "Böyle bir kategori bulunamadı.", new CategoryDto()
-                {
-                    Category = null,
-                    ResultStatus = ResultStatus.Error,
-                    Message = "Böyle bir kategori bulunamadı."
+            {
+                Category = null,
+                ResultStatus = ResultStatus.Error,
+                Message = "Böyle bir kategori bulunamadı."
             });
         }
 
@@ -186,6 +186,32 @@ namespace MyBlog.Services.Concrete
             }
             return new Result(ResultStatus.Error, "Boyle bir kategori bulunamadi.");
 
+        }
+
+        public async Task<IDataResult<int>> Count()
+        {
+            var categoriesCount = await _unitOfWork.Categories.CountAsync();
+            if (categoriesCount > -1)
+            {
+                return new DataResult<int>(ResultStatus.Success, categoriesCount);
+            }
+            else
+            {
+                return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
+            }
+        }
+
+        public async Task<IDataResult<int>> CountByIsDeleted()
+        {
+            var categoriesCount = await _unitOfWork.Categories.CountAsync(c=>!c.IsDeleted);
+            if (categoriesCount > -1)
+            {
+                return new DataResult<int>(ResultStatus.Success, categoriesCount);
+            }
+            else
+            {
+                return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
+            }
         }
     }
 }
