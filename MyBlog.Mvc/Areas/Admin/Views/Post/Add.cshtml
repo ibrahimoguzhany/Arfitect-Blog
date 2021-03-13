@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label for="categoryList">Kategori</label>
                         <select id="categoryList" class="form-control">
-                            <option disabled="disabled">Lütfen bir kategori seçiniz...</option>
+                            <option></option>
                             <option>C#</option>
                             <option>C++</option>
                             <option>Javascript</option>
@@ -84,10 +84,30 @@
 </form>
 @section Scripts
 {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/trumbowyg.min.js" integrity="sha512-sffB9/tXFFTwradcJHhojkhmrCj0hWeaz8M05Aaap5/vlYBfLx5Y7woKi6y0NrqVNgben6OIANTGGlojPTQGEw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/langs/tr.min.js" integrity="sha512-+HGzdrYvtA0U9cp5kJad8OpjTvUi6ywZ9z9kXFGiV3EaAR1II5X6lfulUm6/F9GKesHW+jHFfAqwXK0juybvMw==" crossorigin="anonymous"></script>
     <script src="~/AdminLTE/js/postAdd.js" type="application/ecmascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/colors/trumbowyg.colors.min.js" integrity="sha512-iT7g30i1//3OBZsfoc5XmlULnKQKyxir582Z9fIFWI6+ohfrTdns118QYhCTt0d09aRGcE7IRvCFjw2wngaqRQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/emoji/trumbowyg.emoji.min.js" integrity="sha512-C1y8Ma4rukPZAgoB+9AWiKNMWXvWXGDygpcYuL/lM3YKUcZLUgFwF8brKYML73a5YeZ4y7hmY3604Tzx4f4k0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/fontfamily/trumbowyg.fontfamily.min.js" integrity="sha512-tDDpWlhruXFSzPin7PeSOo/ZklJv354ZUibgoTnthgO9lQUiNn4etCFGNwT4c3WUCZ1jWZgOVrXGMqiApe9sBg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/fontsize/trumbowyg.fontsize.min.js" integrity="sha512-DOJaq3OCe5hLSr73aQBMiJY4kc+L5UwessOl6g2oxyy7VDnZVWt+TgWVy2nh2ypf7bwoaxZmPnIMiRC5PNZecA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/allowtagsfrompaste/trumbowyg.allowtagsfrompaste.min.js" integrity="sha512-Zuq+wA/YLqIGzMTTwdEx7amSDq7QKEcygLO4S8w1MeUytDQAGGZza/kZxCfwp0QiPdGHQHxl/bYGxmoy1MwdDA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/preformatted/trumbowyg.preformatted.min.js" integrity="sha512-H8bz2LLKz+AgS8lOgmZqGdq/dzdC8+lBUxDNiy5/E1ALSb193K9YNcoIeyfDk/z/qIQpEy+QFx4W+kT/bb0c3Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/resizimg/trumbowyg.resizimg.min.js" integrity="sha512-JdV4XBtBs4kuh7D5GLPIBxr5RXZdFQ4y5mIfpejdeO59Py5jfg0NzW5KyzYpFC35fUkbCn7DUvEr6gfVzAByTg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/flick/jquery-ui.min.css" integrity="sha512-Yx7L3AmO2yN7qIM1uM0Mqx6ld35SZj7oyG/gZ668QNvBzJsvoQebhFpsl1zEYVR6jtYCpXcCmewCuhvHrjDhog==" crossorigin="anonymous" />
+
 }
 
 @section Styles
 {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/ui/trumbowyg.min.css" integrity="sha512-iw/TO6rC/bRmSOiXlanoUCVdNrnJBCOufp2s3vhTPyP1Z0CtTSBNbEd5wIo8VJanpONGJSyPOZ5ZRjZ/ojmc7g==" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/colors/ui/trumbowyg.colors.min.css" integrity="sha512-8dXb2ITE13jLrqqGDVTU8kKl9vHZI9E4TpZGyfhevHeF+/cWWA17wVj+SKX3+QHqZISiGihaCOyK3nA152ShDg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/emoji/ui/trumbowyg.emoji.min.css" integrity="sha512-T2q2UM7Pm3t6Fu0VTRcuVMuaQf3/wP1aFi+/NyvpoVV0VBxN1Pqlmq57Jfg1IPRQCfFQOPLKBwoXA28+1gd/Ow==" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/AdminLTE/css/select2-bootstrap4.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/flick/theme.min.css" integrity="sha512-VWoNiZ/8gXnhL2bMWHGku9Oy67OJa3bjHMgx82nBMJMBhS+ZTGxRdyonqW3K92FuhUIn+VR4rMTyuhJ9JhUmow==" crossorigin="anonymous" />
 
 }

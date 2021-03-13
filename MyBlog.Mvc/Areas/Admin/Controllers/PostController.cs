@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyBlog.Mvc.Areas.Admin.Models;
 using MyBlog.Services.Abstract;
 using MyBlog.Shared.Utilities.Results.ComplexTypes;
 
@@ -12,10 +13,12 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
+        private readonly ICategoryService _categoryService;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, ICategoryService categoryService)
         {
             _postService = postService;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
@@ -27,9 +30,17 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            return View();
+            var result = await _categoryService.GetAllByNoneDeleted();
+            if (result.ResultStatus == ResultStatus.Success)
+            {
+                return View(new PostAddViewModel
+                {
+                    Categories = result.Data.Categories
+                });
+            }
+            return NotFound();
         }
     }
 }
