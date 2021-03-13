@@ -25,7 +25,7 @@ namespace MyBlog.Data.Concrete.EntityFramework.Mappings
             builder.Property(x => x.SeoDescription).IsRequired();
             builder.Property(x => x.SeoDescription).IsRequired();
             builder.Property(x => x.SeoTags).IsRequired().HasMaxLength(70);
-            builder.Property(x => x.ViewsCount).IsRequired();
+            builder.Property(x => x.ViewCount).IsRequired();
             builder.Property(x => x.CommentCount).IsRequired();
             builder.Property(x => x.Thumbnail).IsRequired().HasMaxLength(150);
             builder.Property(x => x.CreatedByName).IsRequired().HasMaxLength(50);
