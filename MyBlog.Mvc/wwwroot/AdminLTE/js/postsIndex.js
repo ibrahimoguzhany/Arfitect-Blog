@@ -26,36 +26,48 @@
                 action: function (e, dt, node, config) {
                     $.ajax({
                         type: 'GET',
-                        url: '/Admin/Post/GetAllUsers/',
+                        url: '/Admin/Post/GetAllPosts/',
                         contentType: 'application/json',
                         beforeSend: function () {
                             $('#postsTable').hide();
                             $('.spinner-border').show();
                         },
                         success: function (data) {
-                            const userListDto = jQuery.parseJSON(data);
+                            const postResult = jQuery.parseJSON(data);
                             dataTable.clear();
-                            console.log(userListDto);
-                            if (userListDto.ResultStatus === 0) {
-                                $.each(userListDto.Users.$values, function (index, user) {
+                            console.log(postResult);
+                            if (postResult.Data.ResultStatus === 0) {
+                                $.each(postResult.Data.Posts.$values,
+                                    function (index, post) {
+                                    const newPost = getJsonNetObject(post, postResult.Data.Posts.$values);
+                                    console.log(newPost);
                                     const newTableRow = dataTable.row.add([
-                                        user.Id,
-                                        user.UserName,
-                                        user.Email,
-                                        user.PhoneNumber,
-                                        `<img src="/img/${user.Picture}" alt="${user.UserName}" class="my-image-table" />`,
+                                        newPost.Id,
+                                        newPost.Category.Name,
+                                        newPost.Title,
+                                        `<img src="/img/${newPost.Thumbnail}" alt="${newPost.Title}" class="my-image-table" />`,
+                                        `${convertToShortDate(newPost.Date)}`,
+                                        newPost.ViewCount,
+                                        newPost.CommentCount,
+                                        `${newPost.IsActive ? "Evet" : "Hayır"}`,
+                                        `${newPost.IsDeleted ? "Evet" : "Hayır"}`,
+                                        `${convertToShortDate(newPost.CreatedDate)}`,
+                                        newPost.CreatedByName,
+                                        `${convertToShortDate(newPost.ModifiedDate)}`,
+                                        newPost.ModifiedByName,
                                         `
-                                    <button class="btn btn-primary btn-sm btn-update" data-id="${user.Id}"><span class="fas fa-edit"></span></button>
-                                    <button class="btn btn-danger btn-sm btn-delete" data-id="${user.Id}"><span class="fas fa-minus-circle"></span></button>`
+                                <button class="btn btn-primary btn-sm btn-update" data-id="${newPost.Id}"><span class="fas fa-edit"></span></button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-id="${newPost.Id}"><span class="fas fa-minus-circle"></span></button>
+                                            `
                                     ]).node();
                                     const jqueryTableRow = $(newTableRow);
-                                    jqueryTableRow.attr('name',`${user.Id}`);
+                                    jqueryTableRow.attr('name', `${newPost.Id}`);
                                 });
                                 dataTable.draw();
                                 $('.spinner-border').hide();
                                 $('#postsTable').fadeIn(1400);
                             } else {
-                                toastr.error(`${userListDto.Message}`, 'Islem basarisiz');
+                                toastr.error(`${postResult.Data.Message}`, 'Islem basarisiz');
                             }
                         },
                         error: function (err) {

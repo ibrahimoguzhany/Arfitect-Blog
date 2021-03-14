@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using MyBlog.Mvc.Helpers.Abstract;
 using MyBlog.Services.Abstract;
 using MyBlog.Shared.Utilities.Results.ComplexTypes;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace MyBlog.Mvc.Areas.Admin.Controllers
 {
@@ -137,5 +139,17 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             var postResult = JsonSerializer.Serialize(result);
             return Json(postResult);
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetAllPosts()
+        {
+            var posts = await _postService.GetAllByNonDeletedAndActiveAsync();
+            var postResult = JsonSerializer.Serialize(posts, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
+            return Json(postResult);
+        }
+
     }
 }
