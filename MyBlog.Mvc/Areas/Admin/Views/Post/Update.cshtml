@@ -14,8 +14,10 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
+                    <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="UserId"/>
                     <div class="form-group">
-                        <input type="text" id="postTitle" class="form-control" placeholder="Makale Başlığı" asp-for="Title" />
+                        <input type="text" id="postTitle" class="form-control" placeholder="Makale Başlığı" asp-for="Title"/>
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -45,7 +47,7 @@
                     </div>
                     <div class="form-group">
                         <label for="thumbnail" asp-for="Thumbnail"></label>
-                        <input type="hidden" id="thumbnail" class="form-control-file" asp-for="Thumbnail" />
+                        <input type="hidden" id="thumbnail" class="form-control-file" asp-for="Thumbnail"/>
                         <img class="my-image" src="~/img/@Model.Thumbnail" alt="@Model.Title" />
                         <span asp-validation-for="Thumbnail" class="text-danger"></span>
                     </div>
@@ -58,7 +60,6 @@
                         <input type="checkbox" id="isActive" class="form-check-input" asp-for="IsActive" />
                         <label for="isActive" class="form-check-label" asp-for="IsActive"></label>
                         <span asp-validation-for="IsActive" class="text-danger"></span>
-
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Kaydet</button>

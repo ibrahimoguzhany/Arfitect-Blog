@@ -29,7 +29,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categoriesCountResult = await _categoryService.CountByNonDeleted();
+            var categoriesCountResult = await _categoryService.CountByNonDeletedAsync();
             var postsCountResult = await _postService.CountByNonDeletedAsync();
             var commentsCountResult = await _commentService.CountByNonDeleted();
             var usersCount = await _userManager.Users.CountAsync();

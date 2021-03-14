@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using MyBlog.Entities.ComplexTypes;
 using MyBlog.Entities.Dtos;
@@ -10,6 +7,9 @@ using MyBlog.Shared.Utilities.Extensions;
 using MyBlog.Shared.Utilities.Results.Abstract;
 using MyBlog.Shared.Utilities.Results.ComplexTypes;
 using MyBlog.Shared.Utilities.Results.Concrete;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace MyBlog.Mvc.Helpers.Concrete
 {
@@ -27,7 +27,7 @@ namespace MyBlog.Mvc.Helpers.Concrete
             _wwwroot = _env.WebRootPath;
         }
 
-        public async Task<IDataResult<UploadedImageDto>> Upload(string name, IFormFile pictureFile, PictureType pictureType, string folderName = null)
+        public async Task<IDataResult<ImageUploadedDto>> Upload(string name, IFormFile pictureFile, PictureType pictureType, string folderName = null)
         {
             // Eğer folderName değişkeni null gelir ise, o zaman resim tipine göre (PictureType) klasör adı ataması yapılır.
             folderName ??= pictureType == PictureType.User ? userImagesFolder : postImagesFolder;
@@ -38,7 +38,7 @@ namespace MyBlog.Mvc.Helpers.Concrete
                 Directory.CreateDirectory($"{_wwwroot}/{imgFolder}/{folderName}");
             }
 
-            // Resimin yuklenme sirasindaki ilk adi oldFIleName adli degiskene atanir.
+            // Resimin yuklenme sirasindaki ilk adi oldFileName adli degiskene atanir.
             string oldFileName = Path.GetFileNameWithoutExtension(pictureFile.FileName);
 
             //Resimin uzantisi fileExtension adli degiskene atanir
@@ -64,7 +64,7 @@ namespace MyBlog.Mvc.Helpers.Concrete
             string message = pictureType == PictureType.User
                 ? $"{name} kullanıcısının resmi başarıyla yüklenmiştir."
                 : $"{name} makalenin resmi başarıyla yüklenmiştir.";
-            return new DataResult<UploadedImageDto>(ResultStatus.Success, message, new UploadedImageDto()
+            return new DataResult<ImageUploadedDto>(ResultStatus.Success, message, new ImageUploadedDto()
             {
                 FullName = $"{folderName}/{newFileName}",
                 OldName = oldFileName,
@@ -73,6 +73,29 @@ namespace MyBlog.Mvc.Helpers.Concrete
                 Path = path,
                 Size = pictureFile.Length
             });
+        }
+
+        public IDataResult<ImageDeletedDto> Delete(string pictureName)
+        {
+
+            var fileToDelete = Path.Combine($"{_wwwroot}/{imgFolder}/", pictureName);
+            if (System.IO.File.Exists(fileToDelete))
+            {
+                var fileInfo = new FileInfo(fileToDelete);
+                var imageDeletedDto = new ImageDeletedDto()
+                {
+                    FullName = pictureName,
+                    Extension = fileInfo.Extension,
+                    Path = fileInfo.FullName,
+                    Size = fileInfo.Length
+                };
+                System.IO.File.Delete(fileToDelete);
+                return new DataResult<ImageDeletedDto>(ResultStatus.Success, imageDeletedDto);
+            }
+            else
+            {
+                return new DataResult<ImageDeletedDto>(ResultStatus.Error, $"Böyle bir resim bulunamadı.",null);
+            }
         }
     }
 }

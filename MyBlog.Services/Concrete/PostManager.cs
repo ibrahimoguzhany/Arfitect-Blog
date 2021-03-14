@@ -120,12 +120,12 @@ namespace MyBlog.Services.Concrete
             return new DataResult<PostListDto>(ResultStatus.Error, "Boyle bir kategori bulunamadi.", null);
         }
 
-        public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName)
+        public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId)
         {
             var post = _mapper.Map<Post>(postAddDto);
             post.CreatedByName = createdByName;
             post.ModifiedByName = createdByName;
-            post.UserId = 1;
+            post.UserId = userId;
             await _unitOfWork.Posts.AddAsync(post);
             await _unitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, $"{postAddDto.Title} baslikli makale basariyla eklenmistir.");
@@ -133,7 +133,8 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName)
         {
-            var post = _mapper.Map<Post>(postUpdateDto);
+            var oldPost = await _unitOfWork.Posts.GetAsync(p => p.Id == postUpdateDto.Id);
+            var post = _mapper.Map<PostUpdateDto,Post>(postUpdateDto, oldPost);
             post.ModifiedByName = modifiedByName;
             await _unitOfWork.Posts.UpdateAsync(post);
             await _unitOfWork.SaveAsync();
@@ -148,7 +149,7 @@ namespace MyBlog.Services.Concrete
                 var post = await _unitOfWork.Posts.GetAsync(x => x.Id == postId);
                 post.ModifiedByName = modifiedByName;
                 post.IsDeleted = true;
-                post.ModifiedDate= DateTime.Now;
+                post.ModifiedDate = DateTime.Now;
                 await _unitOfWork.Posts.UpdateAsync(post);
                 await _unitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{post.Title} baslikli makale basariyla guncellenmistir");
@@ -163,7 +164,7 @@ namespace MyBlog.Services.Concrete
             if (result)
             {
                 var post = await _unitOfWork.Posts.GetAsync(x => x.Id == postId);
-              
+
                 await _unitOfWork.Posts.DeleteAsync(post);
                 await _unitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{post.Title} baslikli makale veritabanindan basariyla silinmistir.");
@@ -186,7 +187,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<int>> CountByNonDeletedAsync()
         {
-            var postsCount = await _unitOfWork.Posts.CountAsync(a=>!a.IsDeleted);
+            var postsCount = await _unitOfWork.Posts.CountAsync(a => !a.IsDeleted);
             if (postsCount > -1)
             {
                 return new DataResult<int>(ResultStatus.Success, postsCount);

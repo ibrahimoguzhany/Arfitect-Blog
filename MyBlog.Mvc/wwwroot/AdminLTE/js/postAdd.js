@@ -20,7 +20,6 @@
             ['emoji'],
             ['fontfamily'],
             ['fontsize'],
-            ['preformatted']
         ],
         plugins: {
             colors: {

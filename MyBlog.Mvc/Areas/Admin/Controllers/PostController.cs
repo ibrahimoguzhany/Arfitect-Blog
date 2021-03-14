@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Net.Mime;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.Entities.ComplexTypes;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
@@ -12,6 +9,7 @@ using MyBlog.Mvc.Areas.Admin.Models;
 using MyBlog.Mvc.Helpers.Abstract;
 using MyBlog.Services.Abstract;
 using MyBlog.Shared.Utilities.Results.ComplexTypes;
+using System.Threading.Tasks;
 
 namespace MyBlog.Mvc.Areas.Admin.Controllers
 {
@@ -37,7 +35,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var result = await _categoryService.GetAllByNoneDeletedAndActive();
+            var result = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
             if (result.ResultStatus == ResultStatus.Success)
             {
                 return View(new PostAddViewModel
@@ -57,7 +55,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                 var imageResult = await ImageHelper.Upload(postAddViewModel.Title, postAddViewModel.ThumbnailFile,
                     PictureType.Post);
                 postAddDto.Thumbnail = imageResult.Data.FullName;
-                var result = await _postService.AddAsync(postAddDto, LoggedInUser.UserName);
+                var result = await _postService.AddAsync(postAddDto, LoggedInUser.UserName,LoggedInUser.Id);
                 if (result.ResultStatus == ResultStatus.Success)
                 {
                     TempData.Add("SuccessMessage",result.Message);
@@ -66,9 +64,10 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                 else
                 {
                     ModelState.AddModelError("", result.Message);
-                    return View(postAddViewModel);
                 }
             }
+            var categories = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
+            postAddViewModel.Categories = categories.Data.Categories;
             return View(postAddViewModel);
         }
 
@@ -76,7 +75,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int postId)
         {
             var postResult = await _postService.GetPostUpdateDtoAsync(postId);
-            var categoriesResult = await _categoryService.GetAllByNoneDeletedAndActive();
+            var categoriesResult = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
             if (postResult.ResultStatus == ResultStatus.Success && categoriesResult.ResultStatus==ResultStatus.Success)
             {
                 var postUpdateViewModel = Mapper.Map<PostUpdateViewModel>(postResult.Data);
@@ -87,6 +86,47 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(PostUpdateViewModel postUpdateViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                bool isNewThumbnailUploaded = false;
+                var oldThumbnail = postUpdateViewModel.Thumbnail;
+                if (postUpdateViewModel.ThumbnailFile != null)
+                {
+                    var uploadedImageResult = await ImageHelper.Upload(postUpdateViewModel.Title,
+                        postUpdateViewModel.ThumbnailFile, PictureType.Post);
+                    postUpdateViewModel.Thumbnail = uploadedImageResult.ResultStatus == ResultStatus.Success
+                        ? uploadedImageResult.Data.FullName
+                        : "postImages/defaultThumbnail.jpg";
+                    if(oldThumbnail != "postImages/defaultThumbnail.jpg")
+                    {
+                        isNewThumbnailUploaded = true;
+                    }
+                }
+                var postUpdateDto = Mapper.Map<PostUpdateDto>(postUpdateViewModel);
+                var result = await _postService.UpdateAsync(postUpdateDto, LoggedInUser.UserName);
+                if (result.ResultStatus == ResultStatus.Success)
+                {
+                    if (isNewThumbnailUploaded)
+                    {
+                        ImageHelper.Delete(oldThumbnail);
+                    }
+
+                    TempData.Add("SuccessMessage", result.Message);
+                    return RedirectToAction("Index", "Post");
+                }
+                else
+                {
+                    ModelState.AddModelError("", result.Message);
+                }
+            }
+            var categories = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
+            postUpdateViewModel.Categories = categories.Data.Categories;
+            return View(postUpdateViewModel);
         }
     }
 }

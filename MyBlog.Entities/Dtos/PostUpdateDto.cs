@@ -12,7 +12,7 @@ namespace MyBlog.Entities.Dtos
     public class PostUpdateDto
     {
         [Required]
-        int Id { get; set; }
+        public int Id { get; set; }
         [DisplayName("Baslik")]
         [Required(ErrorMessage = "{0} alani bos gecilmemelidir")]
         [MaxLength(100, ErrorMessage = "{0} alani {1} karakterden buyuk olmamalidir")]
@@ -63,5 +63,9 @@ namespace MyBlog.Entities.Dtos
         [DisplayName("Silinsin Mi?")]
         [Required(ErrorMessage = "{0} alani bos gecilmemelidir")]
         public bool IsDeleted { get; set; }
+        
+        [Required]
+        public int UserId { get; set; }
+
     }
 }

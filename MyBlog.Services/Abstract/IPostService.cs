@@ -17,7 +17,7 @@ namespace MyBlog.Services.Abstract
         Task<IDataResult<PostListDto>> GetAllByNoneDeletedAsync();
         Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActiveAsync();
         Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId);
-        Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName);
+        Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId);
         Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName);
         Task<IResult> DeleteAsync(int postId, string modifiedByName);
         Task<IResult> HardDeleteAsync(int postId);

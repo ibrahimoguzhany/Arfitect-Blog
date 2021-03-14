@@ -11,6 +11,8 @@ namespace MyBlog.Mvc.Areas.Admin.Models
 {
     public class PostUpdateViewModel
     {
+        [Required]
+        public int Id { get; set; }
         [DisplayName("Baslik")]
         [Required(ErrorMessage = "{0} alani bos gecilmemelidir")]
         [MaxLength(100, ErrorMessage = "{0} alani {1} karakterden buyuk olmamalidir")]
@@ -24,7 +26,6 @@ namespace MyBlog.Mvc.Areas.Admin.Models
         [DisplayName("Küçük Resim")]
         public string Thumbnail { get; set; }
         [DisplayName("Küçük Resim Ekle")]
-        [Required(ErrorMessage = "{0} alani bos gecilmemelidir")]
         public IFormFile ThumbnailFile { get; set; }
 
         [DisplayName("Tarih")]
@@ -56,6 +57,9 @@ namespace MyBlog.Mvc.Areas.Admin.Models
         [DisplayName("Aktif Mi?")]
         [Required(ErrorMessage = "{0} alani bos gecilmemelidir")]
         public bool IsActive { get; set; }
+        [Required]
+        public int UserId { get; set; }
         public IList<Category> Categories { get; set; }
+
     }
 }
