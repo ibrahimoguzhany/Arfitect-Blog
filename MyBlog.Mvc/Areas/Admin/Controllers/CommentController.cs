@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using MyBlog.Data.Concrete;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using MyBlog.Mvc.Areas.Admin.Models;
@@ -38,6 +39,20 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             });
             return Json(commentsResult);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDetail(int commentId)
+        {
+            var result = await _commentService.GetAsync(commentId);
+            if (result.ResultStatus == ResultStatus.Success)
+            {
+                return PartialView("_CommentDetailPartial", result.Data);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> Delete(int commentId)
         {
@@ -45,6 +60,18 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             var commentResult = JsonSerializer.Serialize(result);
             return Json(commentResult);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Approve(int commentId)
+        {
+            var result = await _commentService.ApproveAsync(commentId, LoggedInUser.UserName);
+            var commentResult = JsonSerializer.Serialize(result,new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
+            return Json(commentResult);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Update(int commentId)
         {
