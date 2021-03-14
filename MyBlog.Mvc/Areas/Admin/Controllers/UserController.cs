@@ -288,7 +288,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                     {
                         ImageDelete(oldUserPicture);
                     }
-                    ViewData.Add("SuccessMessage", $"{updatedUser.UserName} kullanıcısı başarıyla güncellenmiştir.");
+                    TempData.Add("SuccessMessage", $"{updatedUser.UserName} kullanıcısı başarıyla güncellenmiştir.");
                     return View(userUpdateDto);
                 }
                 else
@@ -339,7 +339,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                         await _userManager.UpdateSecurityStampAsync(user);
                         await _signInManager.SignOutAsync();
                         await _signInManager.PasswordSignInAsync(user, userPasswordChangeDto.NewPassword, true, false);
-                        ViewData.Add("SuccessMessage", $"Parolanız başarıyla değiştirilmiştir.");
+                        TempData.Add("SuccessMessage", $"Parolanız başarıyla değiştirilmiştir.");
                         return View();
                     }
                     else

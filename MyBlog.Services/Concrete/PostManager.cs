@@ -25,7 +25,7 @@ namespace MyBlog.Services.Concrete
             _mapper = mapper;
         }
 
-        public async Task<IDataResult<PostDto>> Get(int postId)
+        public async Task<IDataResult<PostDto>> GetAsync(int postId)
         {
             var post = await _unitOfWork.Posts.GetAsync(x => x.Id == postId, x => x.User, x => x.Category);
             if (post != null)
@@ -40,7 +40,7 @@ namespace MyBlog.Services.Concrete
 
         }
 
-        public async Task<IDataResult<PostListDto>> GetAll()
+        public async Task<IDataResult<PostListDto>> GetAllAsync()
         {
             var posts = await _unitOfWork.Posts.GetAllAsync(null, x => x.User, x => x.Category);
             if (posts.Count > -1)
@@ -54,7 +54,7 @@ namespace MyBlog.Services.Concrete
             return new DataResult<PostListDto>(ResultStatus.Error, "Makaleler bulunamadi.", null);
         }
 
-        public async Task<IDataResult<PostListDto>> GetAllByNoneDeleted()
+        public async Task<IDataResult<PostListDto>> GetAllByNoneDeletedAsync()
         {
             var posts = await _unitOfWork.Posts.GetAllAsync(x => !x.IsDeleted, ar => ar.User, ar => ar.Category);
             if (posts.Count > -1)
@@ -69,7 +69,7 @@ namespace MyBlog.Services.Concrete
 
         }
 
-        public async Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActive()
+        public async Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActiveAsync()
         {
             var posts = await _unitOfWork.Posts.GetAllAsync(x => !x.IsDeleted && x.IsActive, ar => ar.User,
                 ar => ar.Category);
@@ -84,7 +84,7 @@ namespace MyBlog.Services.Concrete
             return new DataResult<PostListDto>(ResultStatus.Error, "Makaleler bulunamadi.", null);
         }
 
-        public async Task<IDataResult<PostListDto>> GetAllByCategory(int categoryId)
+        public async Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId)
         {
 
             var result = await _unitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
@@ -105,7 +105,7 @@ namespace MyBlog.Services.Concrete
             return new DataResult<PostListDto>(ResultStatus.Error, "Boyle bir kategori bulunamadi.", null);
         }
 
-        public async Task<IResult> Add(PostAddDto postAddDto, string createdByName)
+        public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName)
         {
             var post = _mapper.Map<Post>(postAddDto);
             post.CreatedByName = createdByName;
@@ -116,7 +116,7 @@ namespace MyBlog.Services.Concrete
             return new Result(ResultStatus.Success, $"{postAddDto.Title} baslikli makale basariyla eklenmistir.");
         }
 
-        public async Task<IResult> Update(PostUpdateDto postUpdateDto, string modifiedByName)
+        public async Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName)
         {
             var post = _mapper.Map<Post>(postUpdateDto);
             post.ModifiedByName = modifiedByName;
@@ -125,7 +125,7 @@ namespace MyBlog.Services.Concrete
             return new Result(ResultStatus.Success, $"{postUpdateDto.Title} baslikli makale basariyla guncellenmistir");
         }
 
-        public async Task<IResult> Delete(int postId, string modifiedByName)
+        public async Task<IResult> DeleteAsync(int postId, string modifiedByName)
         {
             var result = await _unitOfWork.Posts.AnyAsync(x => x.Id == postId);
             if (result)
@@ -142,7 +142,7 @@ namespace MyBlog.Services.Concrete
             return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
         }
 
-        public async Task<IResult> HardDelete(int postId)
+        public async Task<IResult> HardDeleteAsync(int postId)
         {
             var result = await _unitOfWork.Posts.AnyAsync(x => x.Id == postId);
             if (result)
@@ -156,7 +156,7 @@ namespace MyBlog.Services.Concrete
             return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
         }
 
-        public async Task<IDataResult<int>> Count()
+        public async Task<IDataResult<int>> CountAsync()
         {
             var postsCount = await _unitOfWork.Posts.CountAsync();
             if (postsCount > -1)
@@ -169,7 +169,7 @@ namespace MyBlog.Services.Concrete
             }
         }
 
-        public async Task<IDataResult<int>> CountByNonDeleted()
+        public async Task<IDataResult<int>> CountByNonDeletedAsync()
         {
             var postsCount = await _unitOfWork.Posts.CountAsync(a=>!a.IsDeleted);
             if (postsCount > -1)

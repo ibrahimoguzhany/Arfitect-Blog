@@ -30,10 +30,10 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var categoriesCountResult = await _categoryService.CountByNonDeleted();
-            var postsCountResult = await _postService.CountByNonDeleted();
+            var postsCountResult = await _postService.CountByNonDeletedAsync();
             var commentsCountResult = await _commentService.CountByNonDeleted();
             var usersCount = await _userManager.Users.CountAsync();
-            var postsResult = await _postService.GetAll();
+            var postsResult = await _postService.GetAllAsync();
             if (
                 categoriesCountResult.ResultStatus == ResultStatus.Success &&
                 postsCountResult.ResultStatus == ResultStatus.Success &&
