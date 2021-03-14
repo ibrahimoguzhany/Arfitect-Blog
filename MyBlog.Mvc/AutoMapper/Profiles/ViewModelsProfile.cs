@@ -13,6 +13,7 @@ namespace MyBlog.Mvc.AutoMapper.Profiles
         public ViewModelsProfile()
         {
             CreateMap<PostAddViewModel, PostAddDto>();
+            CreateMap<PostUpdateDto, PostUpdateViewModel>().ReverseMap();
         }
     }
 }

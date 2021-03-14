@@ -71,7 +71,7 @@
                             <td>@post.ModifiedDate.ToShortDateString()</td>
                             <td>@post.ModifiedByName</td>
                             <td>
-                                <button class="btn btn-primary btn-sm btn-update" data-id="@post.Id"><span class="fas fa-edit"></span></button>
+                                <a class="btn btn-primary btn-sm btn-update" data-id="@post.Id" asp-area="Admin" asp-controller="Post" asp-action="Update" asp-route-postId="@post.Id"><span class="fas fa-edit"></span></a>
                                 <button class="btn btn-danger btn-sm btn-delete" data-id="@post.Id"><span class="fas fa-minus-circle"></span></button>
                             </td>
 

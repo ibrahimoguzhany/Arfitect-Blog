@@ -76,8 +76,17 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int postId)
         {
             var postResult = await _postService.GetPostUpdateDtoAsync(postId);
-            var categoriesREsult = await _categoryService.GetAllByNoneDeletedAndActive();
-
+            var categoriesResult = await _categoryService.GetAllByNoneDeletedAndActive();
+            if (postResult.ResultStatus == ResultStatus.Success && categoriesResult.ResultStatus==ResultStatus.Success)
+            {
+                var postUpdateViewModel = Mapper.Map<PostUpdateViewModel>(postResult.Data);
+                postUpdateViewModel.Categories = categoriesResult.Data.Categories;
+                return View(postUpdateViewModel);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
