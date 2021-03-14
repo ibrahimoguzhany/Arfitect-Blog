@@ -14,20 +14,18 @@ using MyBlog.Shared.Utilities.Results.Concrete;
 
 namespace MyBlog.Services.Concrete
 {
-    public class PostManager : IPostService
+    public class PostManager : ManagerBase, IPostService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public PostManager(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public PostManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper,unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+
         }
 
         public async Task<IDataResult<PostDto>> GetAsync(int postId)
         {
-            var post = await _unitOfWork.Posts.GetAsync(x => x.Id == postId, x => x.User, x => x.Category);
+            var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId, x => x.User, x => x.Category);
             if (post != null)
             {
                 return new DataResult<PostDto>(ResultStatus.Success, new PostDto
@@ -42,11 +40,11 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId)
         {
-            var result = await _unitOfWork.Posts.AnyAsync(x => x.Id == postId);
+            var result = await UnitOfWork.Posts.AnyAsync(x => x.Id == postId);
             if (result)
             {
-                var post = await _unitOfWork.Posts.GetAsync(c => c.Id == postId);
-                var postUpdateDto = _mapper.Map<PostUpdateDto>(post);
+                var post = await UnitOfWork.Posts.GetAsync(c => c.Id == postId);
+                var postUpdateDto = Mapper.Map<PostUpdateDto>(post);
                 return new DataResult<PostUpdateDto>(ResultStatus.Success, postUpdateDto);
             }
             else
@@ -57,7 +55,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<PostListDto>> GetAllAsync()
         {
-            var posts = await _unitOfWork.Posts.GetAllAsync(null, x => x.User, x => x.Category);
+            var posts = await UnitOfWork.Posts.GetAllAsync(null, x => x.User, x => x.Category);
             if (posts.Count > -1)
             {
                 return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto
@@ -71,7 +69,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<PostListDto>> GetAllByNoneDeletedAsync()
         {
-            var posts = await _unitOfWork.Posts.GetAllAsync(x => !x.IsDeleted, ar => ar.User, ar => ar.Category);
+            var posts = await UnitOfWork.Posts.GetAllAsync(x => !x.IsDeleted, ar => ar.User, ar => ar.Category);
             if (posts.Count > -1)
             {
                 return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto
@@ -86,7 +84,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActiveAsync()
         {
-            var posts = await _unitOfWork.Posts.GetAllAsync(x => !x.IsDeleted && x.IsActive, ar => ar.User,
+            var posts = await UnitOfWork.Posts.GetAllAsync(x => !x.IsDeleted && x.IsActive, ar => ar.User,
                 ar => ar.Category);
             if (posts.Count > -1)
             {
@@ -102,10 +100,10 @@ namespace MyBlog.Services.Concrete
         public async Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId)
         {
 
-            var result = await _unitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
+            var result = await UnitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
             if (result)
             {
-                var posts = await _unitOfWork.Posts.GetAllAsync(
+                var posts = await UnitOfWork.Posts.GetAllAsync(
                     x => x.CategoryId == categoryId && !x.IsDeleted && x.IsActive, ar => ar.User, ar => ar.Category);
                 if (posts.Count > -1)
                 {
@@ -122,36 +120,36 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId)
         {
-            var post = _mapper.Map<Post>(postAddDto);
+            var post = Mapper.Map<Post>(postAddDto);
             post.CreatedByName = createdByName;
             post.ModifiedByName = createdByName;
             post.UserId = userId;
-            await _unitOfWork.Posts.AddAsync(post);
-            await _unitOfWork.SaveAsync();
+            await UnitOfWork.Posts.AddAsync(post);
+            await UnitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, $"{postAddDto.Title} baslikli makale basariyla eklenmistir.");
         }
 
         public async Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName)
         {
-            var oldPost = await _unitOfWork.Posts.GetAsync(p => p.Id == postUpdateDto.Id);
-            var post = _mapper.Map<PostUpdateDto,Post>(postUpdateDto, oldPost);
+            var oldPost = await UnitOfWork.Posts.GetAsync(p => p.Id == postUpdateDto.Id);
+            var post = Mapper.Map<PostUpdateDto, Post>(postUpdateDto, oldPost);
             post.ModifiedByName = modifiedByName;
-            await _unitOfWork.Posts.UpdateAsync(post);
-            await _unitOfWork.SaveAsync();
+            await UnitOfWork.Posts.UpdateAsync(post);
+            await UnitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, $"{postUpdateDto.Title} baslikli makale basariyla guncellenmistir");
         }
 
         public async Task<IResult> DeleteAsync(int postId, string modifiedByName)
         {
-            var result = await _unitOfWork.Posts.AnyAsync(x => x.Id == postId);
+            var result = await UnitOfWork.Posts.AnyAsync(x => x.Id == postId);
             if (result)
             {
-                var post = await _unitOfWork.Posts.GetAsync(x => x.Id == postId);
+                var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId);
                 post.ModifiedByName = modifiedByName;
                 post.IsDeleted = true;
                 post.ModifiedDate = DateTime.Now;
-                await _unitOfWork.Posts.UpdateAsync(post);
-                await _unitOfWork.SaveAsync();
+                await UnitOfWork.Posts.UpdateAsync(post);
+                await UnitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{post.Title} baslikli makale basariyla guncellenmistir");
 
             }
@@ -160,13 +158,13 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IResult> HardDeleteAsync(int postId)
         {
-            var result = await _unitOfWork.Posts.AnyAsync(x => x.Id == postId);
+            var result = await UnitOfWork.Posts.AnyAsync(x => x.Id == postId);
             if (result)
             {
-                var post = await _unitOfWork.Posts.GetAsync(x => x.Id == postId);
+                var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId);
 
-                await _unitOfWork.Posts.DeleteAsync(post);
-                await _unitOfWork.SaveAsync();
+                await UnitOfWork.Posts.DeleteAsync(post);
+                await UnitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, $"{post.Title} baslikli makale veritabanindan basariyla silinmistir.");
             }
             return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
@@ -174,7 +172,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<int>> CountAsync()
         {
-            var postsCount = await _unitOfWork.Posts.CountAsync();
+            var postsCount = await UnitOfWork.Posts.CountAsync();
             if (postsCount > -1)
             {
                 return new DataResult<int>(ResultStatus.Success, postsCount);
@@ -187,7 +185,7 @@ namespace MyBlog.Services.Concrete
 
         public async Task<IDataResult<int>> CountByNonDeletedAsync()
         {
-            var postsCount = await _unitOfWork.Posts.CountAsync(a => !a.IsDeleted);
+            var postsCount = await UnitOfWork.Posts.CountAsync(a => !a.IsDeleted);
             if (postsCount > -1)
             {
                 return new DataResult<int>(ResultStatus.Success, postsCount);

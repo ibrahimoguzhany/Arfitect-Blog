@@ -29,7 +29,7 @@ namespace MyBlog.Mvc
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddSession();
-            services.AddAutoMapper(typeof(CategoryProfile), typeof(PostProfile), typeof(UserProfile), typeof(ViewModelsProfile));
+            services.AddAutoMapper(typeof(CategoryProfile), typeof(PostProfile), typeof(UserProfile), typeof(ViewModelsProfile), typeof(CommentProfile));
             services.LoadMyServices(connectionString:Configuration.GetConnectionString("LocalDB"));
             services.AddScoped<IImageHelper, ImageHelper>();
             services.ConfigureApplicationCookie(options =>

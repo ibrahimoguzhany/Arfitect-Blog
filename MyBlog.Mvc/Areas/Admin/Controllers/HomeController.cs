@@ -31,7 +31,7 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
         {
             var categoriesCountResult = await _categoryService.CountByNonDeletedAsync();
             var postsCountResult = await _postService.CountByNonDeletedAsync();
-            var commentsCountResult = await _commentService.CountByNonDeleted();
+            var commentsCountResult = await _commentService.CountByNonDeletedAsync();
             var usersCount = await _userManager.Users.CountAsync();
             var postsResult = await _postService.GetAllAsync();
             if (
