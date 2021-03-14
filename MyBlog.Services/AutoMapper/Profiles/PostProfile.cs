@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
+using MyBlog.Services.Concrete;
 
 namespace MyBlog.Services.AutoMapper.Profiles
 {
@@ -15,6 +16,7 @@ namespace MyBlog.Services.AutoMapper.Profiles
         {
             CreateMap<PostAddDto, Post>().ForMember(dest=>dest.CreatedDate,opt=>opt.MapFrom(x=>DateTime.Now));
             CreateMap<PostUpdateDto, Post>().ForMember(dest=>dest.ModifiedDate,opt=>opt.MapFrom(x=>DateTime.Now));
+            CreateMap<Post, PostUpdateDto>();
 
         }
     }

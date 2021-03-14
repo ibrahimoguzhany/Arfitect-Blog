@@ -40,6 +40,21 @@ namespace MyBlog.Services.Concrete
 
         }
 
+        public async Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId)
+        {
+            var result = await _unitOfWork.Posts.AnyAsync(x => x.Id == postId);
+            if (result)
+            {
+                var post = await _unitOfWork.Posts.GetAsync(c => c.Id == postId);
+                var postUpdateDto = _mapper.Map<PostUpdateDto>(post);
+                return new DataResult<PostUpdateDto>(ResultStatus.Success, postUpdateDto);
+            }
+            else
+            {
+                return new DataResult<PostUpdateDto>(ResultStatus.Error, "Böyle bir paylaşım bulunamadı.", null);
+            }
+        }
+
         public async Task<IDataResult<PostListDto>> GetAllAsync()
         {
             var posts = await _unitOfWork.Posts.GetAllAsync(null, x => x.User, x => x.Category);

@@ -12,6 +12,7 @@ namespace MyBlog.Services.Abstract
     public interface IPostService
     {
         Task<IDataResult<PostDto>> GetAsync(int postId);
+        Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId);
         Task<IDataResult<PostListDto>> GetAllAsync();
         Task<IDataResult<PostListDto>> GetAllByNoneDeletedAsync();
         Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActiveAsync();
