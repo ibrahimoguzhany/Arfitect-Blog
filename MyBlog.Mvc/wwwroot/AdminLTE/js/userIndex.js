@@ -285,7 +285,7 @@
         const userName = tableRow.find('td:eq(1)').text();
         Swal.fire({
             title: 'Silmek istetiginize emin misiniz?',
-            text: `${userName} kullanıcı silinecektir!`,
+            text: `${userName} kullanıcısı silinecektir!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

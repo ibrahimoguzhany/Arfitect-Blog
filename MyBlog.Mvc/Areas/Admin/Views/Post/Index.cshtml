@@ -56,7 +56,7 @@
 
                     @foreach (var post in Model.Posts)
                     {
-                        <tr>
+                        <tr name="@post.Id">
                             <td>@post.Id</td>
                             <td>@post.Category.Name</td>
                             <td>@post.Title</td>
@@ -74,7 +74,6 @@
                                 <a class="btn btn-primary btn-sm btn-update" data-id="@post.Id" asp-area="Admin" asp-controller="Post" asp-action="Update" asp-route-postId="@post.Id"><span class="fas fa-edit"></span></a>
                                 <button class="btn btn-danger btn-sm btn-delete" data-id="@post.Id"><span class="fas fa-minus-circle"></span></button>
                             </td>
-
                         </tr>
                     }
 
@@ -86,10 +85,6 @@
 
 @section Scripts
 {
-    <script src="~/AdminLTE/js/postIndex.js" type="application/ecmascript"></script>
+    <script src="~/AdminLTE/js/postsIndex.js" type="application/ecmascript"></script>
 }
 
-@section Styles
-{
-
-}

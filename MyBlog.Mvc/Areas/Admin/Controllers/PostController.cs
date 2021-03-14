@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Text.Json;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -127,6 +128,14 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
             var categories = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
             postUpdateViewModel.Categories = categories.Data.Categories;
             return View(postUpdateViewModel);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Delete(int postId)
+        {
+            var result = await _postService.DeleteAsync(postId, LoggedInUser.UserName);
+            var postResult = JsonSerializer.Serialize(result);
+            return Json(postResult);
         }
     }
 }
