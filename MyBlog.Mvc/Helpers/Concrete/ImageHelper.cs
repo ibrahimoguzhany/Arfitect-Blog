@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using MyBlog.Entities.ComplexTypes;
 using MyBlog.Entities.Dtos;
 using MyBlog.Mvc.Helpers.Abstract;
 using MyBlog.Shared.Utilities.Extensions;
@@ -16,7 +17,9 @@ namespace MyBlog.Mvc.Helpers.Concrete
     {
         private readonly IWebHostEnvironment _env;
         private readonly string _wwwroot;
-        private readonly string imgFolder = "img";
+        private const string imgFolder = "img";
+        private const string userImagesFolder = "userImages";
+        private const string postImagesFolder = "postImages";
 
         public ImageHelper(IWebHostEnvironment env)
         {
@@ -24,24 +27,44 @@ namespace MyBlog.Mvc.Helpers.Concrete
             _wwwroot = _env.WebRootPath;
         }
 
-        public async Task<IDataResult<UploadedImageDto>> UploadUserImage(string userName, IFormFile pictureFile, string folderName = "userImages")
+        public async Task<IDataResult<UploadedImageDto>> Upload(string name, IFormFile pictureFile, PictureType pictureType, string folderName = null)
         {
+            // Eğer folderName değişkeni null gelir ise, o zaman resim tipine göre (PictureType) klasör adı ataması yapılır.
+            folderName ??= pictureType == PictureType.User ? userImagesFolder : postImagesFolder;
+
+                // Eger folderName degiskeni ile gelen klasor adi sistemimizde mevcut degilse, yeni bir klasor olusturulur.
             if (!Directory.Exists($"{_wwwroot}/{imgFolder}/{folderName}"))
             {
                 Directory.CreateDirectory($"{_wwwroot}/{imgFolder}/{folderName}");
             }
-            //string fileName = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName);
-            string oldFileName = Path.GetFileNameWithoutExtension(pictureFile.FileName);
-            string fileExtension = Path.GetExtension(pictureFile.FileName);
-            DateTime dateTime = DateTime.Now;
 
-            string newFileName = $"{userName}_{dateTime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
+            // Resimin yuklenme sirasindaki ilk adi oldFIleName adli degiskene atanir.
+            string oldFileName = Path.GetFileNameWithoutExtension(pictureFile.FileName);
+
+            //Resimin uzantisi fileExtension adli degiskene atanir
+            string fileExtension = Path.GetExtension(pictureFile.FileName);
+
+            DateTime dateTime = DateTime.Now;
+            /*
+             * Parametre ile gelen degeler kullanilarak yeni bir resim adi olusturulur.
+             * Ornegin OguzhanYilmaz_234_1_64_24_5_19_2021.png
+             */
+            string newFileName = $"{name}_{dateTime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
+
+            //Kendi parametlerimiz ile sistemimize uygun yeni bir dosya yolu (path) olusturulur.
             string path = Path.Combine($"{_wwwroot}/{imgFolder}/{folderName}", newFileName);
+
+            //Sistemimiz icin olusturulan yeni dosya yoluna resim kopyalanir.
             await using (var stream = new FileStream(path, FileMode.Create))
             {
                 await pictureFile.CopyToAsync(stream);
             }
-            return new DataResult<UploadedImageDto>(ResultStatus.Success, $"{userName} kullanıcısının resmi başarıyla yüklenmiştir.", new UploadedImageDto()
+
+            //Resim tipine gore kullanici icin mesaj olusturulur.
+            string message = pictureType == PictureType.User
+                ? $"{name} kullanıcısının resmi başarıyla yüklenmiştir."
+                : $"{name} makalenin resmi başarıyla yüklenmiştir.";
+            return new DataResult<UploadedImageDto>(ResultStatus.Success, message, new UploadedImageDto()
             {
                 FullName = $"{folderName}/{newFileName}",
                 OldName = oldFileName,
