@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ArfitectBlog.Data.Abstract;
+﻿using ArfitectBlog.Data.Abstract;
 using ArfitectBlog.Data.Concrete.EntityFramework.Contexts;
 using ArfitectBlog.Data.Concrete.EntityFramework.Repositories;
+using System.Threading.Tasks;
 
 namespace ArfitectBlog.Data.Concrete
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly MyBlogContext _context;
+        private readonly ArfitectBlogContext _context;
         private EfPostRepository _postRepository;
         private EfCategoryRepository _categoryRepository;
         private EfCommentRepository _commentRepository;
 
-        public UnitOfWork(MyBlogContext context)
+        public UnitOfWork(ArfitectBlogContext context)
         {
             _context = context;
         }

@@ -19,7 +19,7 @@ namespace ArfitectBlog.Services.Extensions
     {
         public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection,string connectionString)
         {
-            serviceCollection.AddDbContext<MyBlogContext>(options=>options.UseSqlServer(connectionString));
+            serviceCollection.AddDbContext<ArfitectBlogContext>(options=>options.UseSqlServer(connectionString));
             serviceCollection.AddIdentity<User, Role>(options =>
             {
                 //User Password Options
@@ -33,7 +33,7 @@ namespace ArfitectBlog.Services.Extensions
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
 
-            }).AddEntityFrameworkStores<MyBlogContext>();
+            }).AddEntityFrameworkStores<ArfitectBlogContext>();
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();
             serviceCollection.AddScoped<IPostService, PostManager>();

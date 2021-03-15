@@ -12,17 +12,17 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Repositories
         public EfCategoryRepository(DbContext context) : base(context)
         {
         }
-        private MyBlogContext MyBlogContext
+        private ArfitectBlogContext ArfitectBlogContext
         {
             get
             {
-                return _context as MyBlogContext;
+                return _context as ArfitectBlogContext;
             }
         }
 
         public async Task<Category> GetById(int categoryId)
         {
-            return await MyBlogContext.Categories.SingleOrDefaultAsync(x => x.Id == categoryId);
+            return await ArfitectBlogContext.Categories.SingleOrDefaultAsync(x => x.Id == categoryId);
         }
 
 

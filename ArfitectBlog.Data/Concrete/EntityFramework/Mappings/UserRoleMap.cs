@@ -45,7 +45,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
                     RoleId = 4
 
                 }
-                // Article.Create
+                // Post.Create
                 ,
                 new UserRole
                 {
@@ -54,7 +54,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 
                 }
                 ,
-                // Article.Read
+                // Post.Read
                 new UserRole
                 {
                     UserId = 1,
@@ -62,7 +62,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 
                 }
                 ,
-                // Article.Update
+                // Post.Update
                 new UserRole
                 {
                     UserId = 1,
@@ -70,7 +70,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 
                 }
                 ,
-                // Article.Delete
+                // Post.Delete
                 new UserRole
                 {
                     UserId = 1,
@@ -214,7 +214,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
                     RoleId = 4
 
                 }
-                // Article.Create
+                // Post.Create
                 ,
                 new UserRole
                 {
@@ -223,7 +223,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 
                 }
                 ,
-                // Article.Read
+                // Post.Read
                 new UserRole
                 {
                     UserId = 2,
@@ -231,7 +231,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 
                 }
                 ,
-                // Article.Update
+                // Post.Update
                 new UserRole
                 {
                     UserId = 2,
@@ -239,7 +239,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 
                 }
                 ,
-                // Article.Delete
+                // Post.Delete
                 new UserRole
                 {
                     UserId = 2,
