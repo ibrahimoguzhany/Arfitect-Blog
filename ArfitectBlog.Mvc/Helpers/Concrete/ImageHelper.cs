@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using ArfitectBlog.Shared.Utilities.Extensions;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ArfitectBlog.Entities.ComplexTypes;
 using ArfitectBlog.Entities.Dtos;
@@ -43,6 +44,10 @@ namespace ArfitectBlog.Mvc.Helpers.Concrete
 
             //Resimin uzantisi fileExtension adli degiskene atanir
             string fileExtension = Path.GetExtension(pictureFile.FileName);
+
+
+            Regex regex = new Regex("[*'\",._&#^@]");
+            name = regex.Replace(name, string.Empty);
 
             DateTime dateTime = DateTime.Now;
             /*
