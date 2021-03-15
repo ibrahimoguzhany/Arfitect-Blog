@@ -7,7 +7,7 @@
 <ol class="breadcrumb mb-3 mt-2">
     <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
     <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Post" asp-action="Index">Paylaşımlar</a></li>
-    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Post" asp-action="Update">Düzenle</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Post" asp-action="Update" asp-route-postId="@Model.Id">Düzenle</a></li>
 </ol>
 <form asp-controller="Post" asp-action="Update" method="post" enctype="multipart/form-data">
     <div class="row mt-2">
