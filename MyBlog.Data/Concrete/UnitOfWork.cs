@@ -9,7 +9,7 @@ using MyBlog.Data.Concrete.EntityFramework.Repositories;
 
 namespace MyBlog.Data.Concrete
 {
-    public class UnitOfWork:IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly MyBlogContext _context;
         private EfPostRepository _postRepository;
