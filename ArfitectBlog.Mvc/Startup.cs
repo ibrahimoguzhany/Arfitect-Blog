@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using ArfitectBlog.Mvc.AutoMapper.Profiles;
 using ArfitectBlog.Mvc.Helpers.Abstract;
 using ArfitectBlog.Mvc.Helpers.Concrete;
@@ -23,7 +23,10 @@ namespace ArfitectBlog.Mvc
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddJsonOptions(opt =>
+            services.AddControllersWithViews(options =>
+            {
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value=> "Bu alan boş geçilmemelidir");
+            }).AddRazorRuntimeCompilation().AddJsonOptions(opt =>
             {
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
