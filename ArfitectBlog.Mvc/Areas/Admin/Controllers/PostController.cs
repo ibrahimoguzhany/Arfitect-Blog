@@ -1,20 +1,18 @@
-﻿using System.Net.Mime;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MyBlog.Entities.ComplexTypes;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
-using MyBlog.Mvc.Areas.Admin.Models;
-using MyBlog.Mvc.Helpers.Abstract;
-using MyBlog.Services.Abstract;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
 using System.Threading.Tasks;
-using System.Xml;
+using ArfitectBlog.Entities.ComplexTypes;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Mvc.Areas.Admin.Models;
+using ArfitectBlog.Mvc.Helpers.Abstract;
+using ArfitectBlog.Services.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 
-namespace MyBlog.Mvc.Areas.Admin.Controllers
+namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class PostController : BaseController

@@ -5,18 +5,18 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Mvc.Areas.Admin.Models;
+using ArfitectBlog.Mvc.Helpers.Abstract;
+using ArfitectBlog.Services.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
-using MyBlog.Mvc.Areas.Admin.Models;
-using MyBlog.Mvc.Helpers.Abstract;
-using MyBlog.Services.Abstract;
-using MyBlog.Shared.Utilities.Extensions;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
+using ArfitectBlog.Shared.Utilities.Extensions;
 
-namespace MyBlog.Mvc.Areas.Admin.Controllers
+namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles="Admin,Editor")]

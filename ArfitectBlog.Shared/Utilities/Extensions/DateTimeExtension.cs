@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.Shared.Utilities.Extensions
+namespace ArfitectBlog.Shared.Utilities.Extensions
 {
     public static class DateTimeExtension
     {

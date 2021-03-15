@@ -4,11 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
 using AutoMapper;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
 
-namespace MyBlog.Services.AutoMapper.Profiles
+namespace ArfitectBlog.Services.AutoMapper.Profiles
 {
     public class CategoryProfile:Profile
     {

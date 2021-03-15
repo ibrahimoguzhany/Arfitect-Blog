@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using MyBlog.Data.Abstract;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
-using MyBlog.Services.Abstract;
-using MyBlog.Shared.Utilities.Results.Abstract;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
-using MyBlog.Shared.Utilities.Results.Concrete;
+using ArfitectBlog.Data.Abstract;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Services.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
+using ArfitectBlog.Shared.Utilities.Results.Concrete;
 using System;
 using System.Threading.Tasks;
-using MyBlog.Services.Concrete;
-using MyBlog.Services.Utilities;
+using ArfitectBlog.Services.Concrete;
+using ArfitectBlog.Services.Utilities;
 
 namespace ProgrammersBlog.Services.Concrete
 {

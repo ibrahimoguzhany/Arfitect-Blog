@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MyBlog.Entities.Dtos
+namespace ArfitectBlog.Entities.Dtos
 {
     public class CommentUpdateDto
     {

@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ArfitectBlog.Entities.Concrete;
 using Microsoft.AspNetCore.Http;
-using MyBlog.Entities.Concrete;
 
-namespace MyBlog.Mvc.Areas.Admin.Models
+namespace ArfitectBlog.Mvc.Areas.Admin.Models
 {
     public class PostAddViewModel
     {

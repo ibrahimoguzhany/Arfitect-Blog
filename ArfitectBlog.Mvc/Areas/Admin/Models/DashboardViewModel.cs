@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Entities.Concrete;
 
-namespace MyBlog.Mvc.Areas.Admin.Models
+namespace ArfitectBlog.Mvc.Areas.Admin.Models
 {
     public class DashboardViewModel
     {

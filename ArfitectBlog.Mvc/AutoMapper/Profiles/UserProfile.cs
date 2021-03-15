@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
 
-namespace MyBlog.Mvc.AutoMapper.Profiles
+namespace ArfitectBlog.Mvc.AutoMapper.Profiles
 {
     public class UserProfile : Profile
     {

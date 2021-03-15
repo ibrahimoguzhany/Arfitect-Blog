@@ -1,6 +1,6 @@
-﻿using MyBlog.Entities.Dtos;
+﻿using ArfitectBlog.Entities.Dtos;
 
-namespace MyBlog.Mvc.Areas.Admin.Models
+namespace ArfitectBlog.Mvc.Areas.Admin.Models
 {
     public class CommentUpdateAjaxViewModel
     {

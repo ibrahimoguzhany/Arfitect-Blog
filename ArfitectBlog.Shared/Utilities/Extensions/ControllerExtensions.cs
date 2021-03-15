@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace MyBlog.Shared.Utilities.Extensions
+namespace ArfitectBlog.Shared.Utilities.Extensions
 {
 
     public static class ControllerExtensions

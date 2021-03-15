@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using MyBlog.Shared.Entities.Abstract;
+using ArfitectBlog.Shared.Entities.Abstract;
 
-namespace MyBlog.Shared.Data.Abstract
+namespace ArfitectBlog.Shared.Data.Abstract
 {
     public interface IEntityRepository<T> where T : class, IEntity, new()
     {

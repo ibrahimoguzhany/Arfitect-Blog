@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArfitectBlog.Data.Abstract;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Services.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
+using ArfitectBlog.Shared.Utilities.Results.Concrete;
 using AutoMapper;
-using MyBlog.Data.Abstract;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
-using MyBlog.Services.Abstract;
-using MyBlog.Shared.Utilities.Results.Abstract;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
-using MyBlog.Shared.Utilities.Results.Concrete;
 
-namespace MyBlog.Services.Concrete
+namespace ArfitectBlog.Services.Concrete
 {
     public class PostManager : ManagerBase, IPostService
     {

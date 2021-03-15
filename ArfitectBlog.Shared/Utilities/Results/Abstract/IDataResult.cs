@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.Shared.Utilities.Results.Abstract
+namespace ArfitectBlog.Shared.Utilities.Results.Abstract
 {
     public interface IDataResult<out T> : IResult
     {

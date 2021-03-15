@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyBlog.Entities.Concrete;
-using MyBlog.Shared.Data.Abstract;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Shared.Data.Abstract;
 
-namespace MyBlog.Data.Abstract
+namespace ArfitectBlog.Data.Abstract
 {
     public interface ICategoryRepository : IEntityRepository<Category>
     {

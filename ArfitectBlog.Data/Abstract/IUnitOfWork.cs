@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.Data.Abstract
+namespace ArfitectBlog.Data.Abstract
 {
     public interface IUnitOfWork:IAsyncDisposable
     {

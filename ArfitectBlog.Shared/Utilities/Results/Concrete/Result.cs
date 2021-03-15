@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyBlog.Shared.Utilities.Results.Abstract;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
+using ArfitectBlog.Shared.Utilities.Results.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 
-namespace MyBlog.Shared.Utilities.Results.Concrete
+namespace ArfitectBlog.Shared.Utilities.Results.Concrete
 {
     public class Result:IResult
     {

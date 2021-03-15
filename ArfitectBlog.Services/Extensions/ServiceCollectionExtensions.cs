@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArfitectBlog.Data.Abstract;
+using ArfitectBlog.Data.Concrete;
+using ArfitectBlog.Data.Concrete.EntityFramework.Contexts;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Services.Abstract;
+using ArfitectBlog.Services.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MyBlog.Data.Abstract;
-using MyBlog.Data.Concrete;
-using MyBlog.Data.Concrete.EntityFramework.Contexts;
-using MyBlog.Entities.Concrete;
-using MyBlog.Services.Abstract;
-using MyBlog.Services.Concrete;
 using ProgrammersBlog.Services.Concrete;
 
-namespace MyBlog.Services.Extensions
+namespace ArfitectBlog.Services.Extensions
 {
     public static class ServiceCollectionExtensions
     {

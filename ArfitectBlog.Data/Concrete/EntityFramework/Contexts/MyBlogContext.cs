@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArfitectBlog.Data.Concrete.EntityFramework.Mappings;
+using ArfitectBlog.Entities.Concrete;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MyBlog.Data.Concrete.EntityFramework.Mappings;
-using MyBlog.Entities.Concrete;
 
-namespace MyBlog.Data.Concrete.EntityFramework.Contexts
+namespace ArfitectBlog.Data.Concrete.EntityFramework.Contexts
 {
     public class MyBlogContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {

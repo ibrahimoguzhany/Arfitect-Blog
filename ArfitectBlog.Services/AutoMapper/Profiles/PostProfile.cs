@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
 using AutoMapper;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
-using MyBlog.Services.Concrete;
+using ArfitectBlog.Services.Concrete;
 
-namespace MyBlog.Services.AutoMapper.Profiles
+namespace ArfitectBlog.Services.AutoMapper.Profiles
 {
     public class PostProfile:Profile
     {

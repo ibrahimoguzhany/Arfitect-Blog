@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
-using MyBlog.Shared.Utilities.Results.Abstract;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Shared.Utilities.Results.Abstract;
+using ArfitectBlog.Entities.Concrete;
 
-namespace MyBlog.Services.Abstract
+namespace ArfitectBlog.Services.Abstract
 {
     public interface IPostService
     {

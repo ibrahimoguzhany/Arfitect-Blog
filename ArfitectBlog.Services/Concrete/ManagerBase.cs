@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArfitectBlog.Data.Abstract;
 using AutoMapper;
-using MyBlog.Data.Abstract;
 
-namespace MyBlog.Services.Concrete
+namespace ArfitectBlog.Services.Concrete
 {
    public class ManagerBase
     {

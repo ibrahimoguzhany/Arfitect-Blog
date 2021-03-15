@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using MyBlog.Shared.Entities.Abstract;
+using ArfitectBlog.Shared.Entities.Abstract;
 
-namespace MyBlog.Entities.Dtos
+namespace ArfitectBlog.Entities.Dtos
 {
     public class UserLoginDto : DtoGetBase
     {

@@ -1,8 +1,8 @@
-﻿using MyBlog.Entities.Dtos;
-using MyBlog.Shared.Utilities.Results.Abstract;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Shared.Utilities.Results.Abstract;
 
-namespace MyBlog.Services.Abstract
+namespace ArfitectBlog.Services.Abstract
 {
     public interface ICommentService
     {

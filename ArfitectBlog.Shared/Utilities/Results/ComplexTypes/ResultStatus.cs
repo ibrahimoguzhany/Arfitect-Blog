@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.Shared.Utilities.Results.ComplexTypes
+namespace ArfitectBlog.Shared.Utilities.Results.ComplexTypes
 {
     public enum ResultStatus
     {

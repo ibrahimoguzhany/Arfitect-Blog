@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Mvc.Areas.Admin.Models;
+using ArfitectBlog.Services.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyBlog.Entities.Concrete;
-using MyBlog.Mvc.Areas.Admin.Models;
-using MyBlog.Services.Abstract;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
+using System.Threading.Tasks;
 
-namespace MyBlog.Mvc.Areas.Admin.Controllers
+namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin,Editor")]

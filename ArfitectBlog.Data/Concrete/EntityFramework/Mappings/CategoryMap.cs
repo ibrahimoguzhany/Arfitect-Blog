@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
-using MyBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Concrete;
 
-namespace MyBlog.Data.Concrete.EntityFramework.Mappings
+namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 {
     public class CategoryMap:IEntityTypeConfiguration<Category>
     {

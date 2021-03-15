@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MyBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Concrete;
 
-namespace MyBlog.Mvc.Areas.Admin.Models
+namespace ArfitectBlog.Mvc.Areas.Admin.Models
 {
     public class UserWithRolesViewModel
     {

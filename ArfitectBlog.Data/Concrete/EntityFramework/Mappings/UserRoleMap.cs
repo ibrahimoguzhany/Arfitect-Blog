@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ArfitectBlog.Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyBlog.Entities.Concrete;
 
-namespace MyBlog.Data.Concrete.EntityFramework.Mappings
+namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 {
     public class UserRoleMap:IEntityTypeConfiguration<UserRole>
     {

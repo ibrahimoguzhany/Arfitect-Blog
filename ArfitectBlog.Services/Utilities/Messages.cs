@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBlog.Services.Utilities
+namespace ArfitectBlog.Services.Utilities
 {
     public static class Messages
     {

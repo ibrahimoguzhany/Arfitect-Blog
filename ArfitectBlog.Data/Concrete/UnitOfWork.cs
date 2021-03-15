@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyBlog.Data.Abstract;
-using MyBlog.Data.Concrete.EntityFramework.Contexts;
-using MyBlog.Data.Concrete.EntityFramework.Repositories;
+using ArfitectBlog.Data.Abstract;
+using ArfitectBlog.Data.Concrete.EntityFramework.Contexts;
+using ArfitectBlog.Data.Concrete.EntityFramework.Repositories;
 
-namespace MyBlog.Data.Concrete
+namespace ArfitectBlog.Data.Concrete
 {
     public class UnitOfWork : IUnitOfWork
     {

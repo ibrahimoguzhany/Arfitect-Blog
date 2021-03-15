@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyBlog.Entities.Concrete;
 using System;
+using ArfitectBlog.Entities.Concrete;
 
-namespace MyBlog.Data.Concrete.EntityFramework.Mappings
+namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 {
     public class CommentMap:IEntityTypeConfiguration<Comment>
     {

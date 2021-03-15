@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using MyBlog.Entities.ComplexTypes;
-using MyBlog.Entities.Dtos;
-using MyBlog.Mvc.Helpers.Abstract;
-using MyBlog.Shared.Utilities.Extensions;
-using MyBlog.Shared.Utilities.Results.Abstract;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
-using MyBlog.Shared.Utilities.Results.Concrete;
+using ArfitectBlog.Shared.Utilities.Extensions;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using ArfitectBlog.Entities.ComplexTypes;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Mvc.Helpers.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
+using ArfitectBlog.Shared.Utilities.Results.Concrete;
 
-namespace MyBlog.Mvc.Helpers.Concrete
+namespace ArfitectBlog.Mvc.Helpers.Concrete
 {
     public class ImageHelper : IImageHelper
     {

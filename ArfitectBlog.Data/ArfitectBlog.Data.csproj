@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ArfitectMyBlogArfiteCtctBlog.Entities\ArfitectBlog.Entities.csproj" />
-    <ProjectReference Include="..\ArfitectBlog.Shared\MyBlog.Shared.csproj" />
+    <ProjectReference Include="..\ArfitectBlog.Entities\ArfitectBlog.Entities.csproj" />
+    <ProjectReference Include="..\ArfitectBlog.Shared\ArfitectBlog.Shared.csproj" />
   </ItemGroup>
 
 </Project>

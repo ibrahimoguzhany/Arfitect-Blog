@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Mvc.Areas.Admin.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
-using MyBlog.Entities.Concrete;
-using MyBlog.Mvc.Areas.Admin.Models;
 
-namespace MyBlog.Mvc.Areas.Admin.ViewComponents
+namespace ArfitectBlog.Mvc.Areas.Admin.ViewComponents
 {
     public class UserMenuViewComponent : ViewComponent
     {

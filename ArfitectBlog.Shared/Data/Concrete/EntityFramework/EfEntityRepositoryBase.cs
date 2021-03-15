@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using ArfitectBlog.Shared.Data.Abstract;
+using ArfitectBlog.Shared.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
-using MyBlog.Shared.Data.Abstract;
-using MyBlog.Shared.Entities.Abstract;
 
-namespace MyBlog.Shared.Data.Concrete.EntityFramework
+namespace ArfitectBlog.Shared.Data.Concrete.EntityFramework
 {
     public class EfEntityRepositoryBase<TEntity> : IEntityRepository<TEntity> where TEntity : class, IEntity, new()
     {

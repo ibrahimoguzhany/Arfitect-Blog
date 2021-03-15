@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace MyBlog.Entities.Dtos
+namespace ArfitectBlog.Entities.Dtos
 {
     public class UserUpdateDto
     {

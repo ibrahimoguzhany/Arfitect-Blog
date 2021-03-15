@@ -1,6 +1,6 @@
-﻿using MyBlog.Entities.Concrete;
+﻿using ArfitectBlog.Entities.Concrete;
 
-namespace MyBlog.Entities.Dtos
+namespace ArfitectBlog.Entities.Dtos
 {
     public class CommentDto
     {

@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
-using MyBlog.Mvc.Areas.Admin.Models;
-using MyBlog.Mvc.Helpers.Abstract;
-using MyBlog.Shared.Utilities.Extensions;
-using MyBlog.Shared.Utilities.Results.ComplexTypes;
+using ArfitectBlog.Shared.Utilities.Extensions;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using MyBlog.Entities.ComplexTypes;
+using ArfitectBlog.Entities.ComplexTypes;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
+using ArfitectBlog.Mvc.Areas.Admin.Models;
+using ArfitectBlog.Mvc.Helpers.Abstract;
+using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 
-namespace MyBlog.Mvc.Areas.Admin.Controllers
+namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class UserController : Controller
@@ -43,6 +43,13 @@ namespace MyBlog.Mvc.Areas.Admin.Controllers
                 Users = users,
                 ResultStatus = ResultStatus.Success
             });
+        }
+
+        [HttpGet]
+        public async Task<PartialViewResult> GetDetail(int userId)
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            return PartialView("_GetDetailPartial", new UserDto { User = user });
         }
 
         [HttpGet]

@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
+using ArfitectBlog.Mvc.AutoMapper.Profiles;
+using ArfitectBlog.Mvc.Helpers.Abstract;
+using ArfitectBlog.Mvc.Helpers.Concrete;
+using ArfitectBlog.Services.AutoMapper.Profiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MyBlog.Mvc.AutoMapper.Profiles;
-using MyBlog.Mvc.Helpers.Abstract;
-using MyBlog.Mvc.Helpers.Concrete;
-using MyBlog.Services.AutoMapper.Profiles;
-using MyBlog.Services.Extensions;
+using ArfitectBlog.Services.Extensions;
 
-namespace MyBlog.Mvc
+namespace ArfitectBlog.Mvc
 {
     public class Startup
     {

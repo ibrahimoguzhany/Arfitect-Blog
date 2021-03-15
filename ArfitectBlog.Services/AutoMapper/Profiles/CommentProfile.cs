@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using MyBlog.Entities.Concrete;
-using MyBlog.Entities.Dtos;
 using System;
+using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
 
-namespace MyBlog.Services.AutoMapper.Profiles
+namespace ArfitectBlog.Services.AutoMapper.Profiles
 {
     public class CommentProfile:Profile
     {
