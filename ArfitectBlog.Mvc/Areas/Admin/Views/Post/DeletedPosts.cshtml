@@ -1,0 +1,90 @@
+﻿@model ArfitectBlog.Entities.Dtos.PostListDto
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Silinmiş Makaleler";
+}
+<ol class="breadcrumb mb-3 mt-2">
+    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Post" asp-action="DeletedPosts">Silinmiş Paylaşımlar</a></li>
+</ol>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        Silinmiş Paylaşımlar
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="deletedPostsTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Kategori</th>
+                    <th>Başlık</th>
+                    <th>Küçük Resim</th>
+                    <th>Tarih</th>
+                    <th>Okunma Sayısı</th>
+                    <th>Yorum Sayısı</th>
+                    <th>Aktif Mi?</th>
+                    <th>Silinmiş Mi?</th>
+                    <th>Oluşturulma Tarihi</th>
+                    <th>Oluşturan Kullanıcı Adı</th>
+                    <th>Son Düzenlenme Tarihi</th>
+                    <th>Son Düzenleyen Kullanıcı Adı</th>
+                    <th>İşlemler</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>#</th>
+                    <th>Kategori</th>
+                    <th>Başlık</th>
+                    <th>Küçük Resim</th>
+                    <th>Tarih</th>
+                    <th>Okunma Sayısı</th>
+                    <th>Yorum Sayısı</th>
+                    <th>Aktif Mi?</th>
+                    <th>Silinmiş Mi?</th>
+                    <th>Oluşturulma Tarihi</th>
+                    <th>Oluşturan Kullanıcı Adı</th>
+                    <th>Son Düzenlenme Tarihi</th>
+                    <th>Son Düzenleyen Kullanıcı Adı</th>
+                    <th>İşlemler</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                @foreach (var post in Model.Posts)
+                {
+                    <tr name="@post.Id">
+                        <td>@post.Id</td>
+                        <td>@post.Category.Name</td>
+                        <td>@post.Title</td>
+                        <td><img src="~/img/@post.Thumbnail" class="my-image-table" /></td>
+                        <td>@post.Date.ToShortDateString()</td>
+                        <td>@post.ViewCount</td>
+                        <td>@post.CommentCount</td>
+                        <td>@(post.IsActive ? "Evet" : "Hayır")</td>
+                        <td>@(post.IsDeleted ? "Evet" : "Hayır")</td>
+                        <td>@post.CreatedDate.ToShortDateString()</td>
+                        <td>@post.CreatedByName</td>
+                        <td>@post.ModifiedDate.ToShortDateString()</td>
+                        <td>@post.ModifiedByName</td>
+                        <td>
+                            <a class="btn btn-warning btn-sm btn-undo" data-id="@post.Id"><span class="fas fa-undo"></span></a>
+                            <button class="btn btn-danger btn-sm btn-delete" data-id="@post.Id"><span class="fas fa-minus-circle"></span></button>
+                        </td>
+                    </tr>
+                }
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/AdminLTE/js/deletedPosts.js" type="application/ecmascript"></script>
+}
+@section Styles
+{
+    
+}

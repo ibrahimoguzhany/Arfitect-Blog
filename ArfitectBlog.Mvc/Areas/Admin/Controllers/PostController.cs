@@ -157,5 +157,40 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return Json(postResult);
         }
 
+        [Authorize(Roles = "SuperAdmin,Post.Read")]
+        [HttpGet]
+        public async Task<IActionResult> DeletedPosts()
+        {
+            var result = await _postService.GetAllByDeletedAsync();
+            return View(result.Data);
+
+        }
+        [Authorize(Roles = "SuperAdmin,Post.Read")]
+        [HttpGet]
+        public async Task<JsonResult> GetAllDeletedPosts()
+        {
+            var result = await _postService.GetAllByDeletedAsync();
+            var posts = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
+            return Json(posts);
+        }
+        [Authorize(Roles = "SuperAdmin,Post.Update")]
+        [HttpPost]
+        public async Task<JsonResult> UndoDelete(int postId)
+        {
+            var result = await _postService.UndoDeleteAsync(postId, LoggedInUser.UserName);
+            var undoDeletePostResult = JsonSerializer.Serialize(result);
+            return Json(undoDeletePostResult);
+        }
+        [Authorize(Roles = "SuperAdmin,Post.Delete")]
+        [HttpPost]
+        public async Task<JsonResult> HardDelete(int postId)
+        {
+            var result = await _postService.HardDeleteAsync(postId);
+            var hardDeletedPostResult = JsonSerializer.Serialize(result);
+            return Json(hardDeletedPostResult);
+        }
     }
 }

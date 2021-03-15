@@ -27,6 +27,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         {
             _categoryService = categoryService;
         }
+
         [Authorize(Roles = "SuperAdmin,Category.Read")]
         public async Task<IActionResult> Index()
         {
@@ -101,7 +102,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return Json(categoryUpdateAjaxErrorModel);
         }
 
-        [Authorize]
+        [Authorize(Roles = "SuperAdmin,Category.Read")]
         [HttpGet]
         public async Task<JsonResult> GetAllCategories()
         {
@@ -122,5 +123,42 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return Json(deletedCategory);
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Read")]
+        [HttpGet]
+        public async Task<IActionResult> DeletedCategories()
+        {
+            var result = await _categoryService.GetAllByDeletedAsync();
+            return View(result.Data);
+        }
+
+        [Authorize(Roles = "SuperAdmin,Category.Read")]
+        [HttpGet]
+        public async Task<JsonResult> GetAllDeletedCategories()
+        {
+            var result = await _categoryService.GetAllByDeletedAsync();
+            string categories = JsonSerializer.Serialize(result.Data, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
+            return Json(categories);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Category.Update")]
+        public async Task<JsonResult> UndoDelete(int categoryId)
+        {
+            var result = await _categoryService.UndoDeleteAsync(categoryId, LoggedInUser.UserName);
+            var undoDeletedCategory = JsonSerializer.Serialize(result.Data);
+            return Json(undoDeletedCategory);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Category.Delete")]
+        public async Task<JsonResult> HardDelete(int categoryId)
+        {
+            var result = await _categoryService.HardDeleteAsync(categoryId);
+            var deletedCategory = JsonSerializer.Serialize(result);
+            return Json(deletedCategory);
+        }
     }
 }

@@ -94,11 +94,6 @@ namespace ArfitectBlog.Services.Concrete
 
         }
 
-        public Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedActiveAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedAndActiveAsync()
         {
             var categories = await UnitOfWork.Categories.GetAllAsync(x => !x.IsDeleted & x.IsActive);
@@ -115,7 +110,7 @@ namespace ArfitectBlog.Services.Concrete
 
         public async Task<IDataResult<CategoryListDto>> GetAllByDeletedAsync()
         {
-            var categories = await UnitOfWork.Categories.GetAllAsync(x => !x.IsDeleted);
+            var categories = await UnitOfWork.Categories.GetAllAsync(x => x.IsDeleted);
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto

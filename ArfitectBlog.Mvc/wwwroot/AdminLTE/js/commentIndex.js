@@ -137,7 +137,7 @@
                             if (commentResult.Data) {
                                 Swal.fire(
                                     'Silindi!',
-                                    `${commentResult.Message}`,
+                                    `${commentResult.Data.Comment.Id} no'lu yorum başarıyla silinmiştir.`,
                                     'success'
                                 );
 
@@ -146,7 +146,7 @@
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Başarısız İşlem!',
-                                    text: `${commentResult.Message}`,
+                                    text: 'Beklenmedik bir hata oluştu.',
                                 });
                             }
                         },
@@ -199,24 +199,24 @@
                         placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
                         const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                         if (isValid) {
-                            const id = commentUpdateAjaxModel.UserDto.Comment.Id;
+                            const id = commentUpdateAjaxModel.CommentDto.Comment.Id;
                             const tableRow = $(`[name="${id}"]`);
                             placeHolderDiv.find('.modal').modal('hide');
                             dataTable.row(tableRow).data([
-                                commentUpdateAjaxModel.UserDto.Comment.Id,
-                                commentUpdateAjaxModel.UserDto.Comment.Post.Title,
-                                commentUpdateAjaxModel.UserDto.Comment.Text.length > 75 ? commentUpdateAjaxModel.UserDto.Comment.Text.substring(0, 75) : commentUpdateAjaxModel.UserDto.Comment.Text,
-                                `${commentUpdateAjaxModel.UserDto.Comment.IsActive ? "Evet" : "Hayır"}`,
-                                `${commentUpdateAjaxModel.UserDto.Comment.IsDeleted ? "Evet" : "Hayır"}`,
-                                `${convertToShortDate(commentUpdateAjaxModel.UserDto.Comment.CreatedDate)}`,
-                                commentUpdateAjaxModel.UserDto.Comment.CreatedByName,
-                                `${convertToShortDate(commentUpdateAjaxModel.UserDto.Comment.ModifiedDate)}`,
-                                commentUpdateAjaxModel.UserDto.Comment.ModifiedByName,
-                                getButtonsForDataTable(commentUpdateAjaxModel.UserDto.Comment)
+                                commentUpdateAjaxModel.CommentDto.Comment.Id,
+                                commentUpdateAjaxModel.CommentDto.Comment.Post.Title,
+                                commentUpdateAjaxModel.CommentDto.Comment.Text.length > 75 ? commentUpdateAjaxModel.CommentDto.Comment.Text.substring(0, 75) : commentUpdateAjaxModel.CommentDto.Comment.Text,
+                                `${commentUpdateAjaxModel.CommentDto.Comment.IsActive ? "Evet" : "Hayır"}`,
+                                `${commentUpdateAjaxModel.CommentDto.Comment.IsDeleted ? "Evet" : "Hayır"}`,
+                                `${convertToShortDate(commentUpdateAjaxModel.CommentDto.Comment.CreatedDate)}`,
+                                commentUpdateAjaxModel.CommentDto.Comment.CreatedByName,
+                                `${convertToShortDate(commentUpdateAjaxModel.CommentDto.Comment.ModifiedDate)}`,
+                                commentUpdateAjaxModel.CommentDto.Comment.ModifiedByName,
+                                getButtonsForDataTable(commentUpdateAjaxModel.CommentDto.Comment)
                             ]);
                             tableRow.attr("name", `${id}`);
                             dataTable.row(tableRow).invalidate();
-                            toastr.success(`${commentUpdateAjaxModel.UserDto.Comment.Id} no'lu yorum başarıyla güncellenmiştir`, "Başarılı İşlem!");
+                            toastr.success(`${commentUpdateAjaxModel.CommentDto.Comment.Id} no'lu yorum başarıyla güncellenmiştir`, "Başarılı İşlem!");
                         } else {
                             let summaryText = "";
                             $('#validation-summary > ul > li').each(function () {
@@ -279,7 +279,7 @@
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
-                        data: { commentId: id },
+                        data: { categoryId: id },
                         url: '/Admin/Comment/Approve/',
                         success: function (data) {
                             const commentResult = jQuery.parseJSON(data);

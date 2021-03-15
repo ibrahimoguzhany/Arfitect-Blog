@@ -15,7 +15,6 @@ namespace ArfitectBlog.Services.Abstract
         Task<IDataResult<CategoryUpdateDto>> GetCategoryUpdateDtoAsync(int categoryId);
         Task<IDataResult<CategoryListDto>> GetAllAsync();
         Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedAsync();
-        Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedActiveAsync();
         Task<IDataResult<CategoryListDto>> GetAllByDeletedAsync();
         Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedAndActiveAsync();
         Task<IDataResult<CategoryDto>> AddAsync(CategoryAddDto categoryAddDto, string createdByName);

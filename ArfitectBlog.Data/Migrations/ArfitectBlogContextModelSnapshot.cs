@@ -748,28 +748,28 @@ namespace ArfitectBlog.Data.Migrations
                             Id = 5,
                             ConcurrencyStamp = "f1b4da10-28e6-47ec-96e1-00c4f9c85414",
                             Name = "Post.Create",
-                            NormalizedName = "ARTICLE.CREATE"
+                            NormalizedName = "POST.CREATE"
                         },
                         new
                         {
                             Id = 6,
                             ConcurrencyStamp = "4edbfd0c-ea08-455d-b20a-2d86aa033c6c",
                             Name = "Post.Read",
-                            NormalizedName = "ARTICLE.READ"
+                            NormalizedName = "POST.READ"
                         },
                         new
                         {
                             Id = 7,
                             ConcurrencyStamp = "6b7b4532-5038-4a62-8220-93ce27ea7067",
                             Name = "Post.Update",
-                            NormalizedName = "ARTICLE.UPDATE"
+                            NormalizedName = "POST.UPDATE"
                         },
                         new
                         {
                             Id = 8,
                             ConcurrencyStamp = "e308eac3-e37e-4d12-944f-b625a401dfc0",
                             Name = "Post.Delete",
-                            NormalizedName = "ARTICLE.DELETE"
+                            NormalizedName = "POST.DELETE"
                         },
                         new
                         {

@@ -35,7 +35,7 @@ namespace ArfitectBlog.Services.Concrete
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<PostDto>(ResultStatus.Error, "Boyle bir makale bulunamadi.", null);
+            return new DataResult<PostDto>(ResultStatus.Error, Messages.Post.NotFound(false), null);
 
         }
 
@@ -50,7 +50,7 @@ namespace ArfitectBlog.Services.Concrete
             }
             else
             {
-                return new DataResult<PostUpdateDto>(ResultStatus.Error, "Böyle bir paylaşım bulunamadı.", null);
+                return new DataResult<PostUpdateDto>(ResultStatus.Error, Messages.Post.NotFound(false), null);
             }
         }
 
@@ -65,7 +65,7 @@ namespace ArfitectBlog.Services.Concrete
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<PostListDto>(ResultStatus.Error, "Makaleler bulunamadi.", null);
+            return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
         }
 
         public async Task<IDataResult<PostListDto>> GetAllByNoneDeletedAsync()
@@ -79,7 +79,7 @@ namespace ArfitectBlog.Services.Concrete
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<PostListDto>(ResultStatus.Error, "Makaleler bulunamadi.", null);
+            return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
 
         }
 
@@ -109,7 +109,7 @@ namespace ArfitectBlog.Services.Concrete
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<PostListDto>(ResultStatus.Error, "Makaleler bulunamadi.", null);
+            return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
         }
 
         public async Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId)
@@ -128,9 +128,9 @@ namespace ArfitectBlog.Services.Concrete
                         ResultStatus = ResultStatus.Success
                     });
                 }
-                return new DataResult<PostListDto>(ResultStatus.Error, "Makaleler bulunamadi.", null);
+                return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
             }
-            return new DataResult<PostListDto>(ResultStatus.Error, "Boyle bir kategori bulunamadi.", null);
+            return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
         }
 
         public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId)
@@ -141,7 +141,7 @@ namespace ArfitectBlog.Services.Concrete
             post.UserId = userId;
             await UnitOfWork.Posts.AddAsync(post);
             await UnitOfWork.SaveAsync();
-            return new Result(ResultStatus.Success, $"{postAddDto.Title} baslikli makale basariyla eklenmistir.");
+            return new Result(ResultStatus.Success, Messages.Post.Add(post.Title));
         }
 
         public async Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName)
@@ -151,7 +151,7 @@ namespace ArfitectBlog.Services.Concrete
             post.ModifiedByName = modifiedByName;
             await UnitOfWork.Posts.UpdateAsync(post);
             await UnitOfWork.SaveAsync();
-            return new Result(ResultStatus.Success, $"{postUpdateDto.Title} baslikli makale basariyla guncellenmistir");
+            return new Result(ResultStatus.Success, Messages.Post.Update(post.Title));
         }
 
         public async Task<IResult> DeleteAsync(int postId, string modifiedByName)
@@ -166,10 +166,10 @@ namespace ArfitectBlog.Services.Concrete
                 post.ModifiedDate = DateTime.Now;
                 await UnitOfWork.Posts.UpdateAsync(post);
                 await UnitOfWork.SaveAsync();
-                return new Result(ResultStatus.Success, $"{post.Title} baslikli makale basariyla guncellenmistir");
+                return new Result(ResultStatus.Success, Messages.Post.Delete(post.Title));
 
             }
-            return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
+            return new Result(ResultStatus.Error, Messages.Post.NotFound(false));
         }
 
         public async Task<IResult> UndoDeleteAsync(int postId, string modifiedByName)
@@ -199,9 +199,9 @@ namespace ArfitectBlog.Services.Concrete
 
                 await UnitOfWork.Posts.DeleteAsync(post);
                 await UnitOfWork.SaveAsync();
-                return new Result(ResultStatus.Success, $"{post.Title} baslikli makale veritabanindan basariyla silinmistir.");
+                return new Result(ResultStatus.Success, Messages.Post.Delete(post.Title));
             }
-            return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
+            return new Result(ResultStatus.Error, Messages.Post.NotFound(false));
         }
 
         public async Task<IDataResult<int>> CountAsync()
