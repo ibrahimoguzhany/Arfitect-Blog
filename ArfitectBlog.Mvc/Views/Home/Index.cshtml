@@ -24,7 +24,7 @@
                 }
                 @(post.Content.Length > 250 ? post.Content.Substring(0, 250) : post.Content)
             </p>
-            <a asp-controller="Post" asp-action="Detail" class="btn btn-primary">Daha Fazla Oku &rarr;</a>
+            <a asp-controller="Post" asp-action="Detail" asp-route-postId="@post.Id" class="btn btn-primary">Daha Fazla Oku &rarr;</a>
         </div>
         <div class="card-footer text-muted">
             @post.User.UserName tarafından @post.Date tarihinde paylaşıldı.

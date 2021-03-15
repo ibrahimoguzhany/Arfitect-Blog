@@ -19,14 +19,14 @@ namespace ArfitectBlog.Services.Concrete
     {
 
 
-        public PostManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper,unitOfWork)
+        public PostManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper, unitOfWork)
         {
 
         }
 
         public async Task<IDataResult<PostDto>> GetAsync(int postId)
         {
-            var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId, x => x.User, x => x.Category);
+            var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId, x => x.User, x => x.Category, x => x.Comments);
             if (post != null)
             {
                 return new DataResult<PostDto>(ResultStatus.Success, new PostDto

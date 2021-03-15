@@ -1,0 +1,65 @@
+﻿@model ArfitectBlog.Entities.Dtos.PostDto
+@{
+    Layout = "_PostLayout";
+    ViewBag.Title = Model.Post.Title;
+    ViewBag.Description = Model.Post.SeoDescription;
+    ViewBag.Author = Model.Post.SeoAuthor;
+    ViewBag.Tags = Model.Post.SeoTags;
+}
+
+
+
+<!-- Post Content Column -->
+
+
+<div class="col-lg-8">
+
+    <!-- Title -->
+    <h1 class="mt-4">@Model.Post.Title</h1>
+
+    <!-- Author -->
+    <p class="lead">
+        @Model.Post.User.UserName tarafından @Model.Post.Date.ToShortDateString() tarihinde paylaşılmıştır.
+    </p>
+
+    <hr>
+
+    <div class="text-center">
+        <img class="img-fluid rounded" src="~/img/@Model.Post.Thumbnail" alt="@Model.Post.Title">
+    </div>
+    <hr>
+
+    <!-- Post Content -->
+    @Html.Raw(Model.Post.Content)
+
+    <hr>
+
+    <p class="text-center"><span class="badge badge-info">Okunma Sayısı: @Model.Post.ViewCount</span> Yorum Sayısı: <span class="badge badge-warning"> @Model.Post.CommentCount</span></p>
+
+    <!-- Comments Form -->
+    <div class="card my-4">
+        <h5 class="card-header">Bir yorum ekle:</h5>
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Ekle</button>
+            </form>
+        </div>
+    </div>
+
+
+    @foreach (var comment in Model.Post.Comments)
+    {
+
+        <!-- Single Comment -->
+        <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/34.jpg" alt="">
+            <div class="media-body">
+                <h5 class="mt-0">@comment.CreatedByName</h5>
+                @comment.Text
+            </div>
+        </div>
+    }
+</div>
