@@ -17,11 +17,11 @@ namespace ArfitectBlog.Mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? categoryId)
+        public async Task<IActionResult> Index(int? categoryId, int currentPage = 1, int pageSize = 5)
         {
             var postsResult = await (categoryId == null
-                ? _postService.GetAllByNonDeletedAndActiveAsync()
-                : _postService.GetAllByCategoryAsync(categoryId.Value));
+                ? _postService.GetAllByPagingAsync(null, currentPage, pageSize)
+                : _postService.GetAllByPagingAsync(categoryId.Value, currentPage, pageSize));
             return View(postsResult.Data);
         }
     }

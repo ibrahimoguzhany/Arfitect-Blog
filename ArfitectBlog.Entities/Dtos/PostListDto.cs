@@ -11,6 +11,6 @@ namespace ArfitectBlog.Entities.Dtos
     public class PostListDto:DtoGetBase
     {
         public IList<Post> Posts { get; set; }
-
+        public int? CategoryId { get; set; }
     }
 }

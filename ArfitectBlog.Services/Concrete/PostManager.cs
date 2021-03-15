@@ -144,6 +144,24 @@ namespace ArfitectBlog.Services.Concrete
             });
         }
 
+        public async Task<IDataResult<PostListDto>> GetAllByPagingAsync(int? categoryId, int currentPage = 1, int pageSize = 5, bool isAscending = false)
+        {
+            var posts = categoryId == null
+                ? await UnitOfWork.Posts.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.Category, x => x.User)
+                : await UnitOfWork.Posts.GetAllAsync(x => x.CategoryId == categoryId && x.IsActive && !x.IsDeleted,x => x.Category, x => x.User);
+            var sortedPosts = isAscending 
+                ? posts.OrderBy(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList() 
+                : posts.OrderByDescending(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+            return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto()
+            {
+                Posts = sortedPosts,
+                CategoryId = categoryId == null ? null : categoryId.Value,
+                CurrentPage = currentPage,
+                PageSize = pageSize,
+                TotalCount = posts.Count
+            });
+        }
+
         public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId)
         {
             var post = Mapper.Map<Post>(postAddDto);
