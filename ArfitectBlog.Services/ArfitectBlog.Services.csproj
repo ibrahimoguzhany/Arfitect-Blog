@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyBlog.Data\MyBlog.Data.csproj" />
-    <ProjectReference Include="..\MyBlog.Entities\MyBlog.Entities.csproj" />
+    <ProjectReference Include="..\ArfitectBlog.Data\ArfitectBlogArfitectBlog.Data.csproj" />
+    <ProjectReference Include="..\ArfitectBlog.Entities\ArfitectBlog.Entities.csproj" />
   </ItemGroup>
 
 </Project>
