@@ -13,9 +13,9 @@ using ArfitectBlog.Services.Utilities;
 
 namespace ProgrammersBlog.Services.Concrete
 {
-    public class CommentManager:ManagerBase,ICommentService
+    public class CommentManager : ManagerBase, ICommentService
     {
-        public CommentManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper,unitOfWork)
+        public CommentManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper, unitOfWork)
         {
 
         }
@@ -53,7 +53,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentListDto>> GetAllAsync()
         {
-            var comments = await UnitOfWork.Comments.GetAllAsync(null,c=>c.Post);
+            var comments = await UnitOfWork.Comments.GetAllAsync(null, c => c.Post);
             if (comments.Count > -1)
             {
                 return new DataResult<CommentListDto>(ResultStatus.Success, new CommentListDto
@@ -69,7 +69,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentListDto>> GetAllByDeletedAsync()
         {
-            var comments = await UnitOfWork.Comments.GetAllAsync(c=>c.IsDeleted, c => c.Post);
+            var comments = await UnitOfWork.Comments.GetAllAsync(c => c.IsDeleted, c => c.Post);
             if (comments.Count > -1)
             {
                 return new DataResult<CommentListDto>(ResultStatus.Success, new CommentListDto
@@ -101,7 +101,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentListDto>> GetAllByNonDeletedAndActiveAsync()
         {
-            var comments = await UnitOfWork.Comments.GetAllAsync(c => !c.IsDeleted&&c.IsActive, c => c.Post);
+            var comments = await UnitOfWork.Comments.GetAllAsync(c => !c.IsDeleted && c.IsActive, c => c.Post);
             if (comments.Count > -1)
             {
                 return new DataResult<CommentListDto>(ResultStatus.Success, new CommentListDto
@@ -165,11 +165,34 @@ namespace ProgrammersBlog.Services.Concrete
             if (comment != null)
             {
                 comment.IsDeleted = true;
+                comment.IsActive = false;
                 comment.ModifiedByName = modifiedByName;
                 comment.ModifiedDate = DateTime.Now;
                 var deletedComment = await UnitOfWork.Comments.UpdateAsync(comment);
                 await UnitOfWork.SaveAsync();
                 return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.Delete(deletedComment.CreatedByName), new CommentDto
+                {
+                    Comment = deletedComment,
+                });
+            }
+            return new DataResult<CommentDto>(ResultStatus.Error, Messages.Comment.NotFound(isPlural: false), new CommentDto
+            {
+                Comment = null,
+            });
+        }
+
+        public async Task<IDataResult<CommentDto>> UndoDeleteAsync(int commentId, string modifiedByName)
+        {
+            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId);
+            if (comment != null)
+            {
+                comment.IsDeleted = false;
+                comment.IsActive = true;
+                comment.ModifiedByName = modifiedByName;
+                comment.ModifiedDate = DateTime.Now;
+                var deletedComment = await UnitOfWork.Comments.UpdateAsync(comment);
+                await UnitOfWork.SaveAsync();
+                return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.UndoDelete(deletedComment.CreatedByName), new CommentDto
                 {
                     Comment = deletedComment,
                 });
@@ -207,7 +230,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<int>> CountByNonDeletedAsync()
         {
-            var commentsCount = await UnitOfWork.Comments.CountAsync(c=>!c.IsDeleted);
+            var commentsCount = await UnitOfWork.Comments.CountAsync(c => !c.IsDeleted);
             if (commentsCount > -1)
             {
                 return new DataResult<int>(ResultStatus.Success, commentsCount);

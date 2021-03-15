@@ -15,11 +15,14 @@ namespace ArfitectBlog.Services.Abstract
         Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId);
         Task<IDataResult<PostListDto>> GetAllAsync();
         Task<IDataResult<PostListDto>> GetAllByNoneDeletedAsync();
+        Task<IDataResult<PostListDto>> GetAllByDeletedAsync();
         Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActiveAsync();
         Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId);
         Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId);
         Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName);
         Task<IResult> DeleteAsync(int postId, string modifiedByName);
+        Task<IResult> UndoDeleteAsync(int postId, string modifiedByName);
+
         Task<IResult> HardDeleteAsync(int postId);
         Task<IDataResult<int>> CountAsync();
         Task<IDataResult<int>> CountByNonDeletedAsync();

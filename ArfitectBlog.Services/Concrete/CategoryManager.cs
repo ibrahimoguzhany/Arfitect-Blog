@@ -8,13 +8,14 @@ using ArfitectBlog.Shared.Utilities.Results.Concrete;
 using AutoMapper;
 using System;
 using System.Threading.Tasks;
+using ArfitectBlog.Services.Utilities;
 
 namespace ArfitectBlog.Services.Concrete
 {
-    public class CategoryManager :ManagerBase, ICategoryService
+    public class CategoryManager : ManagerBase, ICategoryService
     {
 
-        public CategoryManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper,unitOfWork)
+        public CategoryManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper, unitOfWork)
         {
         }
 
@@ -93,6 +94,11 @@ namespace ArfitectBlog.Services.Concrete
 
         }
 
+        public Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedActiveAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IDataResult<CategoryListDto>> GetAllByNoneDeletedAndActiveAsync()
         {
             var categories = await UnitOfWork.Categories.GetAllAsync(x => !x.IsDeleted & x.IsActive);
@@ -106,6 +112,21 @@ namespace ArfitectBlog.Services.Concrete
             }
             return new DataResult<CategoryListDto>(ResultStatus.Error, "Hicbir kategori bulunamadi.", null);
         }
+
+        public async Task<IDataResult<CategoryListDto>> GetAllByDeletedAsync()
+        {
+            var categories = await UnitOfWork.Categories.GetAllAsync(x => !x.IsDeleted);
+            if (categories.Count > -1)
+            {
+                return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
+                {
+                    Categories = categories,
+                    ResultStatus = ResultStatus.Success
+                });
+            }
+            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hicbir kategori bulunamadi.", null);
+        }
+
 
         public async Task<IDataResult<CategoryDto>> AddAsync(CategoryAddDto categoryAddDto, string createdByName)
         {
@@ -147,6 +168,7 @@ namespace ArfitectBlog.Services.Concrete
             if (category != null)
             {
                 category.IsDeleted = true;
+                category.IsActive = false;
                 category.ModifiedByName = modifiedByName;
                 category.ModifiedDate = DateTime.Now;
                 var deletedCategory = await UnitOfWork.Categories.UpdateAsync(category);
@@ -160,11 +182,39 @@ namespace ArfitectBlog.Services.Concrete
                         Message = $"{deletedCategory.Name} adli kategori basariyla silinmistir."
                     });
             }
-            return new DataResult<CategoryDto>(ResultStatus.Error, "Böyle bir kategori bulunamadı.", new CategoryDto()
+            return new DataResult<CategoryDto>(ResultStatus.Error, Messages.Category.NotFound(false), new CategoryDto()
             {
                 Category = null,
                 ResultStatus = ResultStatus.Error,
                 Message = "Böyle bir kategori bulunamadı."
+            });
+        }
+
+        public async Task<IDataResult<CategoryDto>> UndoDeleteAsync(int categoryId, string modifiedByName)
+        {
+            var category = await UnitOfWork.Categories.GetAsync(c => c.Id == categoryId);
+            if (category != null)
+            {
+                category.IsDeleted = false;
+                category.IsActive = true;
+                category.ModifiedByName = modifiedByName;
+                category.ModifiedDate = DateTime.Now;
+                var deletedCategory = await UnitOfWork.Categories.UpdateAsync(category);
+                await UnitOfWork.SaveAsync();
+
+                return new DataResult<CategoryDto>(ResultStatus.Success,
+                    Messages.Category.UndoDelete(deletedCategory.Name), new CategoryDto()
+                    {
+                        Category = deletedCategory,
+                        ResultStatus = ResultStatus.Success,
+                        Message = Messages.Category.UndoDelete(deletedCategory.Name)
+                    });
+            }
+            return new DataResult<CategoryDto>(ResultStatus.Error, Messages.Category.NotFound(false), new CategoryDto()
+            {
+                Category = null,
+                ResultStatus = ResultStatus.Error,
+               Message = Messages.Category.NotFound(false)
             });
         }
 
@@ -196,7 +246,7 @@ namespace ArfitectBlog.Services.Concrete
 
         public async Task<IDataResult<int>> CountByNonDeletedAsync()
         {
-            var categoriesCount = await UnitOfWork.Categories.CountAsync(c=>!c.IsDeleted);
+            var categoriesCount = await UnitOfWork.Categories.CountAsync(c => !c.IsDeleted);
             if (categoriesCount > -1)
             {
                 return new DataResult<int>(ResultStatus.Success, categoriesCount);

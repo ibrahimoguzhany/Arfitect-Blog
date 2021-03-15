@@ -7,6 +7,7 @@ using ArfitectBlog.Data.Abstract;
 using ArfitectBlog.Entities.Concrete;
 using ArfitectBlog.Entities.Dtos;
 using ArfitectBlog.Services.Abstract;
+using ArfitectBlog.Services.Utilities;
 using ArfitectBlog.Shared.Utilities.Results.Abstract;
 using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 using ArfitectBlog.Shared.Utilities.Results.Concrete;
@@ -82,6 +83,20 @@ namespace ArfitectBlog.Services.Concrete
 
         }
 
+        public async Task<IDataResult<PostListDto>> GetAllByDeletedAsync()
+        {
+            var posts = await UnitOfWork.Posts.GetAllAsync(x => x.IsDeleted, p => p.User, p => p.Category);
+            if (posts.Count > -1)
+            {
+                return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto()
+                {
+                    Posts = posts,
+                    ResultStatus = ResultStatus.Success
+                });
+            }
+            return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
+        }
+
         public async Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActiveAsync()
         {
             var posts = await UnitOfWork.Posts.GetAllAsync(x => !x.IsDeleted && x.IsActive, ar => ar.User,
@@ -147,6 +162,7 @@ namespace ArfitectBlog.Services.Concrete
                 var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId);
                 post.ModifiedByName = modifiedByName;
                 post.IsDeleted = true;
+                post.IsActive = false;
                 post.ModifiedDate = DateTime.Now;
                 await UnitOfWork.Posts.UpdateAsync(post);
                 await UnitOfWork.SaveAsync();
@@ -154,6 +170,24 @@ namespace ArfitectBlog.Services.Concrete
 
             }
             return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
+        }
+
+        public async Task<IResult> UndoDeleteAsync(int postId, string modifiedByName)
+        {
+            var result = await UnitOfWork.Posts.AnyAsync(x => x.Id == postId);
+            if (result)
+            {
+                var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId);
+                post.IsDeleted = false;
+                post.IsActive = true;
+                post.ModifiedByName = modifiedByName;
+                post.ModifiedDate = DateTime.Now;
+                await UnitOfWork.Posts.UpdateAsync(post);
+                await UnitOfWork.SaveAsync();
+                return new Result(ResultStatus.Success, Messages.Post.UndoDelete(post.Title));
+            }
+
+            return new Result(ResultStatus.Error, Messages.Post.NotFound(false));
         }
 
         public async Task<IResult> HardDeleteAsync(int postId)
