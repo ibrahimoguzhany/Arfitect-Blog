@@ -133,6 +133,17 @@ namespace ArfitectBlog.Services.Concrete
             return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
         }
 
+        public async Task<IDataResult<PostListDto>> GetAllByViewCountAsync(bool isAscending, int? takeSize)
+        {
+            var posts = await UnitOfWork.Posts.GetAllAsync(p => p.IsActive && !p.IsDeleted, x => x.Category,
+                x => x.User);
+            var sortedPosts = isAscending ? posts.OrderBy(p => p.ViewCount) : posts.OrderByDescending(p => p.ViewCount);
+            return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto()
+            {
+                Posts = takeSize == null ? sortedPosts.ToList() : sortedPosts.Take(takeSize.Value).ToList()
+            });
+        }
+
         public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId)
         {
             var post = Mapper.Map<Post>(postAddDto);

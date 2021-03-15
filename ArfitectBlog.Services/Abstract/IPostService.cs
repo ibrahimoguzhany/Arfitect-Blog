@@ -18,6 +18,7 @@ namespace ArfitectBlog.Services.Abstract
         Task<IDataResult<PostListDto>> GetAllByDeletedAsync();
         Task<IDataResult<PostListDto>> GetAllByNonDeletedAndActiveAsync();
         Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId);
+        Task<IDataResult<PostListDto>> GetAllByViewCountAsync(bool isAscending, int? takeSize);
         Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId);
         Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName);
         Task<IResult> DeleteAsync(int postId, string modifiedByName);
