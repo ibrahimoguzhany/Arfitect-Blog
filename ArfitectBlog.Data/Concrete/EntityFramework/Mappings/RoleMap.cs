@@ -69,7 +69,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
                 {
                     Id = 5,
                     Name = "Post.Create",
-                    NormalizedName = "ARTICLE.CREATE",
+                    NormalizedName = "POST.CREATE",
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 }
                 ,
@@ -77,14 +77,14 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
             {
                 Id = 6,
                 Name = "Post.Read",
-                NormalizedName = "ARTICLE.READ",
+                NormalizedName = "POST.READ",
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             },
             new Role
                 {
                     Id = 7,
                     Name = "Post.Update",
-                    NormalizedName = "ARTICLE.UPDATE",
+                    NormalizedName = "POST.UPDATE",
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 }
                 ,
@@ -92,7 +92,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
                 {
                     Id = 8,
                     Name = "Post.Delete",
-                    NormalizedName = "ARTICLE.DELETE",
+                    NormalizedName = "POST.DELETE",
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 }
                 ,

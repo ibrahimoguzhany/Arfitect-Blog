@@ -11,6 +11,7 @@ using ArfitectBlog.Mvc.Areas.Admin.Models;
 using ArfitectBlog.Mvc.Helpers.Abstract;
 using ArfitectBlog.Services.Abstract;
 using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
@@ -26,6 +27,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Post.Read")]
         public async Task<IActionResult> Index()
         {
             var result = await _postService.GetAllByNoneDeletedAsync();
@@ -34,6 +36,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Post.Create")]
         public async Task<IActionResult> Add()
         {
             var result = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
@@ -48,6 +51,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Post.Create")]
         public async Task<IActionResult> Add(PostAddViewModel postAddViewModel)
         {
             if (ModelState.IsValid)
@@ -73,6 +77,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Post.Update")]
         public async Task<IActionResult> Update(int postId)
         {
             var postResult = await _postService.GetPostUpdateDtoAsync(postId);
@@ -90,6 +95,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Post.Update")]
         public async Task<IActionResult> Update(PostUpdateViewModel postUpdateViewModel)
         {
             if (ModelState.IsValid)
@@ -131,6 +137,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Post.Delete")]
         public async Task<JsonResult> Delete(int postId)
         {
             var result = await _postService.DeleteAsync(postId, LoggedInUser.UserName);
@@ -139,6 +146,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Post.Read")]
         public async Task<JsonResult> GetAllPosts()
         {
             var posts = await _postService.GetAllByNonDeletedAndActiveAsync();

@@ -28,7 +28,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             _signInManager = signInManager;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin,User.Read")]
         public async Task<IActionResult> Index()
         {
             List<User> users = await UserManager.Users.ToListAsync();
@@ -39,6 +39,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             });
         }
 
+        [Authorize(Roles = "SuperAdmin,User.Read")]
         [HttpGet]
         public async Task<PartialViewResult> GetDetail(int userId)
         {
@@ -46,48 +47,9 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return PartialView("_GetDetailPartial", new UserDto { User = user });
         }
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View("UserLogin");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await UserManager.FindByEmailAsync(userLoginDto.Email);
-                if (user != null)
-                {
-                    var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password,
-                        userLoginDto.RememberMe, false);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Email adresiniz veya şifreniz yanlıştır.");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Email adresiniz veya şifreniz yanlıştır.");
-                }
-            }
-            return View("UserLogin");
-        }
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home", new { Area = "" });
-        }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin,User.Read")]
         public async Task<JsonResult> GetAllUsers()
         {
             List<User> users = await UserManager.Users.ToListAsync();
@@ -103,8 +65,8 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return Json(userListDto);
         }
 
+        [Authorize(Roles = "SuperAdmin,User.Create")]
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             return PartialView("_UserAddPartial");
@@ -112,7 +74,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin,User.Create")]
         public async Task<IActionResult> Add(UserAddDto userAddDto)
         {
             if (ModelState.IsValid)
@@ -157,7 +119,8 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return Json(userAddAjaxModelStateErrorModel);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin,User.Delete")]
+        [HttpPost]
         public async Task<JsonResult> Delete(int userId)
         {
             User user = await UserManager.FindByIdAsync(userId.ToString());
@@ -191,7 +154,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin,User.Update")]
         public async Task<PartialViewResult> Update(int userId)
         {
             var user = await UserManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
@@ -200,7 +163,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin,User.Update")]
         public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {
             if (ModelState.IsValid)
@@ -366,13 +329,6 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
                 return View(userPasswordChangeDto);
             }
         }
-        
-        [HttpGet]
-        public ViewResult AccessDenied()
-        {
-            return View();
-        }
-
     }
 
 }

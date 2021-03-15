@@ -11,6 +11,7 @@ using ArfitectBlog.Mvc.Helpers.Abstract;
 using ArfitectBlog.Services.Abstract;
 using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 using ArfitectBlog.Shared.Utilities.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
@@ -23,12 +24,15 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             _commentService = commentService;
         }
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Comment.Read")]
         public async Task<IActionResult> Index()
         {
             var result = await _commentService.GetAllByNonDeletedAsync();
             return View(result.Data);
         }
+
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllComments()
         {
             var result = await _commentService.GetAllByNonDeletedAsync();
@@ -40,6 +44,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetDetail(int commentId)
         {
             var result = await _commentService.GetAsync(commentId);
@@ -54,6 +59,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Comment.Delete")]
         public async Task<IActionResult> Delete(int commentId)
         {
             var result = await _commentService.DeleteAsync(commentId, LoggedInUser.UserName);
@@ -62,6 +68,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Comment.Update")]
         public async Task<IActionResult> Approve(int commentId)
         {
             var result = await _commentService.ApproveAsync(commentId, LoggedInUser.UserName);
@@ -73,6 +80,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Comment.Update")]
         public async Task<IActionResult> Update(int commentId)
         {
             var result = await _commentService.GetCommentUpdateDtoAsync(commentId);
@@ -86,6 +94,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Comment.Update")]
         public async Task<IActionResult> Update(CommentUpdateDto commentUpdateDto)
         {
             if (ModelState.IsValid)

@@ -19,7 +19,6 @@ using ArfitectBlog.Shared.Utilities.Extensions;
 namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles="Admin,Editor")]
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
@@ -28,7 +27,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         {
             _categoryService = categoryService;
         }
-
+        [Authorize(Roles = "SuperAdmin,Category.Read")]
         public async Task<IActionResult> Index()
         {
             var result = await _categoryService.GetAllByNoneDeletedAsync();
@@ -36,11 +35,13 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Category.Create")]
         public IActionResult Add()
         {
             return PartialView("_CategoryAddPartial");
         }
 
+        [Authorize(Roles = "SuperAdmin,Category.Create")]
         [HttpPost]
         public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
         {
@@ -65,6 +66,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Category.Update")]
         public async Task<IActionResult> Update(int categoryId)
         {
             var result = await _categoryService.GetCategoryUpdateDtoAsync(categoryId);
@@ -76,6 +78,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Category.Update")]
         public async Task<IActionResult> Update(CategoryUpdateDto categoryUpdateDto)
         {
             if (ModelState.IsValid)
@@ -98,6 +101,8 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return Json(categoryUpdateAjaxErrorModel);
         }
 
+        [Authorize]
+        [HttpGet]
         public async Task<JsonResult> GetAllCategories()
         {
             var result = await _categoryService.GetAllByNoneDeletedAsync();
@@ -109,6 +114,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Category.Delete")]
         public async Task<JsonResult> Delete(int categoryId)
         {
             var result = await _categoryService.DeleteAsync(categoryId, LoggedInUser.UserName);
