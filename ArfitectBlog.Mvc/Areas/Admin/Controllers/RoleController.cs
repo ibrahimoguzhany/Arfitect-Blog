@@ -95,6 +95,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
                         await UserManager.RemoveFromRoleAsync(user, roleAssignDto.RoleName);
                 }
 
+                await UserManager.UpdateSecurityStampAsync(user);
                 var userRoleAssignAjaxViewModel = JsonSerializer.Serialize(new UserRoleAssignAjaxViewModel()
                 {
                     UserDto = new UserDto()

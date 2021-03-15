@@ -146,25 +146,25 @@
                         if (isValid) {
                             placeHolderDiv.find('.modal').modal('hide');
                             const newTableRow = dataTable.row.add([
-                                userAddAjaxModel.CommentDto.User.Id,
-                                userAddAjaxModel.CommentDto.User.UserName,
-                                userAddAjaxModel.CommentDto.User.Email,
-                                userAddAjaxModel.CommentDto.User.FirstName,
-                                userAddAjaxModel.CommentDto.User.LastName,
-                                userAddAjaxModel.CommentDto.User.PhoneNumber,
-                                userAddAjaxModel.CommentDto.User.About.length > 75 ? userAddAjaxModel.CommentDto.User.About.substring(0, 75) : userAddAjaxModel.CommentDto.User.About,
-                                `<img src="/img/${userAddAjaxModel.CommentDto.User.Picture}" alt="${userAddAjaxModel.CommentDto.User.UserName}" class="my-image-table" />`,
+                                userAddAjaxModel.UserDto.User.Id,
+                                userAddAjaxModel.UserDto.User.UserName,
+                                userAddAjaxModel.UserDto.User.Email,
+                                userAddAjaxModel.UserDto.User.FirstName,
+                                userAddAjaxModel.UserDto.User.LastName,
+                                userAddAjaxModel.UserDto.User.PhoneNumber,
+                                userAddAjaxModel.UserDto.User.About.length > 75 ? userAddAjaxModel.UserDto.User.About.substring(0, 75) : userAddAjaxModel.UserDto.User.About,
+                                `<img src="/img/${userAddAjaxModel.UserDto.User.Picture}" alt="${userAddAjaxModel.UserDto.User.UserName}" class="my-image-table" />`,
                                 `
-                                <button class="btn btn-info btn-sm btn-detail" data-id="${userAddAjaxModel.CommentDto.User.Id}"><span class="fas fa-newspaper"></span></button>
-                                <button class="btn btn-warning btn-sm btn-assign" data-id="${userAddAjaxModel.CommentDto.User.Id}"><span class="fas fa-user-shield"></span></button>
-                                <button class="btn btn-primary btn-sm btn-update" data-id="${userAddAjaxModel.CommentDto.User.Id}"><span class="fas fa-edit"></span></button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-id="${userAddAjaxModel.CommentDto.User.Id}"><span class="fas fa-minus-circle"></span></button>
+                                <button class="btn btn-info btn-sm btn-detail" data-id="${userAddAjaxModel.UserDto.User.Id}"><span class="fas fa-newspaper"></span></button>
+                                <button class="btn btn-warning btn-sm btn-assign" data-id="${userAddAjaxModel.UserDto.User.Id}"><span class="fas fa-user-shield"></span></button>
+                                <button class="btn btn-primary btn-sm btn-update" data-id="${userAddAjaxModel.UserDto.User.Id}"><span class="fas fa-edit"></span></button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-id="${userAddAjaxModel.UserDto.User.Id}"><span class="fas fa-minus-circle"></span></button>
                             `
                             ]).node();
                             const jqueryTableRow = $(newTableRow);
-                            jqueryTableRow.attr('name', `${userAddAjaxModel.CommentDto.User.Id}`);
+                            jqueryTableRow.attr('name', `${userAddAjaxModel.UserDto.User.Id}`);
                             dataTable.row(newTableRow).draw();
-                            toastr.success(`${userAddAjaxModel.CommentDto.Message}`, 'Başarılı İşlem!');
+                            toastr.success(`${userAddAjaxModel.UserDto.Message}`, 'Başarılı İşlem!');
                         } else {
                             let summaryText = "";
                             $('#validation-summary > ul > li').each(function () {
@@ -254,6 +254,8 @@
                 });
             });
 
+
+
         /* Ajax POST / Updating a User starts from here */
 
         placeHolderDiv.on('click',
@@ -277,28 +279,28 @@
                         placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
                         const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                         if (isValid) {
-                            const id = userUpdateAjaxModel.CommentDto.User.Id;
+                            const id = userUpdateAjaxModel.UserDto.User.Id;
                             const tableRow = $(`[name="${id}"]`);
                             placeHolderDiv.find('.modal').modal('hide');
                             dataTable.row(tableRow).data([
-                                userUpdateAjaxModel.CommentDto.User.Id,
-                                userUpdateAjaxModel.CommentDto.User.UserName,
-                                userUpdateAjaxModel.CommentDto.User.Email,
-                                userUpdateAjaxModel.CommentDto.User.FirstName,
-                                userUpdateAjaxModel.CommentDto.User.LastName,
-                                userUpdateAjaxModel.CommentDto.User.PhoneNumber,
-                                userUpdateAjaxModel.CommentDto.User.About.length > 75 ? userUpdateAjaxModel.CommentDto.User.About.substring(0, 75) : userUpdateAjaxModel.CommentDto.User.About,
-                                `<img src="/img/${userUpdateAjaxModel.CommentDto.User.Picture}" alt="${userUpdateAjaxModel.CommentDto.User.UserName}" class="my-image-table" />`,
+                                userUpdateAjaxModel.UserDto.User.Id,
+                                userUpdateAjaxModel.UserDto.User.UserName,
+                                userUpdateAjaxModel.UserDto.User.Email,
+                                userUpdateAjaxModel.UserDto.User.FirstName,
+                                userUpdateAjaxModel.UserDto.User.LastName,
+                                userUpdateAjaxModel.UserDto.User.PhoneNumber,
+                                userUpdateAjaxModel.UserDto.User.About.length > 75 ? userUpdateAjaxModel.UserDto.User.About.substring(0, 75) : userUpdateAjaxModel.UserDto.User.About,
+                                `<img src="/img/${userUpdateAjaxModel.UserDto.User.Picture}" alt="${userUpdateAjaxModel.UserDto.User.UserName}" class="my-image-table" />`,
                                 `
-                                <button class="btn btn-info btn-sm btn-detail" data-id="${userUpdateAjaxModel.CommentDto.User.Id}"><span class="fas fa-newspaper"></span></button>
-                                <button class="btn btn-warning btn-sm btn-assign" data-id="${userUpdateAjaxModel.CommentDto.User.Id}"><span class="fas fa-user-shield"></span></button>
-                                <button class="btn btn-primary btn-sm btn-update" data-id="${userUpdateAjaxModel.CommentDto.User.Id}"><span class="fas fa-edit"></span></button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-id="${userUpdateAjaxModel.CommentDto.User.Id}"><span class="fas fa-minus-circle"></span></button>
+                                <button class="btn btn-info btn-sm btn-detail" data-id="${userUpdateAjaxModel.UserDto.User.Id}"><span class="fas fa-newspaper"></span></button>
+                                <button class="btn btn-warning btn-sm btn-assign" data-id="${userUpdateAjaxModel.UserDto.User.Id}"><span class="fas fa-user-shield"></span></button>
+                                <button class="btn btn-primary btn-sm btn-update" data-id="${userUpdateAjaxModel.UserDto.User.Id}"><span class="fas fa-edit"></span></button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-id="${userUpdateAjaxModel.UserDto.User.Id}"><span class="fas fa-minus-circle"></span></button>
                             `
                             ]);
                             tableRow.attr("name", `${id}`);
                             dataTable.row(tableRow).invalidate();
-                            toastr.success(`${userUpdateAjaxModel.CommentDto.Message}`, "Başarılı İşlem!");
+                            toastr.success(`${userUpdateAjaxModel.UserDto.Message}`, "Başarılı İşlem!");
                         } else {
                             let summaryText = "";
                             $('#validation-summary > ul > li').each(function () {
@@ -373,10 +375,10 @@
                         placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
                         const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                         if (isValid) {
-                            const id = userRoleAssignAjaxModel.CommentDto.User.Id;
+                            const id = userRoleAssignAjaxModel.UserDto.User.Id;
                             const tableRow = $(`[name="${id}"]`);
                             //placeHolderDiv.find('.modal').modal('hide');
-                            toastr.success(`${userRoleAssignAjaxModel.CommentDto.Message}`, "Başarılı İşlem!");
+                            toastr.success(`${userRoleAssignAjaxModel.UserDto.Message}`, "Başarılı İşlem!");
                         } else {
                             let summaryText = "";
                             $('#validation-summary > ul > li').each(function () {

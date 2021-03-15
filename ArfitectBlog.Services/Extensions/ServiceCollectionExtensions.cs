@@ -9,6 +9,7 @@ using ArfitectBlog.Data.Concrete.EntityFramework.Contexts;
 using ArfitectBlog.Entities.Concrete;
 using ArfitectBlog.Services.Abstract;
 using ArfitectBlog.Services.Concrete;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProgrammersBlog.Services.Concrete;
@@ -34,6 +35,10 @@ namespace ArfitectBlog.Services.Extensions
                 options.User.RequireUniqueEmail = true;
 
             }).AddEntityFrameworkStores<ArfitectBlogContext>();
+            serviceCollection.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromMinutes(15);
+            });
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();
             serviceCollection.AddScoped<IPostService, PostManager>();
