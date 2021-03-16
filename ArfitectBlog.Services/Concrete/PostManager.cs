@@ -39,7 +39,7 @@ namespace ArfitectBlog.Services.Concrete
 
         }
 
-        public async Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId)
+        public async Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId) 
         {
             var result = await UnitOfWork.Posts.AnyAsync(x => x.Id == postId);
             if (result)
@@ -146,6 +146,7 @@ namespace ArfitectBlog.Services.Concrete
 
         public async Task<IDataResult<PostListDto>> GetAllByPagingAsync(int? categoryId, int currentPage = 1, int pageSize = 5, bool isAscending = false)
         {
+            pageSize = pageSize > 20 ? 20 : pageSize;
             var posts = categoryId == null
                 ? await UnitOfWork.Posts.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.Category, x => x.User)
                 : await UnitOfWork.Posts.GetAllAsync(x => x.CategoryId == categoryId && x.IsActive && !x.IsDeleted,x => x.Category, x => x.User);
@@ -158,7 +159,8 @@ namespace ArfitectBlog.Services.Concrete
                 CategoryId = categoryId == null ? null : categoryId.Value,
                 CurrentPage = currentPage,
                 PageSize = pageSize,
-                TotalCount = posts.Count
+                TotalCount = posts.Count,
+                IsAscending = isAscending
             });
         }
 

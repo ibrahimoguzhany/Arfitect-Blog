@@ -12,6 +12,7 @@ using ArfitectBlog.Services.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ProgrammersBlog.Services.Concrete;
 
 namespace ArfitectBlog.Services.Extensions
