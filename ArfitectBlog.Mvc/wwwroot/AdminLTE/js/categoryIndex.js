@@ -112,11 +112,11 @@
 
     $(function () {
         const url = '/Admin/Category/Add/';
-        const placeHolderDiv = $('#modalPlaceholder');
+        const placeholderDiv = $('#modalPlaceholder');
         $('#btnAdd').click(function () {
             $.get(url).done(function (data) {
-                placeHolderDiv.html(data);
-                placeHolderDiv.find(".modal").modal('show');
+                placeholderDiv.html(data);
+                placeholderDiv.find(".modal").modal('show');
             });
         });
 
@@ -124,7 +124,7 @@
 
         /* Ajax POST / Posting the FormData as CategoryAddDto starts from here. */
 
-        placeHolderDiv.on('click',
+        placeholderDiv.on('click',
             '#btnSave',
             function (event) {
                 event.preventDefault();
@@ -136,10 +136,10 @@
                     const categoryAddAjaxModel = jQuery.parseJSON(data);
                     console.log(categoryAddAjaxModel);
                     const newFormBody = $('.modal-body', categoryAddAjaxModel.CategoryAddPartial);
-                    placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
+                    placeholderDiv.find('.modal-body').replaceWith(newFormBody);
                     const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                     if (isValid) {
-                        placeHolderDiv.find('.modal').modal('hide');
+                        placeholderDiv.find('.modal').modal('hide');
                         const newTableRow = dataTable.row.add([
                             categoryAddAjaxModel.CategoryDto.Category.Id,
                             categoryAddAjaxModel.CategoryDto.Category.Name,
@@ -164,7 +164,7 @@
                         let summaryText = "";
                         $('#validation-summary > ul > li').each(function () {
                             let text = $(this).text();
-                            summaryText = `*${text}\n`;
+                            summaryText += `*${text}\n`;
                         });
                         toastr.warning(summaryText);
                     }
@@ -229,15 +229,15 @@
 
     $(function() {
         const url = '/Admin/Category/Update/';
-        const placeHolderDiv = $('#modalPlaceholder');
+        const placeholderDiv = $('#modalPlaceholder');
         $(document).on('click',
             '.btn-update',
             function(event) {
                 event.preventDefault();
                 const id = $(this).attr('data-id');
                 $.get(url, { categoryId: id }).done(function(data) {
-                    placeHolderDiv.html(data);
-                    placeHolderDiv.find('.modal').modal('show');
+                    placeholderDiv.html(data);
+                    placeholderDiv.find('.modal').modal('show');
                 }).fail(function() {
                     toastr.error("Bir hata oluştu.");
                 });
@@ -245,7 +245,7 @@
 
     /* Ajax POST / Updating a Category starts from here */
 
-    placeHolderDiv.on('click',
+    placeholderDiv.on('click',
         '#btnUpdate',
         function(event) {
             event.preventDefault();
@@ -257,12 +257,12 @@
                 const categoryUpdateAjaxModel = jQuery.parseJSON(data);
                 console.log(categoryUpdateAjaxModel);
                 const newFormBody = $('.modal-body', categoryUpdateAjaxModel.CategoryUpdatePartial);
-                placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
+                placeholderDiv.find('.modal-body').replaceWith(newFormBody);
                 const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                 if (isValid) {
                     const id = categoryUpdateAjaxModel.CategoryDto.Category.Id;
                     const tableRow = $(`[name="${id}"]`);
-                    placeHolderDiv.find('.modal').modal('hide');
+                    placeholderDiv.find('.modal').modal('hide');
                     dataTable.row(tableRow).data([
                         categoryUpdateAjaxModel.CategoryDto.Category.Id,
                         categoryUpdateAjaxModel.CategoryDto.Category.Name,

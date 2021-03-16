@@ -194,7 +194,7 @@
                         success: function (data) {
                             const commentResult = jQuery.parseJSON(data);
                             console.log(commentResult);
-                            if (commentResult.Data.Comment) {
+                            if (commentResult.Data) {
                                 Swal.fire(
                                     'Arşivden Geri Getirildi!',
                                     `${commentResult.Data.Comment.Id} no'lu yorum arşivden geri getirilmiştir.`,

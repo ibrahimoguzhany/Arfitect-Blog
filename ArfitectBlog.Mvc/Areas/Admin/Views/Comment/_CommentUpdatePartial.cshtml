@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Update" id="form-comment-update">
+                <form asp-action="Update" asp-controller="Comment" id="form-comment-update">
                     <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
                     <div asp-validation-summary="All" class="text-danger" id="validation-summary" aria-hidden="true" style="display: none;"></div>
                     <input type="hidden" asp-for="Id" />

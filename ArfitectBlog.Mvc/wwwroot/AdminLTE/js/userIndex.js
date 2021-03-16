@@ -111,11 +111,11 @@
 
     $(function () {
         const url = '/Admin/User/Add/';
-        const placeHolderDiv = $('#modalPlaceHolder');
+        const placeholderDiv = $('#modalPlaceholder');
         $('#btnAdd').click(function () {
             $.get(url).done(function (data) {
-                placeHolderDiv.html(data);
-                placeHolderDiv.find(".modal").modal('show');
+                placeholderDiv.html(data);
+                placeholderDiv.find(".modal").modal('show');
             });
         });
 
@@ -123,7 +123,7 @@
 
         /* Ajax POST / Posting the FormData as UserAddDto starts from here. */
 
-        placeHolderDiv.on('click',
+        placeholderDiv.on('click',
             '#btnSave',
             function (event) {
                 event.preventDefault();
@@ -141,10 +141,10 @@
                         const userAddAjaxModel = jQuery.parseJSON(data);
                         console.log(userAddAjaxModel);
                         const newFormBody = $('.modal-body', userAddAjaxModel.UserAddPartial);
-                        placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
+                        placeholderDiv.find('.modal-body').replaceWith(newFormBody);
                         const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                         if (isValid) {
-                            placeHolderDiv.find('.modal').modal('hide');
+                            placeholderDiv.find('.modal').modal('hide');
                             const newTableRow = dataTable.row.add([
                                 userAddAjaxModel.UserDto.User.Id,
                                 userAddAjaxModel.UserDto.User.UserName,
@@ -240,15 +240,15 @@
 
     $(function () {
         const url = '/Admin/User/Update/';
-        const placeHolderDiv = $('#modalPlaceHolder');
+        const placeholderDiv = $('#modalPlaceholder');
         $(document).on('click',
             '.btn-update',
             function (event) {
                 event.preventDefault();
                 const id = $(this).attr('data-id');
                 $.get(url, { userId: id }).done(function (data) {
-                    placeHolderDiv.html(data);
-                    placeHolderDiv.find('.modal').modal('show');
+                    placeholderDiv.html(data);
+                    placeholderDiv.find('.modal').modal('show');
                 }).fail(function (err) {
                     toastr.error(`${err.responseText}`, 'Hata!');
                 });
@@ -258,7 +258,7 @@
 
         /* Ajax POST / Updating a User starts from here */
 
-        placeHolderDiv.on('click',
+        placeholderDiv.on('click',
             '#btnUpdate',
             function (event) {
                 event.preventDefault();
@@ -276,12 +276,12 @@
                         const userUpdateAjaxModel = jQuery.parseJSON(data);
                         console.log(userUpdateAjaxModel);
                         const newFormBody = $('.modal-body', userUpdateAjaxModel.UserUpdatePartial);
-                        placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
+                        placeholderDiv.find('.modal-body').replaceWith(newFormBody);
                         const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                         if (isValid) {
                             const id = userUpdateAjaxModel.UserDto.User.Id;
                             const tableRow = $(`[name="${id}"]`);
-                            placeHolderDiv.find('.modal').modal('hide');
+                            placeholderDiv.find('.modal').modal('hide');
                             dataTable.row(tableRow).data([
                                 userUpdateAjaxModel.UserDto.User.Id,
                                 userUpdateAjaxModel.UserDto.User.UserName,
@@ -323,15 +323,15 @@
     $(function () {
 
         const url = '/Admin/User/GetDetail/';
-        const placeHolderDiv = $('#modalPlaceHolder');
+        const placeholderDiv = $('#modalPlaceholder');
         $(document).on('click',
             '.btn-detail',
             function (event) {
                 event.preventDefault();
                 const id = $(this).attr('data-id');
                 $.get(url, { userId: id }).done(function (data) {
-                    placeHolderDiv.html(data);
-                    placeHolderDiv.find('.modal').modal('show');
+                    placeholderDiv.html(data);
+                    placeholderDiv.find('.modal').modal('show');
                 }).fail(function (err) {
                     toastr.error(`${err.responseText}`, 'Hata!');
                 });
@@ -339,15 +339,15 @@
     });
       $(function () {
         const url = '/Admin/Role/Assign/';
-        const placeHolderDiv = $('#modalPlaceHolder');
+        const placeholderDiv = $('#modalPlaceholder');
         $(document).on('click',
             '.btn-assign',
             function (event) {
                 event.preventDefault();
                 const id = $(this).attr('data-id');
                 $.get(url, { userId: id }).done(function (data) {
-                    placeHolderDiv.html(data);
-                    placeHolderDiv.find('.modal').modal('show');
+                    placeholderDiv.html(data);
+                    placeholderDiv.find('.modal').modal('show');
                 }).fail(function (err) {
                     toastr.error(`${err.responseText}`, 'Hata!');
                 });
@@ -355,7 +355,7 @@
 
         /* Ajax POST / Updating Role Assign starts from here */
 
-        placeHolderDiv.on('click',
+        placeholderDiv.on('click',
             '#btnAssign',
             function (event) {
                 event.preventDefault();
@@ -372,12 +372,12 @@
                         const userRoleAssignAjaxModel = jQuery.parseJSON(data);
                         console.log(userRoleAssignAjaxModel);
                         const newFormBody = $('.modal-body', userRoleAssignAjaxModel.RoleAssignPartial);
-                        placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
+                        placeholderDiv.find('.modal-body').replaceWith(newFormBody);
                         const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
                         if (isValid) {
                             const id = userRoleAssignAjaxModel.UserDto.User.Id;
                             const tableRow = $(`[name="${id}"]`);
-                            //placeHolderDiv.find('.modal').modal('hide');
+                            //placeholderDiv.find('.modal').modal('hide');
                             toastr.success(`${userRoleAssignAjaxModel.UserDto.Message}`, "Başarılı İşlem!");
                         } else {
                             let summaryText = "";

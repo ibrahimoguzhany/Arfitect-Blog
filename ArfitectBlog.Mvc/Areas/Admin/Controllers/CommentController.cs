@@ -105,7 +105,8 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
                     var commentUpdateAjaxModel = JsonSerializer.Serialize(new CommentUpdateAjaxViewModel
                     {
                         CommentDto = result.Data,
-                        CommentUpdatePartial = await this.RenderViewToStringAsync("_CommentUpdatePartial", commentUpdateDto)
+                        CommentUpdatePartial = await this.RenderViewToStringAsync("_CommentUpdatePartial", commentUpdateDto),
+                        
                     },new JsonSerializerOptions
                     {
                         ReferenceHandler = ReferenceHandler.Preserve

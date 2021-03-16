@@ -120,17 +120,19 @@ namespace ProgrammersBlog.Services.Concrete
             var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId, c => c.Post);
             if (comment != null)
             {
+                var post = comment.Post;
                 comment.IsActive = true;
                 comment.ModifiedByName = modifiedByName;
                 comment.ModifiedDate = DateTime.Now;
                 var updatedComment = await UnitOfWork.Comments.UpdateAsync(comment);
+                post.CommentCount = await UnitOfWork.Comments.CountAsync(c => c.PostId == post.Id && !c.IsDeleted);
+                await UnitOfWork.Posts.UpdateAsync(post);
                 await UnitOfWork.SaveAsync();
-                return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.Approve(commentId), new CommentDto()
+                return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.Approve(commentId), new CommentDto
                 {
                     Comment = updatedComment
                 });
             }
-
             return new DataResult<CommentDto>(ResultStatus.Error, Messages.Comment.NotFound(isPlural: false), null);
         }
 
