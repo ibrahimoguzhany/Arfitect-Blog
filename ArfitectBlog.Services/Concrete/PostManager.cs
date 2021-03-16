@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using ArfitectBlog.Data.Abstract;
@@ -17,8 +18,6 @@ namespace ArfitectBlog.Services.Concrete
 {
     public class PostManager : ManagerBase, IPostService
     {
-
-
         public PostManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper, unitOfWork)
         {
 
@@ -36,7 +35,6 @@ namespace ArfitectBlog.Services.Concrete
                 });
             }
             return new DataResult<PostDto>(ResultStatus.Error, Messages.Post.NotFound(false), null);
-
         }
 
         public async Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId) 
@@ -80,7 +78,6 @@ namespace ArfitectBlog.Services.Concrete
                 });
             }
             return new DataResult<PostListDto>(ResultStatus.Error, Messages.Post.NotFound(true), null);
-
         }
 
         public async Task<IDataResult<PostListDto>> GetAllByDeletedAsync()
@@ -114,7 +111,6 @@ namespace ArfitectBlog.Services.Concrete
 
         public async Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId)
         {
-
             var result = await UnitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
             if (result)
             {
@@ -160,6 +156,46 @@ namespace ArfitectBlog.Services.Concrete
                 CurrentPage = currentPage,
                 PageSize = pageSize,
                 TotalCount = posts.Count,
+                IsAscending = isAscending
+            });
+        }
+
+        public async Task<IDataResult<PostListDto>> SearchAsync(string keyword, int currentPage = 1, int pageSize = 5, bool isAscending = false)
+        {
+            pageSize = pageSize > 20 ? 20 : pageSize;
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                var posts = await UnitOfWork.Posts.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.Category,
+                    x => x.User);
+                   
+                var sortedPosts = isAscending
+                    ? posts.OrderBy(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList()
+                    : posts.OrderByDescending(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+                return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto()
+                {
+                    Posts = sortedPosts,
+                    CurrentPage = currentPage,
+                    PageSize = pageSize,
+                    TotalCount = posts.Count,
+                    IsAscending = isAscending
+                });
+            }
+            var searchPosts = await UnitOfWork.Posts.SearchAsync(new List<Expression<Func<Post, bool>>>()
+            {
+                (p)=>p.Title.Contains(keyword),
+                (p)=>p.Category.Name.Contains(keyword),
+                (p)=>p.SeoDescription.Contains(keyword),
+                (p)=>p.SeoTags.Contains(keyword)
+            },p=>p.Category,p=>p.User);
+            var searchedAndSortedPosts = isAscending
+                ? searchPosts.OrderBy(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList()
+                : searchPosts.OrderByDescending(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+            return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto()
+            {
+                Posts = searchedAndSortedPosts,
+                CurrentPage = currentPage,
+                PageSize = pageSize,
+                TotalCount = searchPosts.Count,
                 IsAscending = isAscending
             });
         }

@@ -20,6 +20,7 @@ namespace ArfitectBlog.Services.Abstract
         Task<IDataResult<PostListDto>> GetAllByCategoryAsync(int categoryId);
         Task<IDataResult<PostListDto>> GetAllByViewCountAsync(bool isAscending, int? takeSize);
         Task<IDataResult<PostListDto>> GetAllByPagingAsync(int? categoryId, int currentPage = 1, int pageSize = 5, bool isAscending = false);
+        Task<IDataResult<PostListDto>> SearchAsync(string keyword, int currentPage = 1, int pageSize = 5, bool isAscending = false);
         Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId);
         Task<IResult> UpdateAsync(PostUpdateDto postUpdateDto, string modifiedByName);
         Task<IResult> DeleteAsync(int postId, string modifiedByName);

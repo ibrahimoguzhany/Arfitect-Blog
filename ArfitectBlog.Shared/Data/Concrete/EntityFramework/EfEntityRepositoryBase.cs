@@ -72,6 +72,26 @@ namespace ArfitectBlog.Shared.Data.Concrete.EntityFramework
             await Task.Run(() => { _context.Set<TEntity>().Remove(entity); });
         }
 
+        public async Task<IList<TEntity>> SearchAsync(IList<Expression<Func<TEntity, bool>>> predicates, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+            if (predicates.Any())
+            {
+                foreach (var predicate in predicates)
+                {
+                    query = query.Where(predicate);
+                }
+                if (includeProperties.Any())
+                {
+                    foreach (var includeProperty in includeProperties)
+                    {
+                        query = query.Include(includeProperty);
+                    }
+                }
+            }
+                return await query.ToListAsync();
+        }
+
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _context.Set<TEntity>().AnyAsync(predicate);
