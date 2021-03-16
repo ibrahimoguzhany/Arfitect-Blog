@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ArfitectBlog.Shared.Data.Abstract;
 using ArfitectBlog.Shared.Entities.Abstract;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArfitectBlog.Shared.Data.Concrete.EntityFramework
@@ -77,19 +78,24 @@ namespace ArfitectBlog.Shared.Data.Concrete.EntityFramework
             IQueryable<TEntity> query = _context.Set<TEntity>();
             if (predicates.Any())
             {
+                var predicateChain = PredicateBuilder.New<TEntity>();
                 foreach (var predicate in predicates)
                 {
-                    query = query.Where(predicate);
+                    //predicate1 && predicate2 && predicate3 &&predicateN // linqkit ile bu sorun çözüldü
+                    //predicate1 || predicate2 || predicate3 ||predicateN
+                    predicateChain.Or(predicate);
                 }
-                if (includeProperties.Any())
+                query = query.Where(predicateChain);
+            }
+
+            if (includeProperties.Any())
+            {
+                foreach (var includeProperty in includeProperties)
                 {
-                    foreach (var includeProperty in includeProperties)
-                    {
-                        query = query.Include(includeProperty);
-                    }
+                    query = query.Include(includeProperty);
                 }
             }
-                return await query.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
