@@ -25,9 +25,10 @@ namespace ArfitectBlog.Services.Concrete
 
         public async Task<IDataResult<PostDto>> GetAsync(int postId)
         {
-            var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId, x => x.User, x => x.Category, x => x.Comments);
+            var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId, x => x.User, x => x.Category);
             if (post != null)
             {
+                post.Comments = await UnitOfWork.Comments.GetAllAsync(c => c.PostId == postId && !c.IsDeleted && c.IsActive);
                 return new DataResult<PostDto>(ResultStatus.Success, new PostDto
                 {
                     Post = post,
@@ -37,7 +38,7 @@ namespace ArfitectBlog.Services.Concrete
             return new DataResult<PostDto>(ResultStatus.Error, Messages.Post.NotFound(false), null);
         }
 
-        public async Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId) 
+        public async Task<IDataResult<PostUpdateDto>> GetPostUpdateDtoAsync(int postId)
         {
             var result = await UnitOfWork.Posts.AnyAsync(x => x.Id == postId);
             if (result)
@@ -145,9 +146,9 @@ namespace ArfitectBlog.Services.Concrete
             pageSize = pageSize > 20 ? 20 : pageSize;
             var posts = categoryId == null
                 ? await UnitOfWork.Posts.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.Category, x => x.User)
-                : await UnitOfWork.Posts.GetAllAsync(x => x.CategoryId == categoryId && x.IsActive && !x.IsDeleted,x => x.Category, x => x.User);
-            var sortedPosts = isAscending 
-                ? posts.OrderBy(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList() 
+                : await UnitOfWork.Posts.GetAllAsync(x => x.CategoryId == categoryId && x.IsActive && !x.IsDeleted, x => x.Category, x => x.User);
+            var sortedPosts = isAscending
+                ? posts.OrderBy(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList()
                 : posts.OrderByDescending(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
             return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto()
             {
@@ -167,7 +168,7 @@ namespace ArfitectBlog.Services.Concrete
             {
                 var posts = await UnitOfWork.Posts.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.Category,
                     x => x.User);
-                   
+
                 var sortedPosts = isAscending
                     ? posts.OrderBy(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList()
                     : posts.OrderByDescending(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
@@ -186,7 +187,7 @@ namespace ArfitectBlog.Services.Concrete
                 (p)=>p.Category.Name.Contains(keyword),
                 (p)=>p.SeoDescription.Contains(keyword),
                 (p)=>p.SeoTags.Contains(keyword)
-            },p=>p.Category,p=>p.User);
+            }, p => p.Category, p => p.User);
             var searchedAndSortedPosts = isAscending
                 ? searchPosts.OrderBy(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList()
                 : searchPosts.OrderByDescending(x => x.Date).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();

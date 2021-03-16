@@ -136,8 +136,16 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentDto>> AddAsync(CommentAddDto commentAddDto)
         {
+            var post = await UnitOfWork.Posts.GetAsync(p => p.Id == commentAddDto.PostId);
+            if (post == null)
+            {
+                return new DataResult<CommentDto>(ResultStatus.Error, Messages.Comment.NotFound(false),
+                    null);
+            }
             var comment = Mapper.Map<Comment>(commentAddDto);
             var addedComment = await UnitOfWork.Comments.AddAsync(comment);
+            post.CommentCount = await UnitOfWork.Comments.CountAsync(c => c.PostId == post.Id && !c.IsDeleted);
+            await UnitOfWork.Posts.UpdateAsync(post);
             await UnitOfWork.SaveAsync();
             return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.Add(commentAddDto.CreatedByName), new CommentDto
             {
@@ -161,14 +169,18 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentDto>> DeleteAsync(int commentId, string modifiedByName)
         {
-            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId);
+            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId,c=>c.Post);
             if (comment != null)
             {
+                var post = comment.Post;
                 comment.IsDeleted = true;
                 comment.IsActive = false;
                 comment.ModifiedByName = modifiedByName;
                 comment.ModifiedDate = DateTime.Now;
                 var deletedComment = await UnitOfWork.Comments.UpdateAsync(comment);
+                post.CommentCount 
+                    = await UnitOfWork.Comments.CountAsync(c => c.PostId == post.Id && !c.IsDeleted);
+                await UnitOfWork.Posts.UpdateAsync(post);
                 await UnitOfWork.SaveAsync();
                 return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.Delete(deletedComment.CreatedByName), new CommentDto
                 {
@@ -183,14 +195,18 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentDto>> UndoDeleteAsync(int commentId, string modifiedByName)
         {
-            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId);
+            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId,c=>c.Post);
             if (comment != null)
             {
+                var post = comment.Post;
                 comment.IsDeleted = false;
                 comment.IsActive = true;
                 comment.ModifiedByName = modifiedByName;
                 comment.ModifiedDate = DateTime.Now;
                 var deletedComment = await UnitOfWork.Comments.UpdateAsync(comment);
+                post.CommentCount =
+                    await UnitOfWork.Comments.CountAsync(c => c.PostId == post.Id && !c.IsDeleted);
+                await UnitOfWork.Posts.UpdateAsync(post);
                 await UnitOfWork.SaveAsync();
                 return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.UndoDelete(deletedComment.CreatedByName), new CommentDto
                 {
@@ -205,10 +221,13 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IResult> HardDeleteAsync(int commentId)
         {
-            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId);
+            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId,c=>c.Post);
             if (comment != null)
             {
+                var post = comment.Post;
                 await UnitOfWork.Comments.DeleteAsync(comment);
+                post.CommentCount = await UnitOfWork.Comments.CountAsync(c => c.PostId == post.Id && !c.IsDeleted);
+                await UnitOfWork.Posts.UpdateAsync(post);
                 await UnitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, Messages.Comment.HardDelete(comment.CreatedByName));
             }
