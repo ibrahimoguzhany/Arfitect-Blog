@@ -15,6 +15,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Contexts
         public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         public ArfitectBlogContext(DbContextOptions<ArfitectBlogContext> options) : base(options)
         {
@@ -32,6 +33,7 @@ namespace ArfitectBlog.Data.Concrete.EntityFramework.Contexts
             modelBuilder.ApplyConfiguration(new UserLoginMap());
             modelBuilder.ApplyConfiguration(new UserRoleMap());
             modelBuilder.ApplyConfiguration(new UserTokenMap());
+            modelBuilder.ApplyConfiguration(new LogMap());
         }
     }
 }

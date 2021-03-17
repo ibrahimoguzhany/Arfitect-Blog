@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ArfitectBlog.Data.Concrete.EntityFramework.Mappings
 {
-    public class UserTokenMap:IEntityTypeConfiguration<UserToken>
+    public class UserTokenMap : IEntityTypeConfiguration<UserToken>
     {
         public void Configure(EntityTypeBuilder<UserToken> builder)
         {
