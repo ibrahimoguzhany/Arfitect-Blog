@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ArfitectBlog.Entities.Concrete;
 using ArfitectBlog.Services.Abstract;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
+using ArfitectBlog.Entities.Dtos;
 
 namespace ArfitectBlog.Mvc.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IPostService _postService;
+        private readonly AboutUsPageInfo _aboutUsPageInfo;
 
-        public HomeController(IPostService postService)
+        public HomeController(IPostService postService, IOptions<AboutUsPageInfo> aboutUsPageInfo)
         {
             _postService = postService;
+            _aboutUsPageInfo = aboutUsPageInfo.Value;
         }
 
         [HttpGet]
@@ -23,6 +25,24 @@ namespace ArfitectBlog.Mvc.Controllers
                 ? _postService.GetAllByPagingAsync(null, currentPage, pageSize, isAscending)
                 : _postService.GetAllByPagingAsync(categoryId.Value, currentPage, pageSize, isAscending));
             return View(postsResult.Data);
+        }
+
+        [HttpGet]
+        public IActionResult About()
+        {
+            return View(_aboutUsPageInfo);
+        }
+
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Contact(EmailSendDto emailSendDto)
+        {
+            return View();
         }
     }
 }
