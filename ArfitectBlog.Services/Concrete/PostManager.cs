@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -74,6 +75,7 @@ namespace ArfitectBlog.Services.Concrete
         public async Task<IDataResult<PostListDto>> GetAllByNoneDeletedAsync()
         {
             var posts = await UnitOfWork.Posts.GetAllAsync(x => !x.IsDeleted, ar => ar.User, ar => ar.Category);
+
             if (posts.Count > -1)
             {
                 return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto
