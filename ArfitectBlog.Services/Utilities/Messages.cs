@@ -58,7 +58,7 @@ namespace ArfitectBlog.Services.Utilities
             }
             public static string UndoDelete(string postTitle)
             {
-                return $"{postTitle} adlı kategori başarıyla arşivden geri getirilmiştir.";
+                return $"{postTitle} başlıklı paylaşım başarıyla geri getirilmiştir.";
             }
             public static string Delete(string postTitle)
             {
@@ -67,6 +67,10 @@ namespace ArfitectBlog.Services.Utilities
             public static string HardDelete(string postTitle)
             {
                 return $"{postTitle} başlıklı paylaşım başarıyla veritabanından silinmiştir.";
+            }
+            public static string IncreaseViewCount(string postTitle)
+            {
+                return $"{postTitle} başlıklı paylaşımın okunma sayısı başarıyla artırılmıştır.";
             }
         }
         public static class Comment

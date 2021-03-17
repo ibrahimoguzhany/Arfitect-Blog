@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using ArfitectBlog.Data.Abstract;
+using ArfitectBlog.Entities.ComplexTypes;
 using ArfitectBlog.Entities.Concrete;
 using ArfitectBlog.Entities.Dtos;
 using ArfitectBlog.Services.Abstract;
@@ -13,14 +14,17 @@ using ArfitectBlog.Shared.Utilities.Results.Abstract;
 using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 using ArfitectBlog.Shared.Utilities.Results.Concrete;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArfitectBlog.Services.Concrete
 {
     public class PostManager : ManagerBase, IPostService
     {
-        public PostManager(IUnitOfWork unitOfWork, IMapper mapper) : base(mapper, unitOfWork)
+        private readonly UserManager<User> _userManager;
+        public PostManager(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager) : base(mapper, unitOfWork)
         {
-
+            _userManager = userManager;
         }
 
         public async Task<IDataResult<PostDto>> GetAsync(int postId)
@@ -161,6 +165,132 @@ namespace ArfitectBlog.Services.Concrete
             });
         }
 
+        public async Task<IDataResult<PostListDto>> GetAllByUserIdOnFilter(int userId, FilterBy filterBy, OrderBy orderBy, bool isAscending, int takeSize,
+            int categoryId, DateTime startAt, DateTime endAt, int minViewCount, int maxViewCount, int minCommentCount,
+            int maxCommentCount)
+        {
+            var anyUser = await _userManager.Users.AnyAsync(u => u.Id == userId);
+            if (!anyUser)
+                return new DataResult<PostListDto>(ResultStatus.Error, $"{userId} id'li kullanıcı bulunamadı.", null);
+
+            var userPosts = await UnitOfWork.Posts.GetAllAsync(p => p.IsActive && !p.IsDeleted && p.UserId == userId);
+            List<Post> sortedPosts = new List<Post>();
+
+            switch (filterBy)
+            {
+                case FilterBy.Category:
+                    switch (orderBy)
+                    {
+                        case OrderBy.Date:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.CategoryId == categoryId).Take(takeSize).OrderBy(x => x.Date)
+                                    .ToList()
+                                : userPosts.Where(x => x.CategoryId == categoryId).Take(takeSize)
+                                    .OrderByDescending(x => x.Date).ToList();
+                            break;
+                        case OrderBy.ViewCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.CategoryId == categoryId).Take(takeSize).OrderBy(x => x.ViewCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.CategoryId == categoryId).Take(takeSize)
+                                    .OrderByDescending(x => x.ViewCount).ToList();
+                            break;
+                        case OrderBy.CommentCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.CategoryId == categoryId).Take(takeSize).OrderBy(x => x.CommentCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.CategoryId == categoryId).Take(takeSize)
+                                    .OrderByDescending(x => x.CommentCount).ToList();
+                            break;
+                    }
+
+                    break;
+                case FilterBy.Date:
+                    switch (orderBy)
+                    {
+                        case OrderBy.Date:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.Date >= startAt && x.Date <= endAt).Take(takeSize).OrderBy(x => x.Date)
+                                    .ToList()
+                                : userPosts.Where(x => x.Date >= startAt && x.Date <= endAt).Take(takeSize)
+                                    .OrderByDescending(x => x.Date).ToList();
+                            break;
+                        case OrderBy.ViewCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.Date >= startAt && x.Date <= endAt).Take(takeSize).OrderBy(x => x.ViewCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.Date >= startAt && x.Date <= endAt).Take(takeSize)
+                                    .OrderByDescending(x => x.ViewCount).ToList();
+                            break;
+                        case OrderBy.CommentCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.Date >= startAt && x.Date <= endAt).Take(takeSize).OrderBy(x => x.CommentCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.Date >= startAt && x.Date <= endAt).Take(takeSize)
+                                    .OrderByDescending(x => x.CommentCount).ToList();
+                            break;
+
+                    }
+                    break;
+                case FilterBy.ViewCount:
+                    switch (orderBy)
+                    {
+                        case OrderBy.Date:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.ViewCount >= minViewCount && x.ViewCount <= maxViewCount).Take(takeSize).OrderBy(x => x.Date)
+                                    .ToList()
+                                : userPosts.Where(x => x.ViewCount >= minViewCount && x.ViewCount <= maxViewCount).Take(takeSize)
+                                    .OrderByDescending(x => x.Date).ToList();
+                            break;
+                        case OrderBy.ViewCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.ViewCount >= minViewCount && x.ViewCount <= maxViewCount).Take(takeSize).OrderBy(x => x.ViewCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.ViewCount >= minViewCount && x.ViewCount <= maxViewCount).Take(takeSize)
+                                    .OrderByDescending(x => x.ViewCount).ToList();
+                            break;
+                        case OrderBy.CommentCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.ViewCount >= minViewCount && x.ViewCount <= maxViewCount).Take(takeSize).OrderBy(x => x.CommentCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.ViewCount >= minViewCount && x.ViewCount <= maxViewCount).Take(takeSize)
+                                    .OrderByDescending(x => x.CommentCount).ToList();
+                            break;
+                    }
+                    break;
+                case FilterBy.CommentCount:
+                    switch (orderBy)
+                    {
+                        case OrderBy.Date:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.CommentCount >= minCommentCount && x.CommentCount <= maxCommentCount).Take(takeSize).OrderBy(x => x.Date)
+                                    .ToList()
+                                : userPosts.Where(x => x.CommentCount >= minCommentCount && x.CommentCount <= maxCommentCount).Take(takeSize)
+                                    .OrderByDescending(x => x.Date).ToList();
+                            break;
+                        case OrderBy.ViewCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.CommentCount >= minCommentCount && x.CommentCount <= maxCommentCount).Take(takeSize).OrderBy(x => x.ViewCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.CommentCount >= minCommentCount && x.CommentCount <= maxCommentCount).Take(takeSize)
+                                    .OrderByDescending(x => x.ViewCount).ToList();
+                            break;
+                        case OrderBy.CommentCount:
+                            sortedPosts = isAscending
+                                ? userPosts.Where(x => x.CommentCount >= minCommentCount && x.CommentCount <= maxCommentCount).Take(takeSize).OrderBy(x => x.CommentCount)
+                                    .ToList()
+                                : userPosts.Where(x => x.CommentCount >= minCommentCount && x.CommentCount <= maxCommentCount).Take(takeSize)
+                                    .OrderByDescending(x => x.CommentCount).ToList();
+                            break;
+                    }
+                    break;
+            }
+            return new DataResult<PostListDto>(ResultStatus.Success, new PostListDto
+            {
+                Posts = sortedPosts
+            });
+        }
+
         public async Task<IDataResult<PostListDto>> SearchAsync(string keyword, int currentPage = 1, int pageSize = 5, bool isAscending = false)
         {
             pageSize = pageSize > 20 ? 20 : pageSize;
@@ -199,6 +329,19 @@ namespace ArfitectBlog.Services.Concrete
                 TotalCount = searchPosts.Count,
                 IsAscending = isAscending
             });
+        }
+
+        public async Task<IResult> IncreaseViewCountAsync(int postId)
+        {
+            var post = await UnitOfWork.Posts.GetAsync(x => x.Id == postId);
+            if (post == null)
+            {
+                return new Result(ResultStatus.Error, Messages.Post.NotFound(false));
+            }
+            post.ViewCount += 1;
+            await UnitOfWork.Posts.UpdateAsync(post);
+            await UnitOfWork.SaveAsync();
+            return new Result(ResultStatus.Success, Messages.Post.IncreaseViewCount(post.Title));
         }
 
         public async Task<IResult> AddAsync(PostAddDto postAddDto, string createdByName, int userId)

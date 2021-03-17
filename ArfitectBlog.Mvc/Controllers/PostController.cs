@@ -41,6 +41,7 @@ namespace ArfitectBlog.Mvc.Controllers
             var postResult = await _postService.GetAsync(postId);
             if (postResult.ResultStatus == ResultStatus.Success)
             {
+                await _postService.IncreaseViewCountAsync(postId);
                 return View(postResult.Data);
             }
 
