@@ -1,11 +1,11 @@
 ﻿@using ArfitectBlog.Entities.Dtos
-@model ArfitectBlog.Entities.Dtos.PostDto
+@model ArfitectBlog.Mvc.Models.PostDetailViewModel
 @{
     Layout = "_PostLayout";
-    ViewBag.Title = Model.Post.Title;
-    ViewBag.Description = Model.Post.SeoDescription;
-    ViewBag.Author = Model.Post.SeoAuthor;
-    ViewBag.Tags = Model.Post.SeoTags;
+    ViewBag.Title = Model.PostDto.Post.Title;
+    ViewBag.Description = Model.PostDto.Post.SeoDescription;
+    ViewBag.Author = Model.PostDto.Post.SeoAuthor;
+    ViewBag.Tags = Model.PostDto.Post.SeoTags;
 }
 
 
@@ -16,33 +16,33 @@
 <div class="col-lg-8">
 
     <!-- Title -->
-    <h1 class="mt-4">@Model.Post.Title</h1>
+    <h1 class="mt-4">@Model.PostDto.Post.Title</h1>
 
     <!-- Author -->
     <p class="lead"> 
-        @Model.Post.User.UserName tarafından @Model.Post.Date.ToShortDateString() tarihinde paylaşılmıştır.
+        @Model.PostDto.Post.User.UserName tarafından @Model.PostDto.Post.Date.ToShortDateString() tarihinde paylaşılmıştır.
     </p>
 
     <hr>
 
     <div class="text-center">
-        <img class="img-fluid rounded" src="~/img/@Model.Post.Thumbnail" alt="@Model.Post.Title">
+        <img class="img-fluid rounded" src="~/img/@Model.PostDto.Post.Thumbnail" alt="@Model.PostDto.Post.Title">
     </div>
     <hr>
 
     <!-- Post Content -->
-    @Html.Raw(Model.Post.Content)
+    @Html.Raw(Model.PostDto.Post.Content)
 
     <hr>
 
-    <p class="text-center"><span class="badge badge-info">Okunma Sayısı: @Model.Post.ViewCount</span> Yorum Sayısı: <span class="badge badge-warning"> @Model.Post.CommentCount</span></p>
+    <p class="text-center"><span class="badge badge-info">Okunma Sayısı: @Model.PostDto.Post.ViewCount</span> Yorum Sayısı: <span class="badge badge-warning"> @Model.PostDto.Post.CommentCount</span></p>
 
     <!-- Comments Form -->
-    <partial name="~/Views/Comment/_CommentAddPartial.cshtml" model="new CommentAddDto{PostId= Model.Post.Id}" />
+    <partial name="~/Views/Comment/_CommentAddPartial.cshtml" model="new CommentAddDto{PostId= Model.PostDto.Post.Id}" />
 
 
     <div id="comments">
-        @foreach (var comment in Model.Post.Comments)
+        @foreach (var comment in Model.PostDto.Post.Comments)
         {
 
             <!-- Single Comment -->
