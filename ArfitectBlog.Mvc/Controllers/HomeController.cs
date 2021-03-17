@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using ArfitectBlog.Entities.Concrete;
 using ArfitectBlog.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
