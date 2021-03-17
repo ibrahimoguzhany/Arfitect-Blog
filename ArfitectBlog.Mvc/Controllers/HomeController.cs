@@ -32,12 +32,14 @@ namespace ArfitectBlog.Mvc.Controllers
         [HttpGet]
         public IActionResult About()
         {
+            throw new SqlNullValueException();
             return View(_aboutUsPageInfo);
         }
 
         [HttpGet]
         public IActionResult Contact()
         {
+            throw new NullReferenceException();
             return View();
         }
 
