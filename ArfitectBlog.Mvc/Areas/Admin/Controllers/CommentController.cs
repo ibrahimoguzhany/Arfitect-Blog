@@ -32,7 +32,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles="SuperAdmin,Comment.Read")]
         public async Task<IActionResult> GetAllComments()
         {
             var result = await _commentService.GetAllByNonDeletedAsync();
@@ -43,8 +43,8 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
             return Json(commentsResult);
         }
 
+        [Authorize(Roles = "SuperAdmin,Comment.Read")]
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetDetail(int commentId)
         {
             var result = await _commentService.GetAsync(commentId);
@@ -63,7 +63,10 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int commentId)
         {
             var result = await _commentService.DeleteAsync(commentId, LoggedInUser.UserName);
-            var commentResult = JsonSerializer.Serialize(result);
+            var commentResult = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
             return Json(commentResult);
         }
 
@@ -145,7 +148,10 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         public async Task<JsonResult> UndoDelete(int commentId)
         {
             var result = await _commentService.UndoDeleteAsync(commentId, LoggedInUser.UserName);
-            var undoDeleteCommentResult = JsonSerializer.Serialize(result);
+            var undoDeleteCommentResult = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
             return Json(undoDeleteCommentResult);
         }
         [Authorize(Roles = "SuperAdmin,Comment.Delete")]
@@ -153,7 +159,10 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         public async Task<JsonResult> HardDelete(int commentId)
         {
             var result = await _commentService.HardDeleteAsync(commentId);
-            var hardDeletedCommentResult = JsonSerializer.Serialize(result);
+            var hardDeletedCommentResult = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
             return Json(hardDeletedCommentResult);
         }
     }

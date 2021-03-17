@@ -205,7 +205,7 @@
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Başarısız İşlem!',
-                                    text: `Beklenmedik bir hata oluştu.`,
+                                    text: 'Beklenmedik bir hata oluştu.',
                                 });
                             }
                         },
