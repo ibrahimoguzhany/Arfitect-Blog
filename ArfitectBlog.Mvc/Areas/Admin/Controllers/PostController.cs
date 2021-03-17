@@ -12,6 +12,7 @@ using ArfitectBlog.Mvc.Helpers.Abstract;
 using ArfitectBlog.Services.Abstract;
 using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
 using Microsoft.AspNetCore.Authorization;
+using NToastNotify;
 
 namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
 {
@@ -20,10 +21,12 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
     {
         private readonly IPostService _postService;
         private readonly ICategoryService _categoryService;
-        public PostController(IPostService postService, ICategoryService categoryService,UserManager<User> userManager,IMapper mapper, IImageHelper imageHelper) : base(userManager, mapper, imageHelper)
+        private readonly IToastNotification _toastNotification;
+        public PostController(IPostService postService, ICategoryService categoryService,UserManager<User> userManager,IMapper mapper, IImageHelper imageHelper, IToastNotification toastNotification) : base(userManager, mapper, imageHelper)
         {
             _postService = postService;
             _categoryService = categoryService;
+            _toastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -63,7 +66,10 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
                 var result = await _postService.AddAsync(postAddDto, LoggedInUser.UserName,LoggedInUser.Id);
                 if (result.ResultStatus == ResultStatus.Success)
                 {
-                    TempData.Add("SuccessMessage",result.Message);
+                    _toastNotification.AddSuccessToastMessage(result.Message, new ToastrOptions
+                    {
+                        Title = "Başarılı İşlem!"
+                    });
                     return RedirectToAction("Index", "Post");
                 }
                 else
@@ -123,7 +129,10 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
                         ImageHelper.Delete(oldThumbnail);
                     }
 
-                    TempData.Add("SuccessMessage", result.Message);
+                    _toastNotification.AddSuccessToastMessage(result.Message, new ToastrOptions
+                    {
+                        Title = "Başarılı İşlem!"
+                    });
                     return RedirectToAction("Index", "Post");
                 }
                 else

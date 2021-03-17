@@ -27,6 +27,7 @@ namespace ArfitectBlog.Mvc
         {
             services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
+            services.Configure<SmtpSettings> (Configuration.GetSection("SmtpSettings"));
             services.AddControllersWithViews(options =>
             {
                 options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value=> "Bu alan boş geçilmemelidir");
@@ -35,7 +36,7 @@ namespace ArfitectBlog.Mvc
             {
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            });
+            }).AddNToastNotifyToastr();
             services.AddSession();
             services.AddAutoMapper(typeof(CategoryProfile), typeof(PostProfile), typeof(UserProfile), typeof(ViewModelsProfile), typeof(CommentProfile));
             services.LoadMyServices(connectionString:Configuration.GetConnectionString("LocalDB"));
@@ -72,6 +73,7 @@ namespace ArfitectBlog.Mvc
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseNToastNotify();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(
