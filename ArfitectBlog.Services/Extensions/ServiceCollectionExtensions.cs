@@ -44,6 +44,7 @@ namespace ArfitectBlog.Services.Extensions
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();
             serviceCollection.AddScoped<IPostService, PostManager>();
             serviceCollection.AddScoped<ICommentService, CommentManager>();
+            serviceCollection.AddSingleton<IMailService, MailManager>();
 
             return serviceCollection;
         }

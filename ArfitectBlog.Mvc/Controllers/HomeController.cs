@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using ArfitectBlog.Entities.Dtos;
+using NToastNotify;
 
 namespace ArfitectBlog.Mvc.Controllers
 {
@@ -13,10 +14,14 @@ namespace ArfitectBlog.Mvc.Controllers
     {
         private readonly IPostService _postService;
         private readonly AboutUsPageInfo _aboutUsPageInfo;
+        private readonly IMailService _mailService;
+        private readonly IToastNotification _toastNotification;
 
-        public HomeController(IPostService postService, IOptions<AboutUsPageInfo> aboutUsPageInfo)
+        public HomeController(IPostService postService, IOptions<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService, IToastNotification toastNotification)
         {
             _postService = postService;
+            _mailService = mailService;
+            _toastNotification = toastNotification;
             _aboutUsPageInfo = aboutUsPageInfo.Value;
         }
 
@@ -32,21 +37,28 @@ namespace ArfitectBlog.Mvc.Controllers
         [HttpGet]
         public IActionResult About()
         {
-            throw new SqlNullValueException();
             return View(_aboutUsPageInfo);
         }
 
         [HttpGet]
         public IActionResult Contact()
         {
-            throw new NullReferenceException();
             return View();
         }
-
+        
         [HttpPost]
         public IActionResult Contact(EmailSendDto emailSendDto)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var result = _mailService.SendContactEmail(emailSendDto);
+                _toastNotification.AddSuccessToastMessage(result.Message, new ToastrOptions()
+                {
+                    Title = "Basarili islem"
+                });
+                return View();
+            }
+            return View(emailSendDto);
         }
     }
 }
