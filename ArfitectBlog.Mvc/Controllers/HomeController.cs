@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NToastNotify;
 using System.Threading.Tasks;
+using ArfitectBlog.Shared.Utilities.Helpers.Abstract;
 
 namespace ArfitectBlog.Mvc.Controllers
 {
@@ -14,12 +15,14 @@ namespace ArfitectBlog.Mvc.Controllers
         private readonly AboutUsPageInfo _aboutUsPageInfo;
         private readonly IMailService _mailService;
         private readonly IToastNotification _toastNotification;
+        private readonly IWritableOptions<AboutUsPageInfo> _aboutUsPageWriter;
 
-        public HomeController(IPostService postService, IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService, IToastNotification toastNotification)
+        public HomeController(IPostService postService, IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService, IToastNotification toastNotification, IWritableOptions<AboutUsPageInfo> aboutUsPageWriter)
         {
             _postService = postService;
             _mailService = mailService;
             _toastNotification = toastNotification;
+            _aboutUsPageWriter = aboutUsPageWriter;
             _aboutUsPageInfo = aboutUsPageInfo.Value;
         }
 
