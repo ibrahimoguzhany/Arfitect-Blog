@@ -1,12 +1,10 @@
-﻿using System;
-using System.Data.SqlTypes;
-using ArfitectBlog.Entities.Concrete;
+﻿using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Entities.Dtos;
 using ArfitectBlog.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
-using ArfitectBlog.Entities.Dtos;
 using NToastNotify;
+using System.Threading.Tasks;
 
 namespace ArfitectBlog.Mvc.Controllers
 {
@@ -17,7 +15,7 @@ namespace ArfitectBlog.Mvc.Controllers
         private readonly IMailService _mailService;
         private readonly IToastNotification _toastNotification;
 
-        public HomeController(IPostService postService, IOptions<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService, IToastNotification toastNotification)
+        public HomeController(IPostService postService, IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IMailService mailService, IToastNotification toastNotification)
         {
             _postService = postService;
             _mailService = mailService;
@@ -49,6 +47,7 @@ namespace ArfitectBlog.Mvc.Controllers
         [HttpPost]
         public IActionResult Contact(EmailSendDto emailSendDto)
         {
+            
             if (ModelState.IsValid)
             {
                 var result = _mailService.SendContactEmail(emailSendDto);

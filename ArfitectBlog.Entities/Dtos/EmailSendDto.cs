@@ -27,7 +27,7 @@ namespace ArfitectBlog.Entities.Dtos
         [MinLength(5, ErrorMessage = "{0} alani en az {1} karakterden olusmalidir.")]
         public string Subject { get; set; }
         [DisplayName("Mesajiniz")]
-        //[Required(ErrorMessage = "{0} alanı zorunludur")]
+        [Required(ErrorMessage = "{0} alanı zorunludur")]
         [MaxLength(1500, ErrorMessage = "{0} alani en fazla {1} karakterden olusmalidir.")]
         [MinLength(20, ErrorMessage = "{0} alani en az {1} karakterden olusmalidir.")]
         public string Message { get; set; }

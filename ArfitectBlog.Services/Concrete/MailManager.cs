@@ -54,7 +54,7 @@ namespace ArfitectBlog.Services.Concrete
                 To = { new MailAddress("ibrahim.oguzhan_4@hotmail.com") },
                 Subject = emailSendDto.Subject,
                 IsBodyHtml = true,
-                Body = $"Gönderen Kişi: {emailSendDto.Name}, Gönderen Email Adresi:{emailSendDto.Email}\n{emailSendDto.Message}"
+                Body = $"Gönderen Kişi: {emailSendDto.Name}, Gönderen Email Adresi:{emailSendDto.Email}<br/>{emailSendDto.Message}"
             };
             SmtpClient smtpClient = new SmtpClient()
             {
