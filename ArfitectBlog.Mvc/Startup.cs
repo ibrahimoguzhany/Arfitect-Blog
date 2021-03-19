@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Mvc.Areas.Admin.Models;
 using ArfitectBlog.Mvc.AutoMapper.Profiles;
 using ArfitectBlog.Mvc.Filters;
 using ArfitectBlog.Mvc.Helpers.Abstract;
@@ -29,9 +30,13 @@ namespace ArfitectBlog.Mvc
             services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.Configure<SmtpSettings> (Configuration.GetSection("SmtpSettings"));
+            services.Configure<PostRightSideBarWidgetOptionsViewModel>(
+                Configuration.GetSection("PostRightSideBarWidgetOptions"));
             services.ConfigureWritable<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.ConfigureWritable<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.ConfigureWritable<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.ConfigureWritable<PostRightSideBarWidgetOptionsViewModel>(
+                Configuration.GetSection("PostRightSideBarWidgetOptions"));
             services.AddControllersWithViews(options =>
             {
                 options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value=> "Bu alan boş geçilmemelidir");

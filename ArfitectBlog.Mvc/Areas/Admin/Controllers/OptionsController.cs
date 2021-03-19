@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ArfitectBlog.Entities.Concrete;
+using ArfitectBlog.Mvc.Areas.Admin.Models;
+using ArfitectBlog.Services.Abstract;
 using ArfitectBlog.Shared.Utilities.Helpers.Abstract;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NToastNotify;
 
@@ -22,13 +22,22 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
         private readonly IWritableOptions<WebsiteInfo> _websiteInfoWriter;
         private readonly SmtpSettings _smtpSettings;
         private readonly IWritableOptions<SmtpSettings> _smtpSettingsWriter;
+        private readonly PostRightSideBarWidgetOptions _postRightSideBarWidgetOptions;
+        private readonly ICategoryService _categoryService;
+        private readonly IWritableOptions<PostRightSideBarWidgetOptions> _postRightSideBarWidWritableOptionsWriter;
+        private readonly IMapper _mapper;
+       
 
-        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter)
+        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter, IOptionsSnapshot<PostRightSideBarWidgetOptions> postRightSideBarWidgetOptions, IWritableOptions<PostRightSideBarWidgetOptions> postRightSideBarWidWritableOptionsWriter, ICategoryService categoryService, IMapper mapper)
         {
             _aboutUsPageInfoWriter = aboutUsPageInfoWriter;
             _toastNotification = toastNotification;
             _websiteInfoWriter = websiteInfoWriter;
             _smtpSettingsWriter = smtpSettingsWriter;
+            _postRightSideBarWidWritableOptionsWriter = postRightSideBarWidWritableOptionsWriter;
+            _categoryService = categoryService;
+            _mapper = mapper;
+            _postRightSideBarWidgetOptions = postRightSideBarWidgetOptions.Value;
             _smtpSettings = smtpSettings.Value;
             _websiteInfo = websiteInfo.Value;
             _aboutUsPageInfo = aboutUsPageInfo.Value;
@@ -117,6 +126,46 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
                 return View(smtpSettings);
             }
             return View(smtpSettings);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PostRightSideBarWidgetSettings()
+        {
+            var categoriesResult = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
+            var postRightSideBarWidgetsOptionsViewModel = _mapper.Map<PostRightSideBarWidgetOptionsViewModel>(_postRightSideBarWidgetOptions);
+            postRightSideBarWidgetsOptionsViewModel.Categories = categoriesResult.Data.Categories;
+            return View(postRightSideBarWidgetsOptionsViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostRightSideBarWidgetSettings(PostRightSideBarWidgetOptionsViewModel postRightSideBarWidgetOptionsViewModel)
+        {
+            var categoriesResult = await _categoryService.GetAllByNoneDeletedAndActiveAsync();
+            postRightSideBarWidgetOptionsViewModel.Categories = categoriesResult.Data.Categories;
+            if (ModelState.IsValid)
+            {
+                _postRightSideBarWidWritableOptionsWriter.Update(x =>
+                {
+                    x.Header = postRightSideBarWidgetOptionsViewModel.Header;
+                    x.TakeSize = postRightSideBarWidgetOptionsViewModel.TakeSize;
+                    x.CategoryId = postRightSideBarWidgetOptionsViewModel.CategoryId;
+                    x.FilterBy = postRightSideBarWidgetOptionsViewModel.FilterBy;
+                    x.OrderBy = postRightSideBarWidgetOptionsViewModel.OrderBy;
+                    x.IsAscending = postRightSideBarWidgetOptionsViewModel.IsAscending;
+                    x.StartAt = postRightSideBarWidgetOptionsViewModel.StartAt;
+                    x.EndAt = postRightSideBarWidgetOptionsViewModel.EndAt;
+                    x.MaxViewCount = postRightSideBarWidgetOptionsViewModel.MaxViewCount;
+                    x.MinViewCount = postRightSideBarWidgetOptionsViewModel.MinViewCount;
+                    x.MaxCommentCount = postRightSideBarWidgetOptionsViewModel.MaxCommentCount;
+                    x.MinCommentCount = postRightSideBarWidgetOptionsViewModel.MinCommentCount;
+                });
+                _toastNotification.AddSuccessToastMessage("Paylaşım sayfalarınızın wifget ayarları başarıyla guncellenmistir.", new ToastrOptions()
+                {
+                    Title = "Başarılı İşlem"
+                });
+                return View(postRightSideBarWidgetOptionsViewModel);
+            }
+            return View(postRightSideBarWidgetOptionsViewModel);
         }
     }
 }

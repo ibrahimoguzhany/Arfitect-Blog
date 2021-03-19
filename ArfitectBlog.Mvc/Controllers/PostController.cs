@@ -5,19 +5,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using ArfitectBlog.Data.Concrete;
 using ArfitectBlog.Entities.ComplexTypes;
+using ArfitectBlog.Entities.Concrete;
 using ArfitectBlog.Mvc.Models;
 using ArfitectBlog.Services.Abstract;
 using ArfitectBlog.Shared.Utilities.Results.ComplexTypes;
+using Microsoft.Extensions.Options;
 
 namespace ArfitectBlog.Mvc.Controllers
 {
     public class PostController : Controller
     {
         private readonly IPostService _postService;
+        private readonly PostRightSideBarWidgetOptions _postRightSideBarWidgetOptions;
 
-        public PostController(IPostService postService)
+
+        public PostController(IPostService postService, IOptionsSnapshot<PostRightSideBarWidgetOptions> postRightSideBarWidgetOptions)
         {
             _postService = postService;
+            _postRightSideBarWidgetOptions = postRightSideBarWidgetOptions.Value;
         }
 
         [HttpGet]
@@ -44,13 +49,18 @@ namespace ArfitectBlog.Mvc.Controllers
             {
                 var userPosts = await _postService.GetAllByUserIdOnFilter(
                     userId: postResult.Data.Post.UserId,
-                    filterBy: FilterBy.Category, 
-                    orderBy: OrderBy.Date, 
-                    isAscending: false, 
-                    takeSize: 10,
-                    categoryId: postResult.Data.Post.CategoryId, 
-                    startAt: DateTime.Now, endAt: DateTime.Now,
-                    minViewCount: 0, maxCommentCount: 99999, minCommentCount: 0, maxViewCount: 99999);
+                    filterBy: _postRightSideBarWidgetOptions.FilterBy, 
+                    orderBy: _postRightSideBarWidgetOptions.OrderBy, 
+                    isAscending: _postRightSideBarWidgetOptions.IsAscending, 
+                    takeSize: _postRightSideBarWidgetOptions.TakeSize,
+                    categoryId: _postRightSideBarWidgetOptions.CategoryId, 
+                    startAt: _postRightSideBarWidgetOptions.StartAt, 
+                    endAt: _postRightSideBarWidgetOptions.EndAt,
+                    minViewCount: _postRightSideBarWidgetOptions.MinViewCount,
+                    maxCommentCount: _postRightSideBarWidgetOptions.MaxCommentCount,
+                    minCommentCount: _postRightSideBarWidgetOptions.MinCommentCount, 
+                    maxViewCount: _postRightSideBarWidgetOptions.MinViewCount);
+
                 await _postService.IncreaseViewCountAsync(postId);
                 return View(new PostDetailViewModel()
                 {
@@ -58,7 +68,7 @@ namespace ArfitectBlog.Mvc.Controllers
                     PostDetailRightSideBarViewModel = new PostDetailRightSideBarViewModel
                     {
                         PostListDto = userPosts.Data,
-                        Header = "Kullanıcının Aynı Kategori Üzerindeki En Çok Okunan Makaleleri",
+                        Header = _postRightSideBarWidgetOptions.Header,
                         User=postResult.Data.Post.User
                     },
                 });
