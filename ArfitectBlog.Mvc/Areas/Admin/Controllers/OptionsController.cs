@@ -159,7 +159,7 @@ namespace ArfitectBlog.Mvc.Areas.Admin.Controllers
                     x.MaxCommentCount = postRightSideBarWidgetOptionsViewModel.MaxCommentCount;
                     x.MinCommentCount = postRightSideBarWidgetOptionsViewModel.MinCommentCount;
                 });
-                _toastNotification.AddSuccessToastMessage("Paylaşım sayfalarınızın wifget ayarları başarıyla guncellenmistir.", new ToastrOptions()
+                _toastNotification.AddSuccessToastMessage("Paylaşım sayfalarınızın widget ayarları başarıyla guncellenmistir.", new ToastrOptions()
                 {
                     Title = "Başarılı İşlem"
                 });

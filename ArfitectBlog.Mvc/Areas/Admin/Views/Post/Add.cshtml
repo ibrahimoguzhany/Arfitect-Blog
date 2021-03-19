@@ -42,7 +42,6 @@
                         <label for="datepicker" asp-for="Date"></label>
                         <input type="text" id="datepicker" value="@DateTime.Now.ToShortDateString()" class="form-control" asp-for="Date" />
                         <span asp-validation-for="Date" class="text-danger"></span>
-
                     </div>
                     <div class="form-group">
                         <label for="thumnnailUpload" asp-for="ThumbnailFile"></label>
@@ -108,7 +107,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/flick/jquery-ui.min.css" integrity="sha512-Yx7L3AmO2yN7qIM1uM0Mqx6ld35SZj7oyG/gZ668QNvBzJsvoQebhFpsl1zEYVR6jtYCpXcCmewCuhvHrjDhog==" crossorigin="anonymous" />
-
 }
 
 @section Styles
@@ -120,5 +118,4 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/AdminLTE/css/select2-bootstrap4.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/flick/theme.min.css" integrity="sha512-VWoNiZ/8gXnhL2bMWHGku9Oy67OJa3bjHMgx82nBMJMBhS+ZTGxRdyonqW3K92FuhUIn+VR4rMTyuhJ9JhUmow==" crossorigin="anonymous" />
-
 }

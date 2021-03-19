@@ -30,12 +30,12 @@ namespace ArfitectBlog.Mvc
             services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.Configure<SmtpSettings> (Configuration.GetSection("SmtpSettings"));
-            services.Configure<PostRightSideBarWidgetOptionsViewModel>(
+            services.Configure<PostRightSideBarWidgetOptions>(
                 Configuration.GetSection("PostRightSideBarWidgetOptions"));
             services.ConfigureWritable<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.ConfigureWritable<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.ConfigureWritable<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
-            services.ConfigureWritable<PostRightSideBarWidgetOptionsViewModel>(
+            services.ConfigureWritable<PostRightSideBarWidgetOptions>(
                 Configuration.GetSection("PostRightSideBarWidgetOptions"));
             services.AddControllersWithViews(options =>
             {
